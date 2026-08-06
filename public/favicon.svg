@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <clipPath id="round">
+      <rect x="0" y="0" width="256" height="256" rx="48" ry="48" />
+    </clipPath>
+  </defs>
+  <rect x="0" y="0" width="256" height="256" fill="#ffffff"/>
+  <image href="/fynktech-logo.jpg" x="0" y="0" width="256" height="256" preserveAspectRatio="xMidYMid slice" clip-path="url(#round)"/>
+</svg>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="16" cy="16" r="16" fill="#0A0045"/>
+  <text x="16" y="22" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18" font-weight="bold">F</text>
+</svg>
