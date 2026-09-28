@@ -4,9 +4,6 @@ const ADMIN_COOKIE = "fynk_admin";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  if (!pathname.startsWith("/admin")) {
-    return NextResponse.next();
-  }
 
   if (pathname === "/admin/login") {
     return NextResponse.next();
@@ -28,5 +25,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin", "/admin/:path*"],
 };

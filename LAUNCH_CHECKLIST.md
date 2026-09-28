@@ -11,6 +11,8 @@ Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blo
 - [ ] `NEXT_PUBLIC_BUSINESS_HOURS` + `NEXT_PUBLIC_OFFLINE_REPLY_PROMISE` + timezone
 - [ ] `NEXT_PUBLIC_VOICE_DEMO_NUMBER` — or leave empty for “coming soon”
 - [ ] Supabase: run `supabase/migrations/001_leads.sql` + `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`
+- [ ] Supabase: run `supabase/migrations/002_media.sql` (Bunny media URLs)
+- [ ] Bunny: fill `BUNNY_STORAGE_API_KEY` + `BUNNY_CDN_URL` in `.env.local` (zone/host already set for `fynktech-website` / SG)
 - [ ] `SLACK_WEBHOOK_URL` and/or Resend (`RESEND_API_KEY`, `LEADS_NOTIFY_EMAIL`)
 - [ ] `ADMIN_PASSWORD` for `/admin/leads`
 - [ ] Starting prices for 4 packaged offers + service pages

@@ -4,6 +4,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "fynktech-website.b-cdn.net",
+        port: "",
+        pathname: "/**",
+      },
+      {
         protocol: 'https',
         hostname: 'cdn.prod.website-files.com',
         port: '',

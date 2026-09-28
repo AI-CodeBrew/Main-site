@@ -8,7 +8,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const from = searchParams.get("from") ?? "/admin/leads";
+  const from = searchParams.get("from") ?? "/admin";
   const configError = searchParams.get("error") === "config";
 
   async function onSubmit(e: React.FormEvent) {
