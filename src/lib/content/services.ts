@@ -603,7 +603,7 @@ const allServices: ServiceContent[] = [
         a: "Absolutely — we extend brand guidelines into product UI.",
       },
     ],
-    heroImage: "/Business-Cards/UI:UXDesign.png",
+    heroImage: "/Business-Cards/UI-UXDesign.png",
   },
   {
     slug: "cloud",

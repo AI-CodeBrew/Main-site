@@ -53,7 +53,7 @@ const aiAutomationServices = [
     icon: Palette,
     title: "UI/UX Design",
     description: "Beautiful and intuitive user experiences",
-    image: "/Business-Cards/UI:UXDesign.png"
+    image: "/Business-Cards/UI-UXDesign.png"
   },
   {
     icon: Cloud,
