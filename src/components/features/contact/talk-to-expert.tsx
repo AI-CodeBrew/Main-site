@@ -62,6 +62,14 @@ type FormValues = {
 const fieldClass =
   "w-full rounded-xl border border-white/15 bg-white/[0.06] px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-[#01B4D2] focus:ring-2 focus:ring-[#01B4D2]/25";
 
+const selectClass = `${fieldClass} appearance-none pr-11 bg-no-repeat bg-[length:0.9rem] bg-[right_1.15rem_center]`;
+
+const selectChevron = {
+  backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+  )}")`,
+};
+
 export function TalkToExpert() {
   const form = useForm<FormValues>({
     defaultValues: {
@@ -200,7 +208,12 @@ export function TalkToExpert() {
                       placeholder="Company *"
                       {...form.register("company")}
                     />
-                    <select className={fieldClass} defaultValue="" {...form.register("lookingFor")}>
+                    <select
+                      className={selectClass}
+                      style={selectChevron}
+                      defaultValue=""
+                      {...form.register("lookingFor")}
+                    >
                       <option value="" disabled>
                         I am looking for *
                       </option>
@@ -233,7 +246,9 @@ export function TalkToExpert() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#25D366" }}
+              style={{
+                background: "linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%)",
+              }}
               onClick={() => trackEvent("whatsapp_click", { location: "talk_to_expert" })}
             >
               <WhatsAppIcon className="h-5 w-5" />

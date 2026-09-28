@@ -4,7 +4,6 @@ import { ClientLogos } from "@/components/common/client-logos";
 import { PackagedOffers } from "@/components/home/packaged-offers";
 import { HowWeWork } from "@/components/home/how-we-work";
 import { CaseStudies } from "@/components/features/contact/case-studies";
-import { VoiceDemoSection } from "@/components/home/voice-demo-section";
 import { HomepageFaq } from "@/components/home/homepage-faq";
 import { FinalCta } from "@/components/home/final-cta";
 
@@ -22,7 +21,6 @@ export default function Home() {
       <PackagedOffers />
       <HowWeWork />
       <CaseStudies />
-      <VoiceDemoSection />
       <HomepageFaq />
       <FinalCta />
     </main>

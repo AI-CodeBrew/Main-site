@@ -6,7 +6,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/layout/chat-widget";
 import { UtmCapture } from "@/components/layout/utm-capture";
-import { ThemeProvider } from "@/components/layout/theme-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-aeonik" });
@@ -56,8 +55,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // next-themes sets the class on <html> before hydration, so React must not complain about it.
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
         <link rel="shortcut icon" href="/favicon-32.png" />
@@ -67,15 +65,13 @@ export default function RootLayout({
         className={`${inter.variable} ${plusJakarta.variable} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
       >
-        <ThemeProvider>
-          <Suspense fallback={null}>
-            <UtmCapture />
-          </Suspense>
-          <Header />
-          {children}
-          <Footer />
-          <ChatWidget />
-        </ThemeProvider>
+        <Suspense fallback={null}>
+          <UtmCapture />
+        </Suspense>
+        <Header />
+        {children}
+        <Footer />
+        <ChatWidget />
       </body>
     </html>
   );

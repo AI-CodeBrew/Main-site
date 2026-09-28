@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useScroll } from "@/hooks/use-scroll";
 import { navItems } from "@/lib/constants";
 
@@ -124,7 +123,6 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <CountryDropdown mobileMenuOpen={mobileMenuOpen} />
-          <ThemeToggle />
           <Link href="/contact" className="btn btn-primary hide-mobile-cta">Talk to an expert</Link>
           
           {/* Mobile Toggle Button */}

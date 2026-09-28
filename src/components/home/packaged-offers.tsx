@@ -6,7 +6,7 @@ import { trackEvent } from "@/lib/analytics";
 
 export function PackagedOffers() {
   return (
-    <section className="py-16 md:py-24 bg-surface" aria-labelledby="offers-heading">
+    <section className="pt-16 md:pt-24 pb-8 md:pb-10 bg-surface" aria-labelledby="offers-heading">
       <div className="container-page">
         <div className="max-w-3xl mb-12">
           <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "rgba(1, 180, 210, 0.9)" }}>

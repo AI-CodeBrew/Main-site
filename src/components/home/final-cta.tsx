@@ -46,7 +46,9 @@ export function FinalCta() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 font-semibold text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "#25D366" }}
+              style={{
+                background: "linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%)",
+              }}
               onClick={() => trackEvent("whatsapp_click", { location: "final_cta" })}
             >
               <WhatsAppIcon className="w-5 h-5" />

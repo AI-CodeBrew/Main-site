@@ -105,20 +105,8 @@ export const homepageFaq = [
     a: "Discovery call → proposal & build → launch & optimize. You get demos during build, not a big reveal at the end.",
   },
   {
-    q: "What tech do you use?",
-    a: "We pick the stack that fits the job — commonly Shopify/Woo, Node, NestJS, Supabase, AWS, LangChain/CrewAI, and voice/chat stacks. See our tech strip for examples.",
-  },
-  {
     q: "Do you support after launch?",
     a: "Yes. We offer maintenance and iteration retainers. Scope is agreed up front so you know what is covered.",
-  },
-  {
-    q: "Who owns the code and accounts?",
-    a: "You own your IP, repos, and vendor accounts. We build in your environments (or hand everything over at launch).",
-  },
-  {
-    q: "Do you work with clients outside Pakistan?",
-    a: "Yes. We’re based in Lahore and work with clients in the Gulf, UK, and US (remote-first).",
   },
   {
     q: "Can we talk to an expert first?",

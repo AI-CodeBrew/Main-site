@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* dark: utilities follow the .dark class on <html> (set by next-themes), not the OS setting. */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* Sticky Video Split Component CSS Helpers */
 @layer utilities {
   /* When content width > 0, show 2 columns (md+) */
@@ -56,42 +53,7 @@
   --line: #E5E7EB;
 }
 
-/* Dark Theme — html.dark outranks the :root blocks regardless of order. */
-html.dark {
-  color-scheme: dark;
-  --background: #07070C;
-  --foreground: #F5F7FF;
-  --muted: #13131D;
-  --muted-foreground: #9CA3AF;
-  --border: #262636;
-  --card: #0F0F17;
-  --card-foreground: #F5F7FF;
-  --popover: #13131D;
-  --popover-foreground: #F5F7FF;
-  --primary: #5A83FF;
-  --primary-foreground: #FFFFFF;
-  --secondary: #1F1F2E;
-  --secondary-foreground: #FFFFFF;
-  --accent: #1F1F2E;
-  --accent-foreground: #FFFFFF;
-  --destructive: #dc3545;
-  --destructive-foreground: #FFFFFF;
-  --ring: #5A83FF;
-
-  --surface: #07070C;
-  --surface-muted: #0F0F17;
-  --heading: #F5F7FF;
-  --body: #D1D5DB;
-  --text-muted: #9CA3AF;
-  --line: #262636;
-
-  --glass-bg: rgba(15, 15, 23, 0.9);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --gradient-card: linear-gradient(135deg, rgba(20, 20, 32, 0.9) 0%, rgba(15, 15, 23, 0.9) 100%);
-  --blog-link: #8FB0FF;
-}
-
-/* Admin screens stay light whatever theme the visitor picked (see app/admin/layout.tsx). */
+/* Admin screens stay light (see app/admin/layout.tsx). */
 .admin-light {
   color-scheme: light;
   --background: #FFFFFF;

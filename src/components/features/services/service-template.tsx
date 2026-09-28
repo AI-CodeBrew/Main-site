@@ -313,7 +313,10 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold bg-[#25D366] text-white hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity"
+                style={{
+                  background: "linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%)",
+                }}
                 onClick={() =>
                   trackEvent("whatsapp_click", {
                     label: "service_cta",

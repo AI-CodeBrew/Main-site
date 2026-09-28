@@ -3,7 +3,7 @@ import Timeline8 from "@/components/ui/c-timeline-8";
 export function HowWeWork() {
   return (
     <section
-      className="relative overflow-hidden bg-white py-16 md:py-24"
+      className="relative overflow-hidden bg-white pt-8 md:pt-10 pb-16 md:pb-24"
       aria-labelledby="process-heading"
     >
       <div className="container-page relative">
