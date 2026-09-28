@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 import { siteConfig } from "@/lib/content/site";
@@ -25,15 +25,11 @@ export default function RoiCalculatorPage() {
     return { hoursSaved: hours, costSaved: cost };
   }, [tickets, minutes, hourly, automationPct]);
 
-  useEffect(() => {
-    trackEvent("calculator_used", { tickets, automationPct });
-  }, [tickets, automationPct]);
-
   async function saveEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
     const utm = getStoredUtms();
-    await fetch("/api/leads", {
+    const response = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,21 +40,32 @@ export default function RoiCalculatorPage() {
         ...utm,
       }),
     });
+    if (!response.ok) return;
+
     setSaved(true);
+    trackEvent("calculator_used", {
+      tickets,
+      minutes,
+      hourly,
+      currency,
+      automation_pct: automationPct,
+      hours_saved: Math.round(hoursSaved),
+      cost_saved: Math.round(costSaved),
+    });
     trackEvent("lead_captured", { source: "calculator" });
   }
 
   return (
     <main className="container-page py-16 max-w-3xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Support ROI calculator</h1>
-      <p className="text-gray-600 mb-8">
+      <h1 className="text-3xl font-bold text-heading mb-2">Support ROI calculator</h1>
+      <p className="text-body mb-8">
         Estimate hours and labor cost saved by automating a share of support tickets with AI. Adjust
         inputs to match your team — this is directional, not a guarantee.
       </p>
 
       <div className="grid gap-6 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm text-gray-700">Monthly tickets</span>
+          <span className="text-sm text-body">Monthly tickets</span>
           <input
             type="number"
             min={1}
@@ -68,7 +75,7 @@ export default function RoiCalculatorPage() {
           />
         </label>
         <label className="block">
-          <span className="text-sm text-gray-700">Avg handling time (minutes)</span>
+          <span className="text-sm text-body">Avg handling time (minutes)</span>
           <input
             type="number"
             min={1}
@@ -78,7 +85,7 @@ export default function RoiCalculatorPage() {
           />
         </label>
         <label className="block">
-          <span className="text-sm text-gray-700">Agent hourly cost</span>
+          <span className="text-sm text-body">Agent hourly cost</span>
           <input
             type="number"
             min={1}
@@ -88,7 +95,7 @@ export default function RoiCalculatorPage() {
           />
         </label>
         <label className="block">
-          <span className="text-sm text-gray-700">Currency</span>
+          <span className="text-sm text-body">Currency</span>
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value as (typeof CURRENCIES)[number])}
@@ -102,7 +109,7 @@ export default function RoiCalculatorPage() {
           </select>
         </label>
         <label className="block md:col-span-2">
-          <span className="text-sm text-gray-700">AI automation % ({automationPct}%)</span>
+          <span className="text-sm text-body">AI automation % ({automationPct}%)</span>
           <input
             type="range"
             min={0}
@@ -115,13 +122,13 @@ export default function RoiCalculatorPage() {
       </div>
 
       <div className="mt-8 p-6 rounded-xl bg-[#0A0045]/5 border border-[#0A0045]/10">
-        <p className="text-lg font-semibold text-gray-900">
+        <p className="text-lg font-semibold text-heading">
           ~{hoursSaved.toFixed(0)} hours / month saved
         </p>
-        <p className="text-2xl font-bold text-[#0A0045] mt-1">
+        <p className="text-2xl font-bold text-heading mt-1">
           ~{costSaved.toFixed(0)} {currency} / month
         </p>
-        <p className="text-xs text-gray-500 mt-3">
+        <p className="text-xs text-subtle mt-3">
           Assumptions: {automationPct}% of {tickets} tickets × {minutes} min at {hourly} {currency}/hr.
           Deflection quality and implementation scope affect real outcomes — validate on a discovery call.
         </p>
@@ -143,11 +150,11 @@ export default function RoiCalculatorPage() {
 
       <div className="mt-10">
         {siteConfig.bookingUrl ? (
-          <a href={siteConfig.bookingUrl} className="text-[#0A0045] font-semibold underline">
+          <a href={siteConfig.bookingUrl} className="text-heading font-semibold underline">
             Book a call to validate ROI
           </a>
         ) : (
-          <Link href="/contact" className="text-[#0A0045] font-semibold underline">
+          <Link href="/contact" className="text-heading font-semibold underline">
             Contact us to validate ROI
           </Link>
         )}

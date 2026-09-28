@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* dark: utilities follow the .dark class on <html> (set by next-themes), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Sticky Video Split Component CSS Helpers */
 @layer utilities {
   /* When content width > 0, show 2 columns (md+) */
@@ -43,28 +46,64 @@
   --destructive: #dc3545;
   --destructive-foreground: #FFFFFF;
   --ring: #0A0045;
+
+  /* Theme tokens used by components (bg-surface, text-heading, text-body, text-subtle, border-line) */
+  --surface: #FFFFFF;
+  --surface-muted: #F8F9FA;
+  --heading: #070643;
+  --body: #374151;
+  --text-muted: #6B7280;
+  --line: #E5E7EB;
 }
 
-/* Dark Theme */
-.dark {
-  --background: #0A0045;
-  --foreground: #FFFFFF;
-  --muted: #1a1a2e;
-  --muted-foreground: #a1a1aa;
-  --border: #374151;
-  --card: #1a1a2e;
-  --card-foreground: #FFFFFF;
-  --popover: #1a1a2e;
-  --popover-foreground: #FFFFFF;
+/* Dark Theme — html.dark outranks the :root blocks regardless of order. */
+html.dark {
+  color-scheme: dark;
+  --background: #07070C;
+  --foreground: #F5F7FF;
+  --muted: #13131D;
+  --muted-foreground: #9CA3AF;
+  --border: #262636;
+  --card: #0F0F17;
+  --card-foreground: #F5F7FF;
+  --popover: #13131D;
+  --popover-foreground: #F5F7FF;
   --primary: #5A83FF;
   --primary-foreground: #FFFFFF;
-  --secondary: #374151;
+  --secondary: #1F1F2E;
   --secondary-foreground: #FFFFFF;
-  --accent: #374151;
+  --accent: #1F1F2E;
   --accent-foreground: #FFFFFF;
   --destructive: #dc3545;
   --destructive-foreground: #FFFFFF;
   --ring: #5A83FF;
+
+  --surface: #07070C;
+  --surface-muted: #0F0F17;
+  --heading: #F5F7FF;
+  --body: #D1D5DB;
+  --text-muted: #9CA3AF;
+  --line: #262636;
+
+  --glass-bg: rgba(15, 15, 23, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --gradient-card: linear-gradient(135deg, rgba(20, 20, 32, 0.9) 0%, rgba(15, 15, 23, 0.9) 100%);
+  --blog-link: #8FB0FF;
+}
+
+/* Admin screens stay light whatever theme the visitor picked (see app/admin/layout.tsx). */
+.admin-light {
+  color-scheme: light;
+  --background: #FFFFFF;
+  --foreground: #0A0045;
+  --surface: #FFFFFF;
+  --surface-muted: #F8F9FA;
+  --heading: #070643;
+  --body: #374151;
+  --text-muted: #6B7280;
+  --line: #E5E7EB;
+  --blog-link: #1e40af;
+  color: #0A0045;
 }
 
 :root {
@@ -95,6 +134,15 @@
   --color-accent: var(--color-accent);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-heading: var(--heading);
+  --color-body: var(--body);
+  --color-subtle: var(--text-muted);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%);
@@ -115,12 +163,59 @@ body {
   font-family: var(--font-inter);
   min-height: 100vh;
   overflow-x: hidden;
+  cursor: default;
 }
 
-/* Prevent horizontal overflow */
-* {
-  max-width: 100%;
-  box-sizing: border-box;
+/* Clickable controls — always show pointer */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a[href],
+select,
+summary,
+label[for],
+.btn,
+input[type="submit"],
+input[type="button"],
+input[type="file"],
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"],
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+/* Keep Spline canvas on default arrow — not grab / light cursors */
+.spline-host,
+.spline-host canvas {
+  cursor: default !important;
+}
+
+/* Simple loader for Spline suspense */
+.loader {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #5A83FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Prevent horizontal overflow. In the base layer so Tailwind max-w-* utilities can still override it
+   (unlayered CSS beats every @layer, which silently disabled all max-w-* classes). */
+@layer base {
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 /* Utilities */
@@ -194,7 +289,7 @@ section {
 .btn-outline { border: 1px solid hsl(var(--border)); color: #fff; background: transparent; }
 .btn-outline:hover { border-color: transparent; background-image: var(--gradient-brand); }
 .link-underline { position: relative; }
-.link-underline::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 1px; width: 0; background: #070643; transition: width .25s ease; }
+.link-underline::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 1px; width: 0; background: var(--heading); transition: width .25s ease; }
 .link-underline:hover::after { width: 100%; }
 
 /* Footer Links */
@@ -214,10 +309,12 @@ section {
   transition: all 0.2s ease;
 }
 
+/* Icons are in brand colors, so hover lifts the chip instead of recoloring it. */
 .social-icon:hover {
-  background-color: #070643;
-  color: white;
-  border-color: #070643;
+  background-color: var(--surface-muted);
+  border-color: var(--heading);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(7, 6, 67, 0.12);
 }
 
 
@@ -368,7 +465,7 @@ section {
 .mesh-overlay::after { content: ""; position: absolute; inset: 0; background: radial-gradient(1200px 600px at 70% 80%, rgba(1,180,210,0.08), transparent 70%); pointer-events: none; }
 
 /* White section separators for depth */
-.section-white { background: #FFFFFF; color: #0b1020; position: relative; }
+.section-white { background: var(--surface); color: var(--heading); position: relative; }
 .section-white::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 16px; box-shadow: 0 -10px 25px rgba(10, 0, 69, 0.10); pointer-events: none; }
 .section-white::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16px; box-shadow: 0 10px 25px rgba(10, 0, 69, 0.10); pointer-events: none; }
 
@@ -433,7 +530,7 @@ section {
   .mobile-menu {
     z-index: 60;
     backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--glass-bg);
   }
   
   /* Mobile button adjustments */

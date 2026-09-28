@@ -12,7 +12,7 @@ export function FeaturedIn() {
   const duplicatedMedia = [...media, ...media];
 
   return (
-    <section className="py-20 relative" style={{ backgroundColor: '#FFFFFF' }}>
+    <section className="py-20 relative" style={{ backgroundColor: 'var(--surface)' }}>
       {/* Background network elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 border border-[#070643] rounded-full"></div>
@@ -26,7 +26,7 @@ export function FeaturedIn() {
       
       <div className="container-page relative z-10">
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12" style={{ color: '#070643' }}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-12" style={{ color: 'var(--heading)' }}>
             Featured in
           </h2>
           
@@ -36,7 +36,7 @@ export function FeaturedIn() {
               {duplicatedMedia.map((outlet, index) => (
                 <div key={`right-${index}`} className="flex-shrink-0 mx-8">
                   <div className="relative px-6 py-4">
-                    <span className="text-lg font-bold text-center transition-colors duration-300 whitespace-nowrap" style={{ color: '#070643' }}>
+                    <span className="text-lg font-bold text-center transition-colors duration-300 whitespace-nowrap" style={{ color: 'var(--heading)' }}>
                       {outlet}
                     </span>
                   </div>

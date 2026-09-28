@@ -1,31 +1,28 @@
-import { howWeWork } from "@/lib/content/site";
+import Timeline8 from "@/components/ui/c-timeline-8";
 
 export function HowWeWork() {
   return (
-    <section className="py-16 md:py-24" style={{ backgroundColor: "#f8f9fc" }} aria-labelledby="process-heading">
-      <div className="container-page">
-        <div className="max-w-3xl mb-12 text-center mx-auto">
-          <h2 id="process-heading" className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#070643" }}>
+    <section
+      className="relative overflow-hidden bg-white py-16 md:py-24"
+      aria-labelledby="process-heading"
+    >
+      <div className="container-page relative">
+        <div className="relative text-center mb-12 md:mb-16">
+          <p className="text-sm md:text-base text-[#6B7280] mb-3">Workflow</p>
+          <h2
+            id="process-heading"
+            className="text-4xl md:text-5xl font-bold tracking-tight text-[#070643]"
+          >
             How we work
           </h2>
-          <p className="text-lg text-gray-600">Three steps. No mystery process.</p>
+          <p className="mt-4 max-w-2xl mx-auto text-[#374151] text-base md:text-lg leading-relaxed">
+            A clear path from discovery to launch — demos along the way, not a big reveal at the end.
+          </p>
         </div>
-        <ol className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {howWeWork.map((item) => (
-            <li key={item.step} className="text-center md:text-left">
-              <div
-                className="inline-flex items-center justify-center w-12 h-12 rounded-full text-white font-bold mb-4"
-                style={{ background: "linear-gradient(135deg, #0A0045, #5A83FF)" }}
-              >
-                {item.step}
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#070643" }}>
-                {item.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">{item.description}</p>
-            </li>
-          ))}
-        </ol>
+
+        <div className="relative rounded-2xl border border-[#E5E7EB] bg-[#F8F9FA] px-4 py-10 md:px-10 md:py-14">
+          <Timeline8 />
+        </div>
       </div>
     </section>
   );

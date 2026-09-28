@@ -765,7 +765,7 @@ const techStackEcommerce = [
 
 export function TechStack() {
   return (
-    <section className="py-24" style={{ backgroundColor: '#FFFFFF' }}>
+    <section className="py-24" style={{ backgroundColor: 'var(--surface)' }}>
       <div className="container-page">
         {/* Tech Stack AI Section */}
         <motion.div
@@ -774,10 +774,10 @@ export function TechStack() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#000000' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
             Tech Stack AI
           </h2>
-          <p className="text-xl" style={{ color: '#666666' }}>
+          <p className="text-xl" style={{ color: 'var(--text-muted)' }}>
             Cutting-edge AI technologies and frameworks powering our automation solutions
           </p>
         </motion.div>
@@ -789,9 +789,9 @@ export function TechStack() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
-              className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col items-center justify-center h-32"
+              className="bg-surface rounded-xl p-6 border border-line shadow-sm flex flex-col items-center justify-center h-32"
             >
-              <div className="w-12 h-12 mb-3 flex items-center justify-center">
+              <div className="w-12 h-12 mb-3 flex items-center justify-center rounded-lg dark:bg-white/95 dark:p-1.5">
                 <img
                   src={tech.logo}
                   alt={tech.name}
@@ -804,7 +804,7 @@ export function TechStack() {
                   }}
                 />
               </div>
-              <h3 className="text-sm font-medium text-center" style={{ color: '#000000' }}>
+              <h3 className="text-sm font-medium text-center" style={{ color: 'var(--heading)' }}>
                 {tech.name}
               </h3>
             </motion.div>
@@ -818,10 +818,10 @@ export function TechStack() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#000000' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
             Tech Stack Ecommerce
           </h2>
-          <p className="text-xl" style={{ color: '#666666' }}>
+          <p className="text-xl" style={{ color: 'var(--text-muted)' }}>
             Comprehensive ecommerce tools and platforms for building successful online stores
           </p>
         </motion.div>
@@ -833,9 +833,9 @@ export function TechStack() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
-              className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col items-center justify-center h-32"
+              className="bg-surface rounded-xl p-6 border border-line shadow-sm flex flex-col items-center justify-center h-32"
             >
-              <div className="w-12 h-12 mb-3 flex items-center justify-center">
+              <div className="w-12 h-12 mb-3 flex items-center justify-center rounded-lg dark:bg-white/95 dark:p-1.5">
                 <img
                   src={tech.logo}
                   alt={tech.name}
@@ -848,7 +848,7 @@ export function TechStack() {
                   }}
                 />
               </div>
-              <h3 className="text-sm font-medium text-center" style={{ color: '#000000' }}>
+              <h3 className="text-sm font-medium text-center" style={{ color: 'var(--heading)' }}>
                 {tech.name}
               </h3>
             </motion.div>

@@ -27,7 +27,7 @@ const achievements = [
 
 export function Achievements() {
   return (
-    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
+    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--surface)' }}>
       
       <div className="container-page relative z-10">
         <motion.div
@@ -36,10 +36,10 @@ export function Achievements() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#070643' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--heading)' }}>
             Fynk Tech's Achievements
           </h2>
-          <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: '#6B7280' }}>
+          <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--text-muted)' }}>
             We take pride in empowering businesses worldwide with innovative solutions. 
             Fynk Tech brings an unwavering commitment to excellence, backed by a global presence.
           </p>
@@ -63,8 +63,8 @@ export function Achievements() {
                 >
                   {achievement.number}
                 </motion.div>
-                <h3 className="text-xl font-semibold mb-2" style={{ color: '#070643' }}>{achievement.label}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--heading)' }}>{achievement.label}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   {achievement.description}
                 </p>
               </div>

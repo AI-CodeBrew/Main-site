@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import posthog from "posthog-js";
 import { trackEvent } from "@/lib/analytics";
 import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { getStoredUtms } from "@/lib/leads/utm";
@@ -39,9 +40,6 @@ function greetingForPath(pathname: string): string {
   }
   if (pathname === "/contact") {
     return "Want to reach the team? I can answer FAQs or connect you with a human.";
-  }
-  if (pathname === "/free-audit") {
-    return "Looking at a free audit? I can explain what we check before you submit.";
   }
   if (pathname === "/roi-calculator") {
     return "Curious about support ROI? I can explain assumptions behind the calculator.";
@@ -308,7 +306,7 @@ export function ChatWidget() {
             messages: next,
             pathname,
             sessionId: sessionId(),
-            visitorName,
+            distinctId: posthog.get_distinct_id(),
           }),
         });
         const data = (await res.json()) as {
@@ -431,9 +429,7 @@ export function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            // Phone: bottom sheet, edge to edge, 65% of the screen tall.
-            // md+: floating 380px panel above the "Chat with us" button.
-            className="fixed inset-x-0 bottom-0 z-[61] w-full h-[65dvh] min-h-[340px] rounded-t-2xl border-t md:static md:mb-4 md:w-[380px] md:h-[min(520px,calc(100vh-6rem))] md:min-h-0 md:rounded-2xl md:border bg-white shadow-2xl border-gray-100 flex flex-col overflow-hidden"
+            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden"
           >
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3">
               <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden ring-2 ring-white/20">
@@ -482,17 +478,28 @@ export function ChatWidget() {
               </button>
             </div>
 
-            {!visitorName ? (
-              <form
-                onSubmit={onNameSubmit}
-                className="flex-1 flex flex-col justify-center gap-4 p-6 bg-gray-50"
-              >
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-[#070643]">Welcome to Fynk Tech 👋</p>
-                  <p className="mt-1 text-sm text-gray-600">Please enter your name to start the chat.</p>
+            <div className="flex-1 overflow-y-auto p-4 bg-surface-muted space-y-3">
+              {messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={`text-sm rounded-2xl px-3 py-2 max-w-[90%] ${
+                    m.role === "user"
+                      ? "ml-auto bg-[#0A0045] text-white"
+                      : "bg-surface border border-line text-heading"
+                  }`}
+                >
+                  {m.content}
                 </div>
-                <label className="block">
-                  <span className="sr-only">Your name</span>
+              ))}
+              {loading && (
+                <div className="text-xs text-subtle animate-pulse">Thinking…</div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+
+            {needsPrivacy && (
+              <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-xs text-amber-900">
+                <label className="flex gap-2 items-start cursor-pointer">
                   <input
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
@@ -537,26 +544,8 @@ export function ChatWidget() {
                 <div ref={bottomRef} />
               </div>
 
-              {needsPrivacy && (
-                <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-xs text-amber-900">
-                  <label className="flex gap-2 items-start cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={privacyAccepted}
-                      onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                      className="mt-0.5"
-                    />
-                    <span>
-                      I agree my contact details are used only to respond to my inquiry.{" "}
-                      <Link href="/privacy" className="underline">
-                        Privacy Policy
-                      </Link>
-                    </span>
-                  </label>
-                </div>
-              )}
-
-              <div className="p-3 border-t bg-white space-y-2">
+            <div className="p-3 border-t bg-surface space-y-2">
+              <div className="flex flex-wrap gap-2">
                 {actions.includes("book") && (
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -577,16 +566,31 @@ export function ChatWidget() {
                     disabled={loading}
                   />
                   <button
-                    type="submit"
-                    disabled={loading || !input.trim()}
-                    className="px-4 py-2 rounded-xl bg-[#0A0045] text-white text-sm disabled:opacity-50"
+                    type="button"
+                    onClick={() => void handleHuman()}
+                    className="text-xs px-3 py-1.5 rounded-full border border-line"
                   >
                     Send
                   </button>
                 </form>
               </div>
-              </>
-            )}
+              <form onSubmit={onSubmit} className="flex gap-2">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type a message…"
+                  className="flex-1 text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                  disabled={loading}
+                />
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  className="px-4 py-2 rounded-xl bg-[#0A0045] text-white text-sm disabled:opacity-50"
+                >
+                  Send
+                </button>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

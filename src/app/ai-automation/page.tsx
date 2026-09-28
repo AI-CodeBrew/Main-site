@@ -1,21 +1,28 @@
-import { PageHero } from "@/components/common/page-hero";
-import { AiAutomation } from "@/components/features/services/ai-automation";
-import { Process } from "@/components/features/services/process";
-import { CaseStudies } from "@/components/features/contact/case-studies";
-import { Contact } from "@/components/features/contact/contact";
+import type { Metadata } from "next";
+import { Hero } from "@/components/common/hero";
+import { ClientLogos } from "@/components/common/client-logos";
+import { ServicesGrid } from "@/components/features/services/services-grid";
+import { FinalCta } from "@/components/home/final-cta";
+
+export const metadata: Metadata = {
+  title: "AI Automation & Intelligent Agents",
+  description:
+    "Fynk Tech builds AI voice and chat agents, workflow automation, sales AI and custom agents for businesses in the Gulf, UK and US. Talk to an expert.",
+};
 
 export default function AiAutomationPage() {
   return (
     <main className="min-h-screen">
-      <PageHero
-        title="AI Automation & Intelligent Agents"
-        subtitle="Transform Your Business with Smart Automation"
-        description="Custom AI agents, SaaS solutions, and intelligent automation tools that streamline workflows and accelerate growth."
+      <Hero
+        videos={["/videos/220941_small.mp4"]}
+        eyebrow="AI Automation"
+        title="AI agents and automation that answer customers, run workflows and grow revenue"
+        description="Voice and chat agents, workflow automation, sales AI and custom agents — built into your CRM and tools, with humans in the loop where it matters."
+        trackingLocation="ai_automation_hero"
       />
-      <AiAutomation />
-      <Process />
-      <CaseStudies />
-      <Contact />
+      <ServicesGrid category="ai" />
+      <ClientLogos />
+      <FinalCta />
     </main>
   );
 }

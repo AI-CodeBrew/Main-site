@@ -32,13 +32,13 @@ const lowerBrands: Brand[] = [
 
 export function TrustedBy() {
   return (
-    <section className="py-20 bg-white dark:bg-[#070643] overflow-hidden">
+    <section className="py-20 bg-surface dark:bg-[#070643] overflow-hidden">
       <div className="container-page">
         <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-black dark:text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-heading dark:text-white mb-4">
             Trusted by Leading Brands
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-body dark:text-gray-300 max-w-2xl mx-auto">
             We power innovation for the world's most successful companies
           </p>
         </div>

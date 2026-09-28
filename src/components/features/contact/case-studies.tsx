@@ -1,80 +1,103 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/content/company";
-import { ExternalLink } from "lucide-react";
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export function CaseStudies() {
-  const dialcom = projects[0];
+  const total = projects.length;
 
   return (
-    <section className="py-16 md:py-24 relative" style={{ backgroundColor: "#FFFFFF" }} aria-labelledby="projects-heading">
+    <section className="py-16 md:py-24 relative overflow-hidden bg-surface-muted" aria-labelledby="projects-heading">
       <div className="container-page relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mb-12"
+          className="max-w-4xl mb-10 md:mb-12"
         >
-          <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "rgba(1, 180, 210, 0.8)" }}>
-            Selected work
-          </p>
-          <h2 id="projects-heading" className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#070643" }}>
+          <h2
+            id="projects-heading"
+            className="text-3xl sm:text-4xl md:text-5xl font-normal uppercase leading-tight tracking-tight mb-5"
+            style={{ color: 'var(--heading)' }}
+          >
             Real projects we&apos;ve built
           </h2>
-          <p className="text-lg" style={{ color: "#6B7280" }}>
-            We only list work we can name publicly. More case studies with metrics will be added as clients approve them.
+          <p className="text-base md:text-lg max-w-xl leading-relaxed" style={{ color: 'var(--body)' }}>
+            AI agents, CRMs and e-commerce systems shipped for real businesses. We only show work we can name publicly.
           </p>
         </motion.div>
+      </div>
 
-        <motion.article
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="rounded-2xl border border-gray-100 p-8 md:p-10 shadow-sm"
-          style={{ background: "linear-gradient(135deg, rgba(90,131,255,0.04) 0%, rgba(255,255,255,1) 50%)" }}
+      {/* Cards bleed off the right edge and scroll horizontally, like a carousel. */}
+      <div className="relative z-10">
+        <ul
+          className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 pr-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          // Left edge lines up with .container-page (max 1400px, 1rem gutter); right side runs to the viewport edge.
+          style={{
+            paddingLeft: "max(1rem, calc((100vw - 1400px) / 2 + 1rem))",
+            scrollPaddingLeft: "max(1rem, calc((100vw - 1400px) / 2 + 1rem))",
+          }}
         >
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: "#070643" }}>
-                {dialcom.name}
-              </h3>
-              <p className="text-base md:text-lg mb-6 max-w-2xl" style={{ color: "#4A5568" }}>
-                {dialcom.summary}
-              </p>
-              <ul className="flex flex-wrap gap-2 mb-6">
-                {dialcom.deliverables.map((item) => (
-                  <li
-                    key={item}
-                    className="px-3 py-1.5 rounded-full text-sm font-medium"
-                    style={{ backgroundColor: "rgba(10,0,69,0.06)", color: "#070643" }}
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="text-sm italic" style={{ color: "#9CA3AF" }}>
-                TODO: Measurable results pending client approval for public use.
-              </p>
-            </div>
-            <a
-              href={dialcom.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary inline-flex items-center gap-2 shrink-0"
+          {projects.map((project, index) => (
+            <motion.li
+              key={project.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="snap-start shrink-0 w-[85vw] sm:w-[60vw] md:w-[42vw] lg:w-[34vw] max-w-[560px]"
             >
-              Visit dialcom.ai
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-        </motion.article>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.name} — ${project.category}`}
+                className="group relative block aspect-[16/10] overflow-hidden rounded-md"
+              >
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    fill
+                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 34vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  // Branded stand-in until a real project image is added.
+                  <div
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{ background: "linear-gradient(135deg, #0A0A3C 0%, #1E3296 55%, #5A83FF 100%)" }}
+                  >
+                    <span className="text-4xl md:text-5xl font-bold tracking-[0.2em] text-white/90 uppercase">
+                      {project.name}
+                    </span>
+                  </div>
+                )}
 
-        <div className="mt-8">
-          <Link href="/case-studies" className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: "#5A83FF" }}>
-            View case studies →
-          </Link>
-        </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
+                  <p className="text-sm text-white/80 mb-1">
+                    {pad(index + 1)}/{pad(total)}
+                  </p>
+                  <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide">{project.category}</h3>
+                  <p className="text-sm text-white/80 mt-0.5">{project.name}</p>
+                </div>
+              </a>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="container-page relative z-10 mt-6">
+        <Link href="/case-studies" className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: "#5A83FF" }}>
+          View case studies →
+        </Link>
       </div>
     </section>
   );

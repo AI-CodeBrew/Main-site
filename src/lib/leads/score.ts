@@ -25,6 +25,6 @@ export function scoreLead(input: ScoreInput): LeadScore {
 
   if (urgent && hasBudget && hasContact) return "hot";
   if (hasContact && (urgent || hasBudget)) return "warm";
-  if (input.lead_type === "audit" || input.lead_type === "contact") return "warm";
+  if (input.lead_type === "contact") return "warm";
   return "cold";
 }

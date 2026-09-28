@@ -54,7 +54,7 @@ export function CountryDropdown({ mobileMenuOpen = false }: CountryDropdownProps
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-black transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded-md"
+        className="flex items-center gap-2 px-3 py-2 text-sm text-body hover:text-heading transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded-md cursor-pointer"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -72,15 +72,15 @@ export function CountryDropdown({ mobileMenuOpen = false }: CountryDropdownProps
       </button>
 
       {isOpen && (
-        <div className={`absolute top-full right-0 mt-2 w-48 sm:w-56 md:w-64 bg-white backdrop-blur-sm border border-gray-200 rounded-lg py-2 shadow-xl ${mobileMenuOpen ? 'z-[70]' : 'z-50'}`}>
+        <div className={`absolute top-full right-0 mt-2 w-48 sm:w-56 md:w-64 bg-surface backdrop-blur-sm border border-line rounded-lg py-2 shadow-xl ${mobileMenuOpen ? 'z-[70]' : 'z-50'}`}>
           {countryOptions.map((option) => (
             <button
               key={option.value}
               onClick={() => handleCountrySelect(option)}
-              className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 ${
+              className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 cursor-pointer ${
                 selectedCountry.value === option.value
                   ? "text-white bg-[#0A0045]"
-                  : "text-gray-800 hover:text-white hover:bg-[#0A0045]"
+                  : "text-heading hover:text-white hover:bg-[#0A0045]"
               }`}
             >
               {option.label}

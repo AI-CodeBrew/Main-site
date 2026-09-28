@@ -2,35 +2,8 @@ import { NavItem, NavDropdownItem, CountryOption } from "@/types";
 
 export const navItems: NavItem[] = [
   { href: "/", label: "Home" },
-  { 
-    label: "AI Automation", 
-    dropdown: [
-      { href: "/ai-automation/voice-chat", label: "AI Voice & Chat Automation" },
-      { href: "/ai-automation/workflow", label: "Business Workflow Automation" },
-      { href: "/ai-automation/sales-marketing", label: "AI Sales & Marketing Automation" },
-      { href: "/ai-automation/data-analytics", label: "Data, Analytics & AI Insight Systems" },
-      { href: "/ai-automation/custom-agents", label: "Custom AI Agent Development" },
-      { href: "/ai-automation/web-development", label: "Web Development" },
-      { href: "/ai-automation/mobile-development", label: "Mobile App Development" },
-      { href: "/ai-automation/ui-ux", label: "UI/UX Design" },
-      { href: "/ai-automation/cloud", label: "Cloud Application" },
-      { href: "/ai-automation/qa-support", label: "Quality Assurance, Maintenance & Support" }
-    ] as NavDropdownItem[]
-  },
-  { 
-    label: "Ecommerce", 
-    dropdown: [
-      { href: "/ecommerce/store-setup", label: "Store Setup & Development (Shopify / Woo / Custom)" },
-      { href: "/ecommerce/product-sourcing", label: "Product Sourcing & Supply Chain Management" },
-      { href: "/ecommerce/marketing-growth", label: "Marketing & Growth Systems" },
-      { href: "/ecommerce/sales-funnel", label: "Sales Funnel Optimization" },
-      { href: "/ecommerce/operations-automation", label: "Operations & Automation (AI + Workflow + Support)" },
-      { href: "/ecommerce/data-analytics", label: "Data Analytics & Scaling Roadmaps" },
-      { href: "/ecommerce/branding-creative", label: "Branding & Creative Production" },
-      { href: "/ecommerce/maintenance", label: "Maintenance & Long-Term Store Management" },
-      { href: "/ecommerce/ai-solutions", label: "AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)" }
-    ] as NavDropdownItem[]
-  },
+  { href: "/ai-automation", label: "AI Automation" },
+  { href: "/ecommerce", label: "Ecommerce" },
   { 
     label: "What We Are", 
     dropdown: [
@@ -39,6 +12,7 @@ export const navItems: NavItem[] = [
       { href: "/blog", label: "Blogs" }
     ] as NavDropdownItem[]
   },
+  { href: "/team", label: "Team" },
   { href: "/contact", label: "Contact" },
 ];
 

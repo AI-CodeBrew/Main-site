@@ -1,0 +1,99 @@
+/* Shared styles for blog HTML — used by the admin editor and the public /blog/[slug] page. */
+
+.blog-content {
+  color: var(--body, #1f2937);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.blog-content > * + * {
+  margin-top: 1rem;
+}
+
+.blog-content h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--heading, #070643);
+  margin-top: 2rem;
+}
+
+.blog-content h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--heading, #070643);
+  margin-top: 1.5rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.5rem;
+}
+.blog-content ul {
+  list-style: disc;
+}
+.blog-content ol {
+  list-style: decimal;
+}
+.blog-content li + li {
+  margin-top: 0.375rem;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid #5a83ff;
+  padding: 0.25rem 0 0.25rem 1rem;
+  color: var(--text-muted, #4b5563);
+  font-style: italic;
+}
+
+.blog-content a:not(.blog-cta-btn) {
+  color: var(--blog-link, #1e40af);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-content img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* execCommand("fontSize") levels → rem */
+.blog-content font[size="1"] { font-size: 0.75rem; }
+.blog-content font[size="2"] { font-size: 0.875rem; }
+.blog-content font[size="3"] { font-size: 1rem; }
+.blog-content font[size="4"] { font-size: 1.25rem; }
+.blog-content font[size="5"] { font-size: 1.5rem; }
+.blog-content font[size="6"] { font-size: 2rem; }
+.blog-content font[size="7"] { font-size: 2.5rem; }
+
+/* CTA buttons (inline styles carry the colors; this adds interaction) */
+.blog-content .blog-cta-btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.blog-content .blog-cta-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.blog-content .blog-cta-btn:hover .blog-cta-icon {
+  transform: translateX(3px);
+}
+.blog-content .blog-cta-icon {
+  transition: transform 0.15s ease;
+}
+
+/* Editor-only affordances */
+.rte-editor img {
+  cursor: pointer;
+}
+.rte-editor img[data-rte-selected] {
+  outline: 3px solid #5a83ff;
+  outline-offset: 2px;
+}
+.rte-editor .blog-cta-btn {
+  cursor: pointer;
+}

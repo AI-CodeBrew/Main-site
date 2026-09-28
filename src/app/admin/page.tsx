@@ -61,6 +61,30 @@ export default function AdminHomePage() {
           </Link>
 
           <Link
+            href="/admin/blogs"
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
+              Blogs
+            </h2>
+            <p className="text-sm text-gray-600">
+              Write, edit and publish blog posts with the rich text editor.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/team"
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
+              Team
+            </h2>
+            <p className="text-sm text-gray-600">
+              Add, edit, reorder and hide team members and photos on the Team page.
+            </p>
+          </Link>
+
+          <Link
             href="/admin/leads"
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >

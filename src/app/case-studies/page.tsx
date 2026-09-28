@@ -24,18 +24,18 @@ export default function CaseStudiesPage() {
         showButtons={true}
       />
 
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-surface">
         <div className="container-page max-w-4xl">
-          <article className="rounded-2xl border border-gray-100 p-8 md:p-12 shadow-sm">
+          <article className="rounded-2xl border border-line p-8 md:p-12 shadow-sm">
             <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "rgba(1, 180, 210, 0.8)" }}>
               Client project
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#070643" }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
               {dialcom.name}
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">{dialcom.summary}</p>
+            <p className="text-lg text-body mb-8 leading-relaxed">{dialcom.summary}</p>
 
-            <h3 className="text-xl font-semibold mb-4" style={{ color: "#070643" }}>
+            <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--heading)' }}>
               What we delivered
             </h3>
             <ul className="grid gap-3 sm:grid-cols-3 mb-8">
@@ -43,14 +43,14 @@ export default function CaseStudiesPage() {
                 <li
                   key={item}
                   className="rounded-xl px-4 py-3 text-center font-medium"
-                  style={{ backgroundColor: "rgba(10,0,69,0.06)", color: "#070643" }}
+                  style={{ backgroundColor: "rgba(10,0,69,0.06)", color: 'var(--heading)' }}
                 >
                   {item}
                 </li>
               ))}
             </ul>
 
-            <p className="text-sm italic text-gray-400 mb-8">
+            <p className="text-sm italic text-subtle mb-8">
               TODO: Problem statement, process, and measurable results pending client approval.
             </p>
 
@@ -65,7 +65,7 @@ export default function CaseStudiesPage() {
             </a>
           </article>
 
-          <p className="mt-10 text-center text-gray-500">
+          <p className="mt-10 text-center text-subtle">
             Want a similar build?{" "}
             <Link href="/contact" className="font-medium underline-offset-4 hover:underline" style={{ color: "#5A83FF" }}>
               Get in touch

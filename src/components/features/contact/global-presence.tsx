@@ -43,7 +43,7 @@ export function GlobalPresence() {
   const router = useRouter();
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-surface relative overflow-hidden">
       <div className="container-page relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -51,10 +51,10 @@ export function GlobalPresence() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-heading">
             Markets we serve
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-body max-w-3xl mx-auto">
             Based in Lahore, we build AI automation and e-commerce systems for clients in Pakistan, the Gulf, the UK and the US.
           </p>
         </motion.div>
@@ -106,16 +106,16 @@ export function GlobalPresence() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="bg-white rounded-2xl p-8 md:p-12 text-left shadow-lg border border-gray-100">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+          <div className="bg-surface rounded-2xl p-8 md:p-12 text-left shadow-lg border border-line">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-heading">
               {companyAddress.label}
             </h3>
-            <p className="text-lg mb-2 text-gray-700">
+            <p className="text-lg mb-2 text-body">
               {companyAddress.line1}
               <br />
               {companyAddress.line2}, {companyAddress.country}
             </p>
-            <p className="text-lg font-medium text-gray-900">
+            <p className="text-lg font-medium text-heading">
               Email: {companyAddress.email}
             </p>
           </div>

@@ -1,9 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Linkedin, Instagram } from "lucide-react";
+import { Mail, MessageCircle, Info, MapPin } from "lucide-react";
 import { companyAddress } from "@/lib/content/company";
+import { siteConfig, socialLinks, whatsappLink } from "@/lib/content/site";
+import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/common/social-icons";
 
 export function Footer() {
+  const whatsappNumber = siteConfig.whatsappNumber;
+
   return (
     <footer className="border-t footer-light-shadow relative overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
       <div
@@ -24,7 +28,7 @@ export function Footer() {
       />
 
       <div className="container-page py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-gray-200">
@@ -41,13 +45,24 @@ export function Footer() {
             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted-foreground)' }}>
               AI automation and e-commerce systems for businesses in Pakistan, the Gulf, the UK and the US.
             </p>
-            <div className="flex gap-4">
-              <a href="https://www.linkedin.com/company/fynk-tech/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full flex items-center justify-center social-icon">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="https://www.instagram.com/fynk.tech?igsh=MWEwbG95NjZtcWYyNg==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full flex items-center justify-center social-icon">
-                <Instagram className="w-5 h-5" />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { href: socialLinks.facebook, label: "Fynk Tech on Facebook", Icon: FacebookIcon },
+                { href: socialLinks.instagram, label: "Fynk Tech on Instagram", Icon: InstagramIcon },
+                { href: socialLinks.linkedin, label: "Fynk Tech on LinkedIn", Icon: LinkedInIcon },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="w-10 h-10 rounded-full flex items-center justify-center social-icon"
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -56,6 +71,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li><Link href="/" className="footer-link">Home</Link></li>
               <li><Link href="/about" className="footer-link">About Us</Link></li>
+              <li><Link href="/team" className="footer-link">Our Team</Link></li>
               <li><Link href="/blog" className="footer-link">Blog</Link></li>
               <li><Link href="/contact" className="footer-link">Contact</Link></li>
             </ul>
@@ -89,27 +105,39 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Resources</h3>
             <ul className="space-y-3 text-sm">
               <li><Link href="/case-studies" className="footer-link">Case Studies</Link></li>
-              <li><Link href="/free-audit" className="footer-link">Free Store Audit</Link></li>
               <li><Link href="/roi-calculator" className="footer-link">ROI Calculator</Link></li>
               <li><Link href="/privacy" className="footer-link">Privacy Policy</Link></li>
               <li><Link href="/terms" className="footer-link">Terms & Conditions</Link></li>
             </ul>
           </div>
-        </div>
 
-        <div className="border-t pt-8 mb-8" style={{ borderColor: 'var(--border)' }}>
-          <h3 className="font-semibold mb-6" style={{ color: 'var(--foreground)' }}>Office</h3>
-          <div className="text-sm max-w-md">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-medium" style={{ color: 'var(--foreground)' }}>{companyAddress.label}</span>
-            </div>
-            <p style={{ color: 'var(--muted-foreground)' }}>
-              {companyAddress.line1}<br />
-              {companyAddress.line2}, {companyAddress.country}
-            </p>
-            <p className="mt-4" style={{ color: 'var(--muted-foreground)' }}>
-              <strong>Email:</strong> {companyAddress.email}
-            </p>
+          <div>
+            <h3 className="font-semibold mb-4">Contact Us</h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
+                <a href={`mailto:${companyAddress.email}`} className="footer-link break-all">{companyAddress.email}</a>
+              </li>
+              {whatsappNumber && (
+                <li className="flex items-start gap-3">
+                  <MessageCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
+                  <a href={whatsappLink() ?? undefined} target="_blank" rel="noopener noreferrer" className="footer-link">
+                    +{whatsappNumber}
+                  </a>
+                </li>
+              )}
+              <li className="flex items-start gap-3">
+                <Info className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
+                <Link href="/about" className="footer-link">About Us</Link>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
+                <span style={{ color: 'var(--muted-foreground)' }}>
+                  {companyAddress.line1},<br />
+                  {companyAddress.line2}, {companyAddress.country}
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 

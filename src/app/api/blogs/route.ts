@@ -1,0 +1,43 @@
+import { NextRequest, NextResponse } from "next/server";
+import { isAdmin } from "@/lib/admin/is-admin";
+import { createBlog, listBlogs } from "@/lib/blogs/store";
+import { blogSchema, firstIssue } from "@/lib/blogs/validation";
+
+/** Public list of published blogs; `?all=1` (admin only) includes drafts. */
+export async function GET(req: NextRequest) {
+  const includeDrafts = req.nextUrl.searchParams.get("all") === "1";
+  if (includeDrafts && !isAdmin(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const result = await listBlogs({ includeDrafts });
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status ?? 502 });
+  }
+  return NextResponse.json({ ok: true, items: result.data });
+}
+
+/** Admin create. */
+export async function POST(req: NextRequest) {
+  if (!isAdmin(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const parsed = blogSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 });
+  }
+
+  const result = await createBlog(parsed.data);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status ?? 502 });
+  }
+  return NextResponse.json({ ok: true, item: result.data });
+}

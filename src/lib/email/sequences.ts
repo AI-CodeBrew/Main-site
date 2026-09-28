@@ -1,4 +1,4 @@
-export type LeadType = "audit" | "calculator" | "contact" | "chat";
+export type LeadType = "calculator" | "contact" | "chat";
 
 export type SequenceEmail = {
   day: number;
@@ -8,33 +8,6 @@ export type SequenceEmail = {
 
 /** Draft copy for review — not sent automatically unless Resend is enabled (see TODO in send helper). */
 export const emailSequences: Record<LeadType, SequenceEmail[]> = {
-  audit: [
-    {
-      day: 0,
-      subject: "Your store audit from Fynk Tech",
-      body: "Thanks for requesting a free audit. Here is a summary of what we found and suggested next steps. TODO: attach personalized audit summary.",
-    },
-    {
-      day: 2,
-      subject: "Quick win from your audit",
-      body: "One change from your audit that often improves conversion: TODO: pick top fix from their report.",
-    },
-    {
-      day: 5,
-      subject: "How we implement audit fixes",
-      body: "Our process: discovery → scoped proposal → build. Reply if you want a walkthrough of the audit items.",
-    },
-    {
-      day: 9,
-      subject: "Case study: similar stores",
-      body: "We help with Shopify/Woo launches and funnel work. TODO: link approved case studies only.",
-    },
-    {
-      day: 14,
-      subject: "Still planning improvements?",
-      body: "Book a free strategy call when ready — no pressure. TODO: insert booking URL.",
-    },
-  ],
   calculator: [
     {
       day: 0,
@@ -80,51 +53,40 @@ export const emailSequences: Record<LeadType, SequenceEmail[]> = {
     },
     {
       day: 9,
-      subject: "Questions we often cover",
-      body: "Timeline, integrations, ownership, and support — see homepage FAQ.",
+      subject: "What we typically deliver",
+      body: "AI support agents, workflow automation, Shopify launches, and growth systems — scoped after discovery.",
     },
     {
       day: 14,
       subject: "Still interested?",
-      body: "Reply to this email or WhatsApp us if your project is still active.",
+      body: "Reply to this email or book a call whenever you are ready. TODO: booking URL.",
     },
   ],
   chat: [
     {
       day: 0,
-      subject: "Following up on your chat",
-      body: "Thanks for chatting with our assistant. Here is a recap and next steps from your conversation. TODO: inject transcript summary.",
+      subject: "Following up on our chat",
+      body: "Thanks for chatting with Fynk Tech. Here is a recap of what you asked about. TODO: insert transcript summary.",
     },
     {
       day: 2,
-      subject: "Answers to your open questions",
-      body: "We noted items that needed a human — our team follows up here. TODO: personalize.",
+      subject: "Next step: strategy call",
+      body: "If you want a tailored proposal, book a free strategy call. TODO: booking URL.",
     },
     {
       day: 5,
-      subject: "Book a strategy call",
-      body: "Move from chat to a scoped plan on a quick call. TODO: booking URL.",
+      subject: "How projects usually start",
+      body: "Discovery → proposal & build → launch & optimize. Happy to walk through timelines.",
     },
     {
-      day: 10,
-      subject: "Privacy reminder",
-      body: "We only use your contact details to respond to your inquiry. Privacy policy: /privacy",
+      day: 9,
+      subject: "Relevant services",
+      body: "Based on our chat, these pages may help: /ai-automation and /ecommerce.",
     },
     {
       day: 14,
-      subject: "Close the loop",
-      body: "If you found another vendor or paused the project, reply 'pause' and we will stop follow-ups.",
+      subject: "We are here when you are ready",
+      body: "Reply anytime or WhatsApp us if you have a number on file. TODO: WhatsApp CTA.",
     },
   ],
 };
-
-/**
- * TODO: When RESEND_API_KEY and RESEND_AUTOMATIONS_ENABLED=true, schedule sends via cron or workflow.
- */
-export async function sendSequenceEmail(
-  _leadType: LeadType,
-  _email: string,
-  _day: number,
-): Promise<void> {
-  // Intentionally no-op until product approves copy and Resend is configured.
-}
