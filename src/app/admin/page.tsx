@@ -17,13 +17,25 @@ export default function AdminHomePage() {
               Admin
             </h1>
             <p className="text-gray-600">
-              Manage media and leads. Add more tools here later.
+              Manage chats, media and leads. Add more tools here later.
             </p>
           </div>
           <AdminLogoutButton />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
+          <Link
+            href="/admin/chats"
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
+              Chats
+            </h2>
+            <p className="text-sm text-gray-600">
+              Read website chat conversations and reply to visitors directly.
+            </p>
+          </Link>
+
           <Link
             href="/admin/settings"
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
