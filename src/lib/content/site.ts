@@ -76,18 +76,23 @@ export const packagedOffers = [
 export const howWeWork = [
   {
     step: 1,
-    title: "Discovery call",
-    description: "We map your goals, systems, and constraints — then agree what success looks like.",
+    title: "Discovery",
+    description: "Understanding your business needs and where time is lost.",
   },
   {
     step: 2,
-    title: "Proposal & build",
-    description: "Clear scope, timeline, and deliverables. We build in short cycles with demos you can react to.",
+    title: "Planning & strategy",
+    description: "A clear scope, timeline, and what success looks like.",
   },
   {
     step: 3,
-    title: "Launch & optimize",
-    description: "Go live with monitoring, handoff docs, and a plan to improve from real usage.",
+    title: "Build",
+    description: "Short cycles with working demos you can react to.",
+  },
+  {
+    step: 4,
+    title: "Launch",
+    description: "Go live, hand it over, and improve from real use.",
   },
 ] as const;
 
@@ -102,7 +107,7 @@ export const homepageFaq = [
   },
   {
     q: "What does your process look like?",
-    a: "Discovery call → proposal & build → launch & optimize. You get demos during build, not a big reveal at the end.",
+    a: "Discovery, planning, build, then launch. You get demos during the build, not a big reveal at the end.",
   },
   {
     q: "Do you support after launch?",

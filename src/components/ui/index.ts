@@ -1,4 +1,3 @@
-export { CountryDropdown } from "./country-dropdown";
 export { SplineScene } from "./splite";
 export { SplineSceneBasic } from "./spline-scene-basic";
 export { SplineSceneBasicDemo } from "./demo";

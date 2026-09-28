@@ -11,12 +11,6 @@ export interface NavDropdownItem {
   label: string;
 }
 
-export interface CountryOption {
-  value: string;
-  label: string;
-  flag?: string;
-}
-
 export interface Service {
   id: string;
   title: string;

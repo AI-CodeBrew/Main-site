@@ -1,4 +1,4 @@
-import { NavItem, NavDropdownItem, CountryOption } from "@/types";
+import { NavItem, NavDropdownItem } from "@/types";
 
 export const navItems: NavItem[] = [
   { href: "/", label: "Home" },
@@ -14,14 +14,6 @@ export const navItems: NavItem[] = [
   },
   { href: "/team", label: "Team" },
   { href: "/contact", label: "Contact" },
-];
-
-export const countryOptions: CountryOption[] = [
-  { value: "global", label: "Global" },
-  { value: "mena", label: "MENA" },
-  { value: "ksa-en", label: "KSA & Gulf" },
-  { value: "america", label: "USA" },
-  { value: "europe-uk", label: "Europe & UK" },
 ];
 
 export const services = [

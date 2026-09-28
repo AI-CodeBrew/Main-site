@@ -7,11 +7,6 @@ const ClientLogos = dynamic(
   { loading: () => <div className="min-h-[12rem]" aria-hidden /> },
 );
 
-const PackagedOffers = dynamic(
-  () => import("@/components/home/packaged-offers").then((m) => m.PackagedOffers),
-  { loading: () => <div className="min-h-[20rem]" aria-hidden /> },
-);
-
 const HowWeWork = dynamic(
   () => import("@/components/home/how-we-work").then((m) => m.HowWeWork),
   { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
@@ -39,7 +34,6 @@ export default function Home() {
     <main className="min-h-screen">
       <HomeHero />
       <ClientLogos />
-      <PackagedOffers />
       <HowWeWork />
       <CaseStudies />
       <FinalCta />

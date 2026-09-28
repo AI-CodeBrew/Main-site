@@ -2,7 +2,13 @@
 
 import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { projects } from "@/lib/content/company";
 
 type WorkItem = {
@@ -60,29 +66,64 @@ const workItems: WorkItem[] = [
   },
 ];
 
+/**
+ * Axtra: scrub 2, start top/bottom, end bottom/center,
+ * rotateX 90→0, scale 0.5→1, opacity 0.7→1.
+ * Trigger stays on an untransformed wrapper so layout height doesn't collapse.
+ */
 function WorkCard({ item, index }: { item: WorkItem; index: number }) {
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: triggerRef,
+    offset: ["start end", "end center"],
+  });
+
+  // GSAP scrub: 2 — catch up smoothly, no bounce
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 32,
+    mass: 0.85,
+    restDelta: 0.0004,
+  });
+
+  const rotateX = useTransform(progress, [0, 1], [90, 0]);
+  const scale = useTransform(progress, [0, 1], [0.5, 1]);
+  const opacity = useTransform(progress, [0, 1], [0.7, 1]);
+
   return (
-    <a
-      href={item.href}
-      target={item.href.startsWith("http") ? "_blank" : undefined}
-      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className={`relative z-10 block ${index % 2 === 1 ? "md:mt-[22rem]" : ""}`}
+    <div
+      ref={triggerRef}
+      className={`relative z-[999] ${index % 2 === 1 ? "md:mt-[28rem]" : ""}`}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#1c1c1c]">
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          sizes="(max-width: 768px) 92vw, 42vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
-          <h3 className="text-2xl md:text-3xl font-medium tracking-tight">{item.title}</h3>
-          <p className="mt-1 text-sm md:text-base text-white/75">{item.meta}</p>
+      <motion.a
+        href={item.href}
+        target={item.href.startsWith("http") ? "_blank" : undefined}
+        rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+        className="block will-change-transform"
+        style={{
+          rotateX,
+          scale,
+          opacity,
+          transformPerspective: 4000,
+          transformOrigin: "center center",
+        }}
+      >
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#1c1c1c]">
+          <Image
+            src={item.image}
+            alt={item.title}
+            fill
+            sizes="(max-width: 768px) 92vw, 42vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
+            <h3 className="text-2xl md:text-3xl font-medium tracking-tight">{item.title}</h3>
+            <p className="mt-1 text-sm md:text-base text-white/75">{item.meta}</p>
+          </div>
         </div>
-      </div>
-    </a>
+      </motion.a>
+    </div>
   );
 }
 
@@ -93,27 +134,18 @@ function smoothstep(amount: number) {
 
 export function CaseStudies() {
   const trackRef = useRef<HTMLElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
   const pinTop = useMotionValue(0);
-  const viewport = useMotionValue(900);
-  const intro = useMotionValue(1000);
-  const stack = useMotionValue(2400);
+  const sectionProgress = useMotionValue(0);
 
   useLayoutEffect(() => {
     const track = trackRef.current;
-    const lead = introRef.current;
-    const grid = gridRef.current;
-    if (!track || !lead || !grid) return;
+    if (!track) return;
 
     const metrics = { sectionTop: 0, max: 1 };
     let frame = 0;
 
     const measure = () => {
       const vh = window.innerHeight;
-      viewport.set(vh);
-      intro.set(Math.max(lead.offsetHeight, 1));
-      stack.set(grid.offsetHeight);
       metrics.sectionTop = track.getBoundingClientRect().top + window.scrollY;
       metrics.max = Math.max(track.offsetHeight - vh, 1);
     };
@@ -123,7 +155,9 @@ export function CaseStudies() {
       frame = requestAnimationFrame(() => {
         frame = 0;
         const scrolled = window.scrollY - metrics.sectionTop;
-        pinTop.set(Math.min(Math.max(scrolled, 0), metrics.max));
+        const clamped = Math.min(Math.max(scrolled, 0), metrics.max);
+        pinTop.set(clamped);
+        sectionProgress.set(clamped / metrics.max);
       });
     };
 
@@ -135,7 +169,7 @@ export function CaseStudies() {
     measure();
     onScroll();
     const observer = new ResizeObserver(onResize);
-    observer.observe(grid);
+    observer.observe(track);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     return () => {
@@ -144,22 +178,22 @@ export function CaseStudies() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
-  }, [intro, pinTop, stack, viewport]);
+  }, [pinTop, sectionProgress]);
 
-  const wordScale = useTransform([pinTop, viewport, intro, stack], ([scrolled, vh, introHeight, stackHeight]) => {
-    const distance = Number(scrolled);
-    const height = Number(vh);
-    const lead = Number(introHeight);
-    const grid = Number(stackHeight);
-    const zoomInStart = height * 0.08;
-    const zoomInEnd = Math.max(zoomInStart + 1, lead * 0.72);
-    const zoomOutStart = lead + grid - height * 0.2;
-    const zoomOutEnd = zoomOutStart + height * 0.62;
+  // Axtra WORK text scrub: 1
+  const smoothSection = useSpring(sectionProgress, {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.7,
+    restDelta: 0.0004,
+  });
 
-    if (distance <= zoomInStart) return 1;
-    if (distance < zoomInEnd) return 1 + 0.85 * smoothstep((distance - zoomInStart) / (zoomInEnd - zoomInStart));
-    if (distance <= zoomOutStart) return 1.85;
-    if (distance < zoomOutEnd) return 1.85 - 0.85 * smoothstep((distance - zoomOutStart) / (zoomOutEnd - zoomOutStart));
+  // Axtra: zoom to 3, hold, zoom back to 1
+  const wordScale = useTransform(smoothSection, (value) => {
+    if (value <= 0.05) return 1;
+    if (value < 0.2) return 1 + 2 * smoothstep((value - 0.05) / 0.15);
+    if (value <= 0.78) return 3;
+    if (value < 0.95) return 3 - 2 * smoothstep((value - 0.78) / 0.17);
     return 1;
   });
 
@@ -167,34 +201,34 @@ export function CaseStudies() {
     <section
       ref={trackRef}
       className="relative bg-[#111111]"
-      style={{ overflow: "hidden" }}
+      style={{ overflow: "clip" }}
       aria-labelledby="projects-heading"
     >
       <motion.div
         style={{ y: pinTop }}
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 flex h-[100dvh] items-center justify-center will-change-transform"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[1] flex h-[100dvh] items-center justify-center will-change-transform"
       >
         <motion.h2
           id="projects-heading"
           style={{ scale: wordScale }}
-          className="text-center text-[clamp(4.75rem,17vw,15rem)] font-semibold uppercase leading-none tracking-[-0.045em] text-white"
+          className="text-center text-[clamp(5rem,10.5vw,9.375rem)] font-medium uppercase leading-none tracking-tight text-white will-change-transform"
         >
           work
         </motion.h2>
       </motion.div>
 
-      <div className="relative z-10">
-        <div ref={introRef} className="h-[112dvh]" aria-hidden />
-        <div
-          ref={gridRef}
-          className="container-page grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-20 md:gap-y-16"
-        >
-          {workItems.map((item, index) => (
-            <WorkCard key={item.title} item={item} index={index} />
-          ))}
-        </div>
-        <div className="h-[92dvh]" aria-hidden />
+      <div className="relative z-[999] h-[85dvh]" aria-hidden />
+
+      <div
+        className="relative z-[999] container-page grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-x-[30px] md:gap-y-16"
+        style={{ perspective: "4000px" }}
+      >
+        {workItems.map((item, index) => (
+          <WorkCard key={item.title} item={item} index={index} />
+        ))}
       </div>
+
+      <div className="relative z-[999] h-[120dvh]" aria-hidden />
     </section>
   );
 }
