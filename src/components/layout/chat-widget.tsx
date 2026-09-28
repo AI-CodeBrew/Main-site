@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bot } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -118,16 +119,43 @@ function sessionId(): string {
   return fresh.id;
 }
 
-// Clicking "Chat with us" the first time shows a name screen; the name is remembered in this
-// browser (kept across new chats) so admin sees "Ali Khan" instead of "Visitor · 56a7".
+// Clicking "Chat with us" the first time asks for a name (required) and phone (optional).
+// Both are remembered in this browser so admin sees them on the conversation.
 const NAME_KEY = "fynk_chat_name";
+const PHONE_KEY = "fynk_chat_phone";
+const GATE_KEY = "fynk_chat_gate";
 let memoryName: string | null = null;
+let memoryPhone: string | null = null;
 
 function readVisitorName(): string | null {
   try {
     return localStorage.getItem(NAME_KEY)?.trim() || memoryName;
   } catch {
     return memoryName;
+  }
+}
+
+function hasPassedGate(): boolean {
+  try {
+    return localStorage.getItem(GATE_KEY) === "name-phone";
+  } catch {
+    return Boolean(memoryName);
+  }
+}
+
+function markGatePassed() {
+  try {
+    localStorage.setItem(GATE_KEY, "name-phone");
+  } catch {
+    // Ignore.
+  }
+}
+
+function readVisitorPhone(): string | null {
+  try {
+    return localStorage.getItem(PHONE_KEY)?.trim() || memoryPhone;
+  } catch {
+    return memoryPhone;
   }
 }
 
@@ -140,8 +168,22 @@ function saveVisitorName(name: string) {
   }
 }
 
+function saveVisitorPhone(phone: string | null) {
+  memoryPhone = phone;
+  try {
+    if (phone) localStorage.setItem(PHONE_KEY, phone);
+    else localStorage.removeItem(PHONE_KEY);
+  } catch {
+    // Ignore — memoryPhone keeps it for this page view.
+  }
+}
+
 function cleanName(raw: string): string {
   return raw.replace(/\s+/g, " ").trim().slice(0, 60);
+}
+
+function cleanPhone(raw: string): string {
+  return raw.replace(/[^\d+\s-]/g, "").replace(/\s+/g, " ").trim().slice(0, 20);
 }
 
 /** Marks the chat as active now, restarting the 1-hour window. */
@@ -159,9 +201,17 @@ export function ChatWidget() {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [needsPrivacy, setNeedsPrivacy] = useState(false);
   const [visitorName, setVisitorName] = useState<string | null>(() =>
-    typeof window === "undefined" ? null : readVisitorName(),
+    typeof window === "undefined" ? null : hasPassedGate() ? readVisitorName() : null,
   );
-  const [nameInput, setNameInput] = useState("");
+  const [visitorPhone, setVisitorPhone] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : readVisitorPhone(),
+  );
+  const [nameInput, setNameInput] = useState(() =>
+    typeof window === "undefined" ? "" : readVisitorName() ?? "",
+  );
+  const [phoneInput, setPhoneInput] = useState(() =>
+    typeof window === "undefined" ? "" : readVisitorPhone() ?? "",
+  );
   const bottomRef = useRef<HTMLDivElement>(null);
   const seenAdminIds = useRef(new Set<string>());
   const lastAdminAt = useRef<string | null>(null);
@@ -308,6 +358,7 @@ export function ChatWidget() {
             sessionId: sessionId(),
             distinctId: posthog.get_distinct_id(),
             visitorName: visitorName ?? undefined,
+            visitorPhone: visitorPhone ?? undefined,
           }),
         });
         const data = (await res.json()) as {
@@ -335,7 +386,7 @@ export function ChatWidget() {
         setLoading(false);
       }
     },
-    [loading, messages, pathname, intro, visitorName],
+    [loading, messages, pathname, intro, visitorName, visitorPhone],
   );
 
   const captureLead = async (fields: {
@@ -396,14 +447,19 @@ export function ChatWidget() {
     }
   };
 
-  /** Name screen submit: remembers the name, then the chat opens with a personal greeting. */
+  /** Gate submit: name is required, phone is optional. */
   const onNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const name = cleanName(nameInput);
     if (!name) return;
+    const phone = cleanPhone(phoneInput);
     saveVisitorName(name);
+    saveVisitorPhone(phone || null);
+    markGatePassed();
     setVisitorName(name);
+    setVisitorPhone(phone || null);
     setNameInput("");
+    setPhoneInput("");
   };
 
   const onSubmit = (e: React.FormEvent) => {
@@ -486,10 +542,10 @@ export function ChatWidget() {
               >
                 <div className="text-center">
                   <p className="text-lg font-semibold text-heading">Welcome to Fynk Tech</p>
-                  <p className="mt-1 text-sm text-body">Please enter your name to start the chat.</p>
+                  <p className="mt-1 text-sm text-body">Enter your name to start. Phone is optional.</p>
                 </div>
                 <label className="block">
-                  <span className="sr-only">Your name</span>
+                  <span className="mb-1.5 block text-xs font-medium text-heading">Name</span>
                   <input
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
@@ -497,6 +553,19 @@ export function ChatWidget() {
                     autoComplete="name"
                     maxLength={60}
                     autoFocus
+                    required
+                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-medium text-heading">Phone (optional)</span>
+                  <input
+                    value={phoneInput}
+                    onChange={(e) => setPhoneInput(e.target.value)}
+                    placeholder="03xx xxx xxxx"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    maxLength={20}
                     className="w-full text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
@@ -590,14 +659,18 @@ export function ChatWidget() {
       {!open && (
         <motion.button
           type="button"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={openChat}
-          className="flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] text-white shadow-lg text-sm font-medium"
-          aria-label="Open chat"
+          className="flex flex-col items-center gap-1.5"
+          aria-label="Chat with us"
         >
-          <span className="w-2 h-2 rounded-full bg-green-400" />
-          Chat with us
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#5A83FF] to-[#01B4D2] text-white shadow-lg">
+            <Bot className="h-8 w-8" strokeWidth={1.75} aria-hidden />
+          </span>
+          <span className="text-[11px] font-semibold text-[#0A0045] [text-shadow:0_0_6px_#fff,0_0_6px_#fff]">
+            Chat with us
+          </span>
         </motion.button>
       )}
     </div>

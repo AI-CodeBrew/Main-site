@@ -1,103 +1,199 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { projects } from "@/lib/content/company";
 
-const pad = (n: number) => String(n).padStart(2, "0");
+type WorkItem = {
+  title: string;
+  meta: string;
+  image: string;
+  href: string;
+};
+
+const dialcom = projects.find((project) => project.id === "dialcom");
+
+/** Visual stand-ins until real project screenshots are added. Dialcom is the only named client. */
+const workItems: WorkItem[] = [
+  {
+    title: dialcom?.name ?? "Dialcom",
+    meta: "AI receptionist · CRM · OMS",
+    image:
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
+    href: dialcom?.url ?? "/contact",
+  },
+  {
+    title: "Store launch",
+    meta: "E-commerce",
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+    href: "/ecommerce/store-setup",
+  },
+  {
+    title: "Support agent",
+    meta: "Voice & chat",
+    image:
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+    href: "/ai-automation/voice-chat",
+  },
+  {
+    title: "Workflow system",
+    meta: "Automation",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    href: "/ai-automation/workflow",
+  },
+  {
+    title: "Sales funnel",
+    meta: "Growth",
+    image:
+      "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80",
+    href: "/ecommerce/sales-funnel",
+  },
+  {
+    title: "Custom agent",
+    meta: "AI product",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+    href: "/ai-automation/custom-agents",
+  },
+];
+
+function WorkCard({ item, index }: { item: WorkItem; index: number }) {
+  return (
+    <a
+      href={item.href}
+      target={item.href.startsWith("http") ? "_blank" : undefined}
+      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+      className={`relative z-10 block ${index % 2 === 1 ? "md:mt-[22rem]" : ""}`}
+    >
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#1c1c1c]">
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 92vw, 42vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
+          <h3 className="text-2xl md:text-3xl font-medium tracking-tight">{item.title}</h3>
+          <p className="mt-1 text-sm md:text-base text-white/75">{item.meta}</p>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function smoothstep(amount: number) {
+  const t = Math.min(1, Math.max(0, amount));
+  return t * t * (3 - 2 * t);
+}
 
 export function CaseStudies() {
-  const total = projects.length;
+  const trackRef = useRef<HTMLElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const pinTop = useMotionValue(0);
+  const viewport = useMotionValue(900);
+  const intro = useMotionValue(1000);
+  const stack = useMotionValue(2400);
+
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    const lead = introRef.current;
+    const grid = gridRef.current;
+    if (!track || !lead || !grid) return;
+
+    const metrics = { sectionTop: 0, max: 1 };
+    let frame = 0;
+
+    const measure = () => {
+      const vh = window.innerHeight;
+      viewport.set(vh);
+      intro.set(Math.max(lead.offsetHeight, 1));
+      stack.set(grid.offsetHeight);
+      metrics.sectionTop = track.getBoundingClientRect().top + window.scrollY;
+      metrics.max = Math.max(track.offsetHeight - vh, 1);
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const scrolled = window.scrollY - metrics.sectionTop;
+        pinTop.set(Math.min(Math.max(scrolled, 0), metrics.max));
+      });
+    };
+
+    const onResize = () => {
+      measure();
+      onScroll();
+    };
+
+    measure();
+    onScroll();
+    const observer = new ResizeObserver(onResize);
+    observer.observe(grid);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [intro, pinTop, stack, viewport]);
+
+  const wordScale = useTransform([pinTop, viewport, intro, stack], ([scrolled, vh, introHeight, stackHeight]) => {
+    const distance = Number(scrolled);
+    const height = Number(vh);
+    const lead = Number(introHeight);
+    const grid = Number(stackHeight);
+    const zoomInStart = height * 0.08;
+    const zoomInEnd = Math.max(zoomInStart + 1, lead * 0.72);
+    const zoomOutStart = lead + grid - height * 0.2;
+    const zoomOutEnd = zoomOutStart + height * 0.62;
+
+    if (distance <= zoomInStart) return 1;
+    if (distance < zoomInEnd) return 1 + 0.85 * smoothstep((distance - zoomInStart) / (zoomInEnd - zoomInStart));
+    if (distance <= zoomOutStart) return 1.85;
+    if (distance < zoomOutEnd) return 1.85 - 0.85 * smoothstep((distance - zoomOutStart) / (zoomOutEnd - zoomOutStart));
+    return 1;
+  });
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden bg-surface-muted" aria-labelledby="projects-heading">
-      <div className="container-page relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-4xl mb-10 md:mb-12"
+    <section
+      ref={trackRef}
+      className="relative bg-[#111111]"
+      style={{ overflow: "hidden" }}
+      aria-labelledby="projects-heading"
+    >
+      <motion.div
+        style={{ y: pinTop }}
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 flex h-[100dvh] items-center justify-center will-change-transform"
+      >
+        <motion.h2
+          id="projects-heading"
+          style={{ scale: wordScale }}
+          className="text-center text-[clamp(4.75rem,17vw,15rem)] font-semibold uppercase leading-none tracking-[-0.045em] text-white"
         >
-          <h2
-            id="projects-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-normal uppercase leading-tight tracking-tight mb-5"
-            style={{ color: 'var(--heading)' }}
-          >
-            Real projects we&apos;ve built
-          </h2>
-          <p className="text-base md:text-lg max-w-xl leading-relaxed" style={{ color: 'var(--body)' }}>
-            AI agents, CRMs and e-commerce systems shipped for real businesses. We only show work we can name publicly.
-          </p>
-        </motion.div>
-      </div>
+          work
+        </motion.h2>
+      </motion.div>
 
-      {/* Cards bleed off the right edge and scroll horizontally, like a carousel. */}
       <div className="relative z-10">
-        <ul
-          className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 pr-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          // Left edge lines up with .container-page (max 1400px, 1rem gutter); right side runs to the viewport edge.
-          style={{
-            paddingLeft: "max(1rem, calc((100vw - 1400px) / 2 + 1rem))",
-            scrollPaddingLeft: "max(1rem, calc((100vw - 1400px) / 2 + 1rem))",
-          }}
+        <div ref={introRef} className="h-[112dvh]" aria-hidden />
+        <div
+          ref={gridRef}
+          className="container-page grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-20 md:gap-y-16"
         >
-          {projects.map((project, index) => (
-            <motion.li
-              key={project.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="snap-start shrink-0 w-[85vw] sm:w-[60vw] md:w-[42vw] lg:w-[34vw] max-w-[560px]"
-            >
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${project.name} — ${project.category}`}
-                className="group relative block aspect-[16/10] overflow-hidden rounded-md"
-              >
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={project.name}
-                    fill
-                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 34vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                ) : (
-                  // Branded stand-in until a real project image is added.
-                  <div
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, #0A0A3C 0%, #1E3296 55%, #5A83FF 100%)" }}
-                  >
-                    <span className="text-4xl md:text-5xl font-bold tracking-[0.2em] text-white/90 uppercase">
-                      {project.name}
-                    </span>
-                  </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
-                  <p className="text-sm text-white/80 mb-1">
-                    {pad(index + 1)}/{pad(total)}
-                  </p>
-                  <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide">{project.category}</h3>
-                  <p className="text-sm text-white/80 mt-0.5">{project.name}</p>
-                </div>
-              </a>
-            </motion.li>
+          {workItems.map((item, index) => (
+            <WorkCard key={item.title} item={item} index={index} />
           ))}
-        </ul>
-      </div>
-
-      <div className="container-page relative z-10 mt-6">
-        <Link href="/case-studies" className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: "#5A83FF" }}>
-          View case studies →
-        </Link>
+        </div>
+        <div className="h-[92dvh]" aria-hidden />
       </div>
     </section>
   );

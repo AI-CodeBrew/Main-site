@@ -23,11 +23,6 @@ const CaseStudies = dynamic(
   { loading: () => <div className="min-h-[20rem]" aria-hidden /> },
 );
 
-const HomepageFaq = dynamic(
-  () => import("@/components/home/homepage-faq").then((m) => m.HomepageFaq),
-  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
-);
-
 const FinalCta = dynamic(
   () => import("@/components/home/final-cta").then((m) => m.FinalCta),
   { loading: () => <div className="min-h-[12rem]" aria-hidden /> },
@@ -47,7 +42,6 @@ export default function Home() {
       <PackagedOffers />
       <HowWeWork />
       <CaseStudies />
-      <HomepageFaq />
       <FinalCta />
     </main>
   );

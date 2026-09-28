@@ -137,6 +137,7 @@ export async function POST(req: NextRequest) {
     sessionId?: string;
     distinctId?: string;
     visitorName?: string;
+    visitorPhone?: string;
   };
   try {
     body = await req.json();
@@ -157,6 +158,10 @@ export async function POST(req: NextRequest) {
     typeof body.visitorName === "string"
       ? body.visitorName.replace(/[\u0000-\u001f]/g, "").replace(/\s+/g, " ").trim().slice(0, 60) || null
       : null;
+  const visitorPhone =
+    typeof body.visitorPhone === "string"
+      ? body.visitorPhone.replace(/[^\d+\s-]/g, "").replace(/\s+/g, " ").trim().slice(0, 20) || null
+      : null;
   let conversation: ChatConversation | null = null;
   if (sessionId && lastUser) {
     try {
@@ -168,6 +173,11 @@ export async function POST(req: NextRequest) {
         if (knownName) {
           if (conversation.visitor_name !== knownName) contact.visitor_name = knownName;
           else delete contact.visitor_name;
+        }
+        if (visitorPhone) {
+          const stored = visitorPhone.replace(/[\s-]/g, "");
+          if (conversation.visitor_whatsapp !== stored) contact.visitor_whatsapp = stored;
+          else delete contact.visitor_whatsapp;
         }
         if (Object.keys(contact).length > 0) {
           await updateConversation(conversation.id, contact);

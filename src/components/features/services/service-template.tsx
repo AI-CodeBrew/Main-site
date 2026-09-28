@@ -5,27 +5,15 @@ import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 type ServiceTemplateProps = {
   service: ServiceContent;
 };
 
 export function ServiceTemplate({ service }: ServiceTemplateProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const wa = whatsappLink(
     `Hi Fynk Tech — I'm interested in ${service.headline}.`,
   );
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: service.faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
 
   return (
     <main className="min-h-screen bg-surface">
@@ -239,49 +227,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
         </div>
       </section>
 
-      {/* 9 — FAQ */}
-      <section className="py-14 md:py-20" aria-labelledby={`faq-${service.slug}`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-        <div className="container-page max-w-3xl">
-          <h2
-            id={`faq-${service.slug}`}
-            className="text-2xl md:text-3xl font-bold mb-8"
-            style={{ color: 'var(--heading)' }}
-          >
-            FAQ
-          </h2>
-          <div className="space-y-3">
-            {service.faq.map((item, i) => {
-              const isOpen = openFaq === i;
-              return (
-                <div
-                  key={item.q}
-                  className="border border-line rounded-xl overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    className="w-full text-left px-5 py-4 font-semibold flex justify-between gap-4"
-                    style={{ color: 'var(--heading)' }}
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                  >
-                    {item.q}
-                    <span className="text-subtle shrink-0">{isOpen ? "−" : "+"}</span>
-                  </button>
-                  {isOpen && (
-                    <div className="px-5 pb-4 text-body leading-relaxed">{item.a}</div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 10 — CTA */}
+      {/* CTA */}
       <section
         className="py-16 md:py-24"
         style={{ background: "linear-gradient(135deg, #0A0045 0%, #1a1a5e 100%)" }}

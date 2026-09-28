@@ -276,7 +276,13 @@ export function ChatsAdminClient({
                       </span>
                     </span>
                     <span className="mt-0.5 flex items-center justify-between gap-2">
-                      <span className="truncate text-sm text-gray-500">{c.last_message ?? "—"}</span>
+                      <span className="min-w-0 truncate text-sm text-gray-500">
+                        {c.visitor_whatsapp ? (
+                          <span className="text-[#070643]">{c.visitor_whatsapp}</span>
+                        ) : null}
+                        {c.visitor_whatsapp && c.last_message ? " · " : null}
+                        {c.last_message ?? (c.visitor_whatsapp ? "" : "—")}
+                      </span>
                       <span className="flex shrink-0 items-center gap-1">
                         {c.needs_human && (
                           <span className="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold text-red-600">
@@ -329,7 +335,11 @@ export function ChatsAdminClient({
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{displayName(active)}</p>
                 <p className="truncate text-xs text-white/70">
-                  {[active.visitor_email, active.visitor_whatsapp, active.source_page && `from ${active.source_page}`]
+                  {[
+                    active.visitor_whatsapp && `Phone ${active.visitor_whatsapp}`,
+                    active.visitor_email,
+                    active.source_page && `from ${active.source_page}`,
+                  ]
                     .filter(Boolean)
                     .join(" · ") || "Website visitor"}
                 </p>
