@@ -7,6 +7,7 @@ import { CaseStudies } from "@/components/features/contact/case-studies";
 import { VoiceDemoSection } from "@/components/home/voice-demo-section";
 import { HomepageFaq } from "@/components/home/homepage-faq";
 import { FinalCta } from "@/components/home/final-cta";
+import { SplineSceneBasic } from "@/components/ui/spline-scene-basic";
 
 export const metadata: Metadata = {
   title: "AI Agents & E-commerce Systems",
@@ -19,6 +20,7 @@ export default function Home() {
     <main className="min-h-screen">
       <Hero />
       <ClientLogos />
+      <SplineSceneBasic />
       <PackagedOffers />
       <HowWeWork />
       <CaseStudies />
