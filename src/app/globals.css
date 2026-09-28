@@ -160,6 +160,50 @@ body {
   font-family: var(--font-inter);
   min-height: 100vh;
   overflow-x: hidden;
+  cursor: default;
+}
+
+/* Clickable controls — always show pointer */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a[href],
+select,
+summary,
+label[for],
+.btn,
+input[type="submit"],
+input[type="button"],
+input[type="file"],
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"],
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+/* Keep Spline canvas on default arrow — not grab / light cursors */
+.spline-host,
+.spline-host canvas {
+  cursor: default !important;
+}
+
+/* Simple loader for Spline suspense */
+.loader {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #5A83FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Prevent horizontal overflow. In the base layer so Tailwind max-w-* utilities can still override it

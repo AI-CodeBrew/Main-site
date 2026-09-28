@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Globe, Crown } from "lucide-react";
+import { Bot, Crown } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { getStoredUtms } from "@/lib/leads/utm";
 
@@ -208,7 +208,7 @@ export function Contact() {
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 min-h-[200px] flex flex-col justify-center">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#0A0045] to-[#0B0050] flex items-center justify-center">
-                  <Globe className="w-6 h-6 text-white" />
+                  <Bot className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold">Based in Lahore</h3>
               </div>
