@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isWithinBusinessHours } from "@/lib/chat/business-hours";
 import { chatwootHandoff, notifyTeam, type HandoffPayload } from "@/lib/chat/handoff";
 import { getSiteHoursSettings } from "@/lib/settings/store";
+import { getConversationBySession, updateConversation } from "@/lib/chat/store";
 
 const AGENT_TIMEOUT_MS = Number(process.env.CHAT_HANDOFF_AGENT_TIMEOUT_MS ?? "120000");
 
@@ -15,6 +16,14 @@ export async function POST(req: NextRequest) {
 
   if (!payload.sessionId) {
     return NextResponse.json({ error: "sessionId required" }, { status: 400 });
+  }
+
+  // Flag the saved conversation so it stands out in /admin/chats.
+  try {
+    const conversation = await getConversationBySession(payload.sessionId);
+    if (conversation) await updateConversation(conversation.id, { needs_human: true });
+  } catch (err) {
+    console.error("[handoff] failed to flag conversation", err);
   }
 
   const simulateNoAgent = process.env.CHAT_HANDOFF_SIMULATE_NO_AGENT !== "false";
