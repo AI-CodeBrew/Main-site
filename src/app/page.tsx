@@ -3,7 +3,6 @@ import { HomeHero } from "@/components/common/home-hero";
 import { ClientLogos } from "@/components/common/client-logos";
 import { PackagedOffers } from "@/components/home/packaged-offers";
 import { HowWeWork } from "@/components/home/how-we-work";
-import { SplineSceneBasic } from "@/components/ui/spline-scene-basic";
 import { CaseStudies } from "@/components/features/contact/case-studies";
 import { VoiceDemoSection } from "@/components/home/voice-demo-section";
 import { HomepageFaq } from "@/components/home/homepage-faq";
@@ -22,7 +21,6 @@ export default function Home() {
       <ClientLogos />
       <PackagedOffers />
       <HowWeWork />
-      <SplineSceneBasic />
       <CaseStudies />
       <VoiceDemoSection />
       <HomepageFaq />

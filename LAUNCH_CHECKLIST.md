@@ -5,7 +5,7 @@ Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blo
 ## Must fill before go-live
 
 - [ ] Copy `.env.example` → `.env.local`
-- [ ] `ANTHROPIC_API_KEY` — chat assistant
+- [ ] `OPENAI_API_KEY` — chat assistant (`gpt-4o-mini` by default)
 - [ ] `NEXT_PUBLIC_WHATSAPP_NUMBER` — WhatsApp CTAs
 - [ ] `NEXT_PUBLIC_BOOKING_URL` — embedded calendar
 - [ ] `NEXT_PUBLIC_BUSINESS_HOURS` + `NEXT_PUBLIC_OFFLINE_REPLY_PROMISE` + timezone

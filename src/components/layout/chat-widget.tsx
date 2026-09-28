@@ -307,6 +307,7 @@ export function ChatWidget() {
             pathname,
             sessionId: sessionId(),
             distinctId: posthog.get_distinct_id(),
+            visitorName: visitorName ?? undefined,
           }),
         });
         const data = (await res.json()) as {
@@ -478,28 +479,17 @@ export function ChatWidget() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 bg-surface-muted space-y-3">
-              {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={`text-sm rounded-2xl px-3 py-2 max-w-[90%] ${
-                    m.role === "user"
-                      ? "ml-auto bg-[#0A0045] text-white"
-                      : "bg-surface border border-line text-heading"
-                  }`}
-                >
-                  {m.content}
+            {!visitorName ? (
+              <form
+                onSubmit={onNameSubmit}
+                className="flex-1 flex flex-col justify-center gap-4 p-6 bg-surface-muted"
+              >
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-heading">Welcome to Fynk Tech</p>
+                  <p className="mt-1 text-sm text-body">Please enter your name to start the chat.</p>
                 </div>
-              ))}
-              {loading && (
-                <div className="text-xs text-subtle animate-pulse">Thinking…</div>
-              )}
-              <div ref={bottomRef} />
-            </div>
-
-            {needsPrivacy && (
-              <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-xs text-amber-900">
-                <label className="flex gap-2 items-start cursor-pointer">
+                <label className="block">
+                  <span className="sr-only">Your name</span>
                   <input
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
@@ -507,7 +497,7 @@ export function ChatWidget() {
                     autoComplete="name"
                     maxLength={60}
                     autoFocus
-                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
                 <button
@@ -520,77 +510,79 @@ export function ChatWidget() {
               </form>
             ) : (
               <>
-              <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3">
-                {messages.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`w-fit text-sm rounded-2xl px-3 py-2 max-w-[90%]! ${
-                      m.role === "user"
-                        ? "ml-auto bg-[#0A0045] text-white"
-                        : "bg-white border border-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {/* Bot and team replies look the same to the visitor. */}
-                    {m.role === "user" ? (
-                      <span className="whitespace-pre-wrap">{m.content}</span>
-                    ) : (
-                      <ChatMarkdown text={m.content} />
-                    )}
-                  </div>
-                ))}
-                {(loading || awaitingTeam) && (
-                  <div className="text-xs text-gray-500 animate-pulse">Thinking…</div>
-                )}
-                <div ref={bottomRef} />
-              </div>
-
-            <div className="p-3 border-t bg-surface space-y-2">
-              <div className="flex flex-wrap gap-2">
-                {actions.includes("book") && (
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={handleBook}
-                      className="text-xs px-3 py-1.5 rounded-full bg-[#0A0045] text-white"
+                <div className="flex-1 overflow-y-auto p-4 bg-surface-muted space-y-3">
+                  {messages.map((m, i) => (
+                    <div
+                      key={i}
+                      className={`w-fit text-sm rounded-2xl px-3 py-2 max-w-[90%] ${
+                        m.role === "user"
+                          ? "ml-auto bg-[#0A0045] text-white"
+                          : "bg-surface border border-line text-heading"
+                      }`}
                     >
-                      Book call
-                    </button>
+                      {m.role === "user" ? (
+                        <span className="whitespace-pre-wrap">{m.content}</span>
+                      ) : (
+                        <ChatMarkdown text={m.content} />
+                      )}
+                    </div>
+                  ))}
+                  {(loading || awaitingTeam) && (
+                    <div className="text-xs text-subtle animate-pulse">Thinking…</div>
+                  )}
+                  <div ref={bottomRef} />
+                </div>
+
+                {needsPrivacy && (
+                  <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-xs text-amber-900">
+                    <label className="flex gap-2 items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={privacyAccepted}
+                        onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <span>
+                        I agree my contact details are used only to respond to my inquiry.{" "}
+                        <Link href="/privacy" className="underline">
+                          Privacy Policy
+                        </Link>
+                      </span>
+                    </label>
                   </div>
                 )}
-                <form onSubmit={onSubmit} className="flex gap-2">
-                  <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a message…"
-                    className="flex-1 text-sm px-3 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
-                    disabled={loading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => void handleHuman()}
-                    className="text-xs px-3 py-1.5 rounded-full border border-line"
-                  >
-                    Send
-                  </button>
-                </form>
-              </div>
-              <form onSubmit={onSubmit} className="flex gap-2">
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type a message…"
-                  className="flex-1 text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
-                  disabled={loading}
-                />
-                <button
-                  type="submit"
-                  disabled={loading || !input.trim()}
-                  className="px-4 py-2 rounded-xl bg-[#0A0045] text-white text-sm disabled:opacity-50"
-                >
-                  Send
-                </button>
-              </form>
-            </div>
+
+                <div className="p-3 border-t border-line bg-surface space-y-2">
+                  {actions.includes("book") && (
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={handleBook}
+                        className="text-xs px-3 py-1.5 rounded-full bg-[#0A0045] text-white"
+                      >
+                        Book call
+                      </button>
+                    </div>
+                  )}
+                  <form onSubmit={onSubmit} className="flex gap-2">
+                    <input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder="Type a message…"
+                      className="flex-1 text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                      disabled={loading}
+                    />
+                    <button
+                      type="submit"
+                      disabled={loading || !input.trim()}
+                      className="px-4 py-2 rounded-xl bg-[#0A0045] text-white text-sm disabled:opacity-50"
+                    >
+                      Send
+                    </button>
+                  </form>
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

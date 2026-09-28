@@ -15,7 +15,7 @@ import {
   updateConversation,
   type ChatConversation,
 } from "@/lib/chat/store";
-import { callOpenAI } from "@/lib/chat/openai";
+import { callOpenAI, chatModel } from "@/lib/chat/openai";
 import { getChatSettings } from "@/lib/chat/settings";
 import { prepareHistory } from "@/lib/chat/history";
 
@@ -39,20 +39,9 @@ function createPostHogClient(): PostHog | null {
   const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
   const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
-  if (!token) {
-    if (process.env.NODE_ENV === "development") {
-      throw new Error(
-        "NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN is configured",
-      );
-    }
-    return null;
-  }
-
-  if (!host) {
-    if (process.env.NODE_ENV === "development") {
-      throw new Error(
-        "NEXT_PUBLIC_POSTHOG_HOST variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once NEXT_PUBLIC_POSTHOG_HOST is configured",
-      );
+  if (!token || !host) {
+    if (process.env.NODE_ENV === "development" && (!token || !host)) {
+      // PostHog is optional for local chat — skip quietly when unset.
     }
     return null;
   }
@@ -76,17 +65,17 @@ async function captureAiGeneration(client: PostHog | null, generation: AiGenerat
       $ai_trace_id: generation.traceId,
       $ai_session_id: generation.sessionId,
       $ai_span_id: randomUUID(),
-      $ai_span_name: "anthropic_messages",
+      $ai_span_name: "openai_chat_completions",
       $ai_model: generation.model,
-      $ai_provider: "anthropic",
+      $ai_provider: "openai",
       $ai_input_tokens: generation.inputTokens,
       $ai_output_tokens: generation.outputTokens,
       $ai_latency: generation.latency,
       $ai_http_status: generation.status,
       $ai_stop_reason: generation.stopReason,
       $ai_max_tokens: 1024,
-      $ai_base_url: "https://api.anthropic.com",
-      $ai_request_url: "https://api.anthropic.com/v1/messages",
+      $ai_base_url: "https://api.openai.com",
+      $ai_request_url: "https://api.openai.com/v1/chat/completions",
       $ai_is_error: generation.status >= 400,
     },
   });
@@ -147,6 +136,7 @@ export async function POST(req: NextRequest) {
     pathname?: string;
     sessionId?: string;
     distinctId?: string;
+    visitorName?: string;
   };
   try {
     body = await req.json();
@@ -161,10 +151,8 @@ export async function POST(req: NextRequest) {
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
 
-  // Save the conversation for /admin/chats. Best-effort: chat keeps working if Supabase fails.
   const sessionId =
     typeof body.sessionId === "string" && /^[\w-]{8,100}$/.test(body.sessionId) ? body.sessionId : null;
-  // Name the visitor typed in the widget before their first chat.
   const visitorName =
     typeof body.visitorName === "string"
       ? body.visitorName.replace(/[\u0000-\u001f]/g, "").replace(/\s+/g, " ").trim().slice(0, 60) || null
@@ -176,7 +164,6 @@ export async function POST(req: NextRequest) {
       if (conversation) {
         await addChatMessage(conversation.id, "user", lastUser.content);
         const contact = extractContact(lastUser.content);
-        // The name from the widget wins over one guessed from the message text.
         const knownName = visitorName ?? conversation.visitor_name;
         if (knownName) {
           if (conversation.visitor_name !== knownName) contact.visitor_name = knownName;
@@ -192,7 +179,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // An admin has taken over this chat from /admin/chats: the bot stays quiet.
   if (conversation?.mode === "human") {
     return NextResponse.json({
       reply: null,
@@ -214,8 +200,6 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // Which messages the AI sees: the saved chat (limited / summarized per admin settings),
-  // or the browser's copy when the chat could not be saved.
   const settings = await getChatSettings();
   let history: { role: ChatMessage["role"]; content: string }[] = settings.historyLimitEnabled
     ? messages.slice(-settings.historyLimit)
@@ -230,21 +214,19 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // The fixed system prompt goes first so OpenAI can cache it; per-request parts come after.
   const knownName = conversation?.visitor_name ?? visitorName;
   const nameBlock = knownName
     ? `VISITOR NAME: ${knownName} (already collected — use it naturally and do not ask for their name again).\n\n`
     : "";
   const summaryBlock = summary ? `SUMMARY OF EARLIER MESSAGES IN THIS CHAT:\n${summary}\n\n` : "";
   const contextBlock = `RETRIEVED CONTEXT:\n${context}\n\nSite booking URL: ${siteConfig.bookingUrl || "TODO: set NEXT_PUBLIC_BOOKING_URL"}`;
-  const systemPrompt = `${SYSTEM}\n\n${contextBlock}`;
-  const anthropicMessages = messages.map((m) => ({
-    role: m.role,
-    content: m.content,
-  }));
+
+  const model = chatModel();
   const aiSessionId = body.sessionId ?? randomUUID();
   const traceId = randomUUID();
   const posthog = createPostHogClient();
+  const distinctId = body.distinctId ?? aiSessionId;
+
   posthogChatLogger?.emit({
     body: "chat_generation_requested",
     severityNumber: SeverityNumber.INFO,
@@ -253,34 +235,28 @@ export async function POST(req: NextRequest) {
       "chat.message_count": messages.length,
     },
   });
+
   const startedAt = performance.now();
-
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: anthropicMessages,
-    }),
-  });
+  const result = await callOpenAI(
+    [
+      { role: "system", content: `${CHAT_SYSTEM_PROMPT}\n\n${nameBlock}${summaryBlock}${contextBlock}` },
+      ...history.map((m) => ({
+        role: m.role === "user" ? ("user" as const) : ("assistant" as const),
+        content: m.content,
+      })),
+    ],
+    1024,
+  );
   const latency = (performance.now() - startedAt) / 1000;
-  const distinctId = body.distinctId ?? aiSessionId;
 
-  if (!res.ok) {
-    const errText = await res.text();
-    console.error("[chat] Anthropic error", res.status, errText);
+  if (!result.ok) {
+    console.error("[chat] OpenAI error", result.status, result.error);
     posthogChatLogger?.emit({
       body: "chat_generation_failed",
       severityNumber: SeverityNumber.ERROR,
       attributes: {
         "chat.model": model,
-        "http.response.status_code": res.status,
+        "http.response.status_code": result.status,
         "chat.latency_seconds": latency,
       },
     });
@@ -291,7 +267,7 @@ export async function POST(req: NextRequest) {
       traceId,
       model,
       latency,
-      status: res.status,
+      status: result.status || 502,
     });
     return NextResponse.json(
       { error: "Assistant temporarily unavailable.", actions: ["human"] as ChatAction[] },
@@ -299,25 +275,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const data = (await res.json()) as {
-    content?: { type: string; text?: string }[];
-    stop_reason?: string | null;
-    usage?: { input_tokens?: number; output_tokens?: number };
-  };
-  const reply =
-    data.content?.find((c) => c.type === "text")?.text ??
-    "Sorry, I could not generate a reply. Would you like to talk to our team?";
+  const reply = result.text || "Sorry, I could not generate a reply. Would you like to talk to our team?";
 
   await captureAiGeneration(posthog, {
     distinctId,
     sessionId: aiSessionId,
     traceId,
-    model,
+    model: result.usage.model,
     latency,
-    status: res.status,
-    inputTokens: data.usage?.input_tokens,
-    outputTokens: data.usage?.output_tokens,
-    stopReason: data.stop_reason,
+    status: 200,
+    inputTokens: result.usage.inputTokens,
+    outputTokens: result.usage.outputTokens,
+    stopReason: "stop",
   });
 
   const userText = lastUser?.content ?? "";
@@ -328,10 +297,10 @@ export async function POST(req: NextRequest) {
     body: "chat_generation_completed",
     severityNumber: SeverityNumber.INFO,
     attributes: {
-      "chat.model": model,
-      "http.response.status_code": res.status,
+      "chat.model": result.usage.model,
+      "http.response.status_code": 200,
       "chat.latency_seconds": latency,
-      "chat.output_tokens": data.usage?.output_tokens ?? 0,
+      "chat.output_tokens": result.usage.outputTokens,
       "chat.action_count": actions.length,
     },
   });
