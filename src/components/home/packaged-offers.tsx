@@ -6,16 +6,16 @@ import { trackEvent } from "@/lib/analytics";
 
 export function PackagedOffers() {
   return (
-    <section className="py-16 md:py-24 bg-white" aria-labelledby="offers-heading">
+    <section className="py-16 md:py-24 bg-surface" aria-labelledby="offers-heading">
       <div className="container-page">
         <div className="max-w-3xl mb-12">
           <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "rgba(1, 180, 210, 0.9)" }}>
             Packaged offers
           </p>
-          <h2 id="offers-heading" className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#070643" }}>
+          <h2 id="offers-heading" className="text-3xl md:text-4xl font-bold mb-3" style={{ color: 'var(--heading)' }}>
             Clear starting points
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-body">
             Four ways teams usually start with us. Custom builds are available after discovery.
           </p>
         </div>
@@ -24,16 +24,16 @@ export function PackagedOffers() {
           {packagedOffers.map((offer) => (
             <article
               key={offer.id}
-              className="rounded-2xl border border-gray-100 p-6 md:p-8 flex flex-col"
+              className="rounded-2xl border border-line p-6 md:p-8 flex flex-col"
               style={{ boxShadow: "0 12px 40px rgba(10,0,69,0.06)" }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#070643" }}>
+              <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--heading)' }}>
                 {offer.name}
               </h3>
-              <p className="text-sm text-gray-500 mb-3">
-                <span className="font-medium text-gray-700">For:</span> {offer.forWho}
+              <p className="text-sm text-subtle mb-3">
+                <span className="font-medium text-body">For:</span> {offer.forWho}
               </p>
-              <p className="text-base text-gray-700 mb-6 flex-1">{offer.outcome}</p>
+              <p className="text-base text-body mb-6 flex-1">{offer.outcome}</p>
               <p className="text-sm font-semibold mb-4" style={{ color: "#5A83FF" }}>
                 {offer.startingPrice
                   ? `Starting from ${offer.startingPrice}`

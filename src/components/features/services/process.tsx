@@ -5,7 +5,7 @@ export function Process() {
     { title: "Scale", desc: "Optimize, automate, and expand across markets." },
   ];
   return (
-    <section className="py-24 bg-white text-black dark:bg-black dark:text-white">
+    <section className="py-24 bg-surface text-heading dark:bg-black dark:text-white">
       <div className="container-page">
         <h2 className="heading-title text-3xl md:text-4xl mb-8">Our Process</h2>
         <div className="grid gap-6 md:grid-cols-3">

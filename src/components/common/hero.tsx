@@ -5,14 +5,28 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-export function Hero() {
+type HeroProps = {
+  videos?: string[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  trackingLocation?: string;
+};
+
+const defaultVideos = [
+  "/videos/220941_small.mp4",
+  "/videos/148596-794221551_small.mp4",
+];
+
+export function Hero({
+  videos = defaultVideos,
+  eyebrow = "Fynk Tech",
+  title = "We build AI agents and e-commerce stores that grow revenue for businesses in the Gulf, UK and US",
+  description = "From AI receptionists and CRM/OMS systems to Shopify launches — shipped from Lahore, built for real operations.",
+  trackingLocation = "hero",
+}: HeroProps) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const videos = [
-    "/videos/220941_small.mp4",
-    "/videos/148596-794221551_small.mp4",
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,7 +70,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           className="text-sm md:text-base font-semibold tracking-wide text-white/90"
         >
-          Fynk Tech
+          {eyebrow}
         </motion.p>
 
         <motion.h1
@@ -65,7 +79,7 @@ export function Hero() {
           transition={{ duration: 0.7 }}
           className="heading-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-lg max-w-5xl"
         >
-          We build AI agents and e-commerce stores that grow revenue for businesses in the Gulf, UK and US
+          {title}
         </motion.h1>
 
         <motion.p
@@ -74,7 +88,7 @@ export function Hero() {
           transition={{ delay: 0.15 }}
           className="text-base md:text-xl max-w-2xl leading-relaxed text-white/90"
         >
-          From AI receptionists and CRM/OMS systems to Shopify launches — shipped from Lahore, built for real operations.
+          {description}
         </motion.p>
 
         <motion.div
@@ -86,14 +100,14 @@ export function Hero() {
           <Link
             href="/contact?intent=strategy-call"
             className="btn btn-primary text-base md:text-lg px-7 py-3.5"
-            onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: "hero" })}
+            onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: trackingLocation })}
           >
             Book a Free Strategy Call
           </Link>
           <Link
             href="/free-audit"
             className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-[#0A0045] transition-colors"
-            onClick={() => trackEvent("cta_click", { cta: "free_audit", location: "hero" })}
+            onClick={() => trackEvent("cta_click", { cta: "free_audit", location: trackingLocation })}
           >
             Get a Free Audit
           </Link>

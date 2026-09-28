@@ -14,7 +14,7 @@ interface PageOverviewProps {
 
 export function PageOverview({ title, description, features, image, imageAlt }: PageOverviewProps) {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-surface">
       <div className="container-page">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Information */}
@@ -25,10 +25,10 @@ export function PageOverview({ title, description, features, image, imageAlt }: 
             className="space-y-8"
           >
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-heading">
                 {title}
               </h2>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-xl text-body leading-relaxed">
                 {description}
               </p>
             </div>
@@ -48,7 +48,7 @@ export function PageOverview({ title, description, features, image, imageAlt }: 
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <p className="text-gray-700 leading-relaxed">{feature}</p>
+                  <p className="text-body leading-relaxed">{feature}</p>
                 </motion.div>
               ))}
             </div>

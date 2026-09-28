@@ -112,7 +112,7 @@ export function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <section id="testimonials" className="py-24 bg-gradient-to-br from-surface-muted to-surface relative overflow-hidden">
       <div className="container-page relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -120,10 +120,10 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-heading">
             Client Success Stories
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-body max-w-3xl mx-auto">
             Hear from our satisfied clients who have transformed their businesses with our AI automation and e-commerce solutions.
           </p>
         </motion.div>
@@ -137,15 +137,15 @@ export function Testimonials() {
             className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center group hover:scale-110 ${
               currentSlide === 0 
                 ? 'bg-gray-200 cursor-not-allowed' 
-                : 'bg-white hover:shadow-xl'
+                : 'bg-surface hover:shadow-xl'
             }`}
             aria-label="Previous testimonials"
             style={{ display: itemsPerView === 1 ? 'none' : undefined }}
           >
             <svg className={`w-6 h-6 transition-colors ${
               currentSlide === 0 
-                ? 'text-gray-400' 
-                : 'text-gray-600 group-hover:text-[#0A0045]'
+                ? 'text-subtle' 
+                : 'text-body group-hover:text-heading'
             }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -157,15 +157,15 @@ export function Testimonials() {
             className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center group hover:scale-110 ${
               currentSlide >= clients.length - itemsPerView 
                 ? 'bg-gray-200 cursor-not-allowed' 
-                : 'bg-white hover:shadow-xl'
+                : 'bg-surface hover:shadow-xl'
             }`}
             aria-label="Next testimonials"
             style={{ display: itemsPerView === 1 ? 'none' : undefined }}
           >
             <svg className={`w-6 h-6 transition-colors ${
               currentSlide >= clients.length - itemsPerView 
-                ? 'text-gray-400' 
-                : 'text-gray-600 group-hover:text-[#0A0045]'
+                ? 'text-subtle' 
+                : 'text-body group-hover:text-heading'
             }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -190,7 +190,7 @@ export function Testimonials() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                  <div className="bg-surface rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-line h-full">
                     {/* Client Image and Info */}
                     <div className="flex flex-col items-center text-center mb-6">
                       <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4">
@@ -202,9 +202,9 @@ export function Testimonials() {
                           sizes="80px"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{client.name}</h3>
-                      <p className="text-sm text-gray-600 mb-1">{client.title}</p>
-                      <p className="text-xs text-gray-500">{client.company}</p>
+                      <h3 className="text-lg font-semibold text-heading mb-1">{client.name}</h3>
+                      <p className="text-sm text-body mb-1">{client.title}</p>
+                      <p className="text-xs text-subtle">{client.company}</p>
                     </div>
 
                     {/* Rating */}
@@ -217,7 +217,7 @@ export function Testimonials() {
                     </div>
 
                     {/* Quote */}
-                    <blockquote className="text-sm text-gray-700 mb-6 leading-relaxed text-center">
+                    <blockquote className="text-sm text-body mb-6 leading-relaxed text-center">
                       "{client.quote}"
                     </blockquote>
 
@@ -260,7 +260,7 @@ export function Testimonials() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-16"
         >
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-body mb-6">
             Ready to join our success stories?
           </p>
           <a

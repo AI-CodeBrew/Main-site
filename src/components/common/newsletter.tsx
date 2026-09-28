@@ -7,7 +7,7 @@ export function Newsletter({ compact = false }: { compact?: boolean }) {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section className={`${compact ? "py-8" : "py-16"} bg-white text-black dark:bg-black dark:text-white`}>
+    <section className={`${compact ? "py-8" : "py-16"} bg-surface text-heading dark:bg-black dark:text-white`}>
       <div className="container-page">
         {!compact && (
           <h2 className="heading-title text-2xl md:text-3xl mb-4">Get the latest in AI & e‑commerce innovation</h2>

@@ -25,7 +25,7 @@ export function ServiceTechStack({ title, description, techStack }: ServiceTechS
   }, {} as Record<string, TechItem[]>);
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-surface">
       <div className="container-page">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -33,10 +33,10 @@ export function ServiceTechStack({ title, description, techStack }: ServiceTechS
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-heading">
             {title}
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-body max-w-3xl mx-auto">
             {description}
           </p>
         </motion.div>
@@ -49,7 +49,7 @@ export function ServiceTechStack({ title, description, techStack }: ServiceTechS
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
             >
-              <h3 className="text-2xl font-bold mb-8 text-gray-900 text-center">
+              <h3 className="text-2xl font-bold mb-8 text-heading text-center">
                 {category}
               </h3>
               
@@ -60,9 +60,9 @@ export function ServiceTechStack({ title, description, techStack }: ServiceTechS
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: techIndex * 0.05 }}
-                    className="bg-gray-50 rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col items-center justify-center h-32 hover:shadow-md transition-shadow"
+                    className="bg-surface-muted rounded-xl p-6 border border-line shadow-sm flex flex-col items-center justify-center h-32 hover:shadow-md transition-shadow"
                   >
-                    <div className="w-12 h-12 mb-3 flex items-center justify-center">
+                    <div className="w-12 h-12 mb-3 flex items-center justify-center rounded-lg dark:bg-white/95 dark:p-1.5">
                       <img
                         src={tech.logo}
                         alt={tech.name}
@@ -75,7 +75,7 @@ export function ServiceTechStack({ title, description, techStack }: ServiceTechS
                         }}
                       />
                     </div>
-                    <h4 className="text-sm font-medium text-center text-gray-900">
+                    <h4 className="text-sm font-medium text-center text-heading">
                       {tech.name}
                     </h4>
                   </motion.div>

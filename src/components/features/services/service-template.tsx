@@ -28,7 +28,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-surface">
       {/* 1 — Outcome headline */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -63,16 +63,16 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       </section>
 
       {/* 2 — Who this is for */}
-      <section className="py-14 md:py-20 bg-gray-50">
+      <section className="py-14 md:py-20 bg-surface-muted">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: 'var(--heading)' }}>
             Who this is for
           </h2>
           <ul className="space-y-4">
             {service.whoFor.map((item) => (
               <li
                 key={item}
-                className="flex gap-3 text-gray-700 leading-relaxed"
+                className="flex gap-3 text-body leading-relaxed"
               >
                 <span
                   className="mt-2 h-2 w-2 shrink-0 rounded-full"
@@ -89,24 +89,24 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       {/* 3 — Problem */}
       <section className="py-14 md:py-20">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--heading)' }}>
             The problem
           </h2>
-          <p className="text-lg text-gray-600 leading-relaxed">{service.problem}</p>
+          <p className="text-lg text-body leading-relaxed">{service.problem}</p>
         </div>
       </section>
 
       {/* 4 — Deliverables */}
-      <section className="py-14 md:py-20 bg-gray-50">
+      <section className="py-14 md:py-20 bg-surface-muted">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: 'var(--heading)' }}>
             What you get
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2">
             {service.deliverables.map((item) => (
               <li
                 key={item}
-                className="rounded-xl border border-gray-100 bg-white px-4 py-3 text-gray-700 text-sm md:text-base leading-relaxed"
+                className="rounded-xl border border-line bg-surface px-4 py-3 text-body text-sm md:text-base leading-relaxed"
               >
                 {item}
               </li>
@@ -118,11 +118,11 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       {/* 5 — Process + timeline */}
       <section className="py-14 md:py-20">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
             How we work
           </h2>
-          <p className="text-gray-600 mb-10 leading-relaxed">
-            <span className="font-semibold text-gray-800">Typical timeline: </span>
+          <p className="text-body mb-10 leading-relaxed">
+            <span className="font-semibold text-heading">Typical timeline: </span>
             {service.timeline}
           </p>
           <ol className="space-y-8">
@@ -135,10 +135,10 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
                   {i + 1}
                 </span>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2" style={{ color: "#0A0045" }}>
+                  <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--heading)' }}>
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                  <p className="text-body leading-relaxed">{step.description}</p>
                 </div>
               </li>
             ))}
@@ -147,9 +147,9 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       </section>
 
       {/* 6 — Tech stack */}
-      <section className="py-14 md:py-20 bg-gray-50">
+      <section className="py-14 md:py-20 bg-surface-muted">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: 'var(--heading)' }}>
             Tech we often use
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -169,15 +169,15 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       {/* 7 — Case study or TODO */}
       <section className="py-14 md:py-20">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--heading)' }}>
             Related work
           </h2>
           {service.relatedCaseStudy ? (
-            <div className="rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
-              <h3 className="text-xl font-semibold mb-2" style={{ color: "#0A0045" }}>
+            <div className="rounded-2xl border border-line p-6 md:p-8 shadow-sm">
+              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--heading)' }}>
                 {service.relatedCaseStudy.title}
               </h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-body mb-6 leading-relaxed">
                 {service.relatedCaseStudy.note}
               </p>
               <Link
@@ -198,7 +198,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               </Link>
             </div>
           ) : (
-            <p className="text-gray-600 rounded-xl border border-dashed border-gray-200 p-6 leading-relaxed">
+            <p className="text-body rounded-xl border border-dashed border-line p-6 leading-relaxed">
               TODO: add a named case study for this service when client approval is available.
               Dialcom is our public reference for voice, agents, and workflow — see{" "}
               <Link href="/case-studies" className="text-[#5A83FF] hover:underline">
@@ -211,9 +211,9 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
       </section>
 
       {/* 8 — Pricing */}
-      <section className="py-14 md:py-20 bg-gray-50">
+      <section className="py-14 md:py-20 bg-surface-muted">
         <div className="container-page max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: "#0A0045" }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--heading)' }}>
             Pricing
           </h2>
           {service.pricing.startingFrom ? (
@@ -221,14 +221,14 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               Starting from {service.pricing.startingFrom}
             </p>
           ) : (
-            <p className="text-lg text-gray-700 mb-4">
+            <p className="text-lg text-body mb-4">
               Starting price: TODO — we share a clear quote after discovery.
             </p>
           )}
-          <p className="text-gray-600 mb-4 font-medium">What affects your quote:</p>
+          <p className="text-body mb-4 font-medium">What affects your quote:</p>
           <ul className="space-y-2">
             {service.pricing.factors.map((f) => (
-              <li key={f} className="flex gap-2 text-gray-600">
+              <li key={f} className="flex gap-2 text-body">
                 <span className="text-[#5A83FF]" aria-hidden>
                   •
                 </span>
@@ -249,7 +249,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
           <h2
             id={`faq-${service.slug}`}
             className="text-2xl md:text-3xl font-bold mb-8"
-            style={{ color: "#0A0045" }}
+            style={{ color: 'var(--heading)' }}
           >
             FAQ
           </h2>
@@ -259,20 +259,20 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               return (
                 <div
                   key={item.q}
-                  className="border border-gray-100 rounded-xl overflow-hidden"
+                  className="border border-line rounded-xl overflow-hidden"
                 >
                   <button
                     type="button"
                     className="w-full text-left px-5 py-4 font-semibold flex justify-between gap-4"
-                    style={{ color: "#0A0045" }}
+                    style={{ color: 'var(--heading)' }}
                     aria-expanded={isOpen}
                     onClick={() => setOpenFaq(isOpen ? null : i)}
                   >
                     {item.q}
-                    <span className="text-gray-400 shrink-0">{isOpen ? "−" : "+"}</span>
+                    <span className="text-subtle shrink-0">{isOpen ? "−" : "+"}</span>
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-4 text-gray-600 leading-relaxed">{item.a}</div>
+                    <div className="px-5 pb-4 text-body leading-relaxed">{item.a}</div>
                   )}
                 </div>
               );
@@ -326,7 +326,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               </Link>
             ) : null}
           </div>
-          <p className="mt-6 text-sm text-gray-400">
+          <p className="mt-6 text-sm text-subtle">
             Prefer chat? Open the assistant on any page — we will follow up using our published reply promise when offline.
           </p>
         </div>

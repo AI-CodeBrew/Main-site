@@ -192,7 +192,7 @@ export function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden"
           >
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-white/20">
@@ -220,21 +220,21 @@ export function ChatWidget() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 bg-surface-muted space-y-3">
               {messages.map((m, i) => (
                 <div
                   key={i}
                   className={`text-sm rounded-2xl px-3 py-2 max-w-[90%] ${
                     m.role === "user"
                       ? "ml-auto bg-[#0A0045] text-white"
-                      : "bg-white border border-gray-100 text-gray-800"
+                      : "bg-surface border border-line text-heading"
                   }`}
                 >
                   {m.content}
                 </div>
               ))}
               {loading && (
-                <div className="text-xs text-gray-500 animate-pulse">Thinking…</div>
+                <div className="text-xs text-subtle animate-pulse">Thinking…</div>
               )}
               <div ref={bottomRef} />
             </div>
@@ -258,7 +258,7 @@ export function ChatWidget() {
               </div>
             )}
 
-            <div className="p-3 border-t bg-white space-y-2">
+            <div className="p-3 border-t bg-surface space-y-2">
               <div className="flex flex-wrap gap-2">
                 {actions.includes("book") && (
                   <button
@@ -273,7 +273,7 @@ export function ChatWidget() {
                   <button
                     type="button"
                     onClick={() => void handleHuman()}
-                    className="text-xs px-3 py-1.5 rounded-full border border-gray-300"
+                    className="text-xs px-3 py-1.5 rounded-full border border-line"
                   >
                     Talk to human
                   </button>
@@ -295,7 +295,7 @@ export function ChatWidget() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type a message…"
-                  className="flex-1 text-sm px-3 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                  className="flex-1 text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   disabled={loading}
                 />
                 <button

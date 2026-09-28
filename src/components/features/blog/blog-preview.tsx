@@ -8,7 +8,7 @@ export function BlogPreview() {
   ];
 
   return (
-    <section id="blog" className="py-16 md:py-24 bg-white text-black dark:bg-black dark:text-white">
+    <section id="blog" className="py-16 md:py-24 bg-surface text-heading dark:bg-black dark:text-white">
       <div className="container-page">
         <h2 className="heading-title text-2xl md:text-3xl lg:text-4xl mb-6 md:mb-8">Insights</h2>
         <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-3">

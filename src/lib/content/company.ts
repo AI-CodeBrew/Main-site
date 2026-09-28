@@ -8,7 +8,7 @@ export const companyAddress = {
   line1: "206-CCA2-6C Phase 6 DHA",
   line2: "Lahore 54792",
   country: "Pakistan",
-  email: "team@fynktech.com",
+  email: "umer@fynktech.com",
 } as const;
 
 /** Real client projects we may name publicly. No invented metrics. */
@@ -17,6 +17,9 @@ export const projects = [
     id: "dialcom",
     name: "Dialcom",
     url: "https://dialcom.ai/",
+    category: "Lending & Finance",
+    /** TODO: add a project screenshot to /public/projects/ and set its path here, e.g. "/projects/dialcom.jpg" */
+    image: null as string | null,
     summary:
       "CRM and voice AI platform for lenders — AI receptionist, CRM, and OMS.",
     deliverables: ["AI receptionist", "CRM", "OMS"] as const,

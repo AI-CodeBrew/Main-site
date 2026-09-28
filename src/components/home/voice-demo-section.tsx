@@ -34,10 +34,10 @@ export function VoiceDemoSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-white" aria-labelledby="voice-demo-heading">
+    <section className="py-16 md:py-24 bg-surface" aria-labelledby="voice-demo-heading">
       <div className="container-page max-w-4xl">
         <div
-          className="rounded-2xl p-8 md:p-12 border border-gray-100"
+          className="rounded-2xl p-8 md:p-12 border border-line"
           style={{ background: "linear-gradient(135deg, rgba(90,131,255,0.08), rgba(1,180,210,0.06))" }}
         >
           <div className="flex items-start gap-4 mb-6">
@@ -45,10 +45,10 @@ export function VoiceDemoSection() {
               <Phone className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="voice-demo-heading" className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "#070643" }}>
+              <h2 id="voice-demo-heading" className="text-2xl md:text-3xl font-bold mb-2" style={{ color: 'var(--heading)' }}>
                 Call our AI receptionist
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-body leading-relaxed">
                 Hear a live voice agent qualify a caller, answer FAQs, and book a follow-up — the same class of system we ship for clients like Dialcom.
               </p>
             </div>
@@ -74,7 +74,7 @@ export function VoiceDemoSection() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
-                  className="flex-1 rounded-full border border-gray-200 px-4 py-3 outline-none focus:ring-2 focus:ring-[#5A83FF]/40"
+                  className="flex-1 rounded-full border border-line px-4 py-3 outline-none focus:ring-2 focus:ring-[#5A83FF]/40"
                 />
                 <button type="submit" className="btn btn-primary" disabled={status === "loading"}>
                   {status === "loading" ? "Saving…" : status === "done" ? "You're on the list" : "Notify me"}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useScroll } from "@/hooks/use-scroll";
 import { navItems } from "@/lib/constants";
 
@@ -76,7 +77,7 @@ export function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all ${
-        scrolled ? "bg-white border-b border-gray-200/20" : "bg-white"
+        scrolled ? "bg-surface border-b border-line" : "bg-surface"
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between">
@@ -91,18 +92,18 @@ export function Header() {
               priority
             />
           </div>
-          <span className="font-semibold text-gray-900">Fynk Tech</span>
+          <span className="font-semibold text-heading">Fynk Tech</span>
         </Link>
         <nav ref={navRef} className="hidden md:flex items-center gap-6 text-sm">
           {navItems.map((item) => (
             <div key={item.label} className="relative">
               {item.href ? (
-                <Link href={item.href} className="text-gray-600 hover:text-gray-900 transition link-underline">
+                <Link href={item.href} className="text-body hover:text-heading transition link-underline">
                   {item.label}
                 </Link>
               ) : (
                 <button
-                  className="text-gray-600 hover:text-gray-900 transition-all duration-300 ease-out cursor-pointer flex items-center gap-1 hover:scale-105"
+                  className="text-body hover:text-heading transition-all duration-300 ease-out cursor-pointer flex items-center gap-1 hover:scale-105"
                   onClick={() => handleDropdownToggle(item.label)}
                 >
                   {item.label}
@@ -123,12 +124,13 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <CountryDropdown mobileMenuOpen={mobileMenuOpen} />
+          <ThemeToggle />
           <Link href="/contact" className="btn btn-primary hide-mobile-cta">Get a Quote</Link>
           
           {/* Mobile Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-surface-muted transition-colors"
             aria-label="Toggle mobile menu"
           >
             <div className="w-6 h-6 flex flex-col justify-center items-center">
@@ -154,7 +156,7 @@ export function Header() {
           />
           
           {/* Full-Screen Dropdown Content */}
-          <div className={`absolute top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-2xl transition-all duration-500 ease-out ${
+          <div className={`absolute top-0 left-0 right-0 bg-surface dark:bg-gray-900 shadow-2xl transition-all duration-500 ease-out ${
             activeDropdown && !dropdownAnimating
               ? 'opacity-100 transform translate-y-0'
               : 'opacity-0 transform -translate-y-8'
@@ -166,10 +168,10 @@ export function Header() {
                     <Link
                       key={dropdownItem.href}
                       href={dropdownItem.href!}
-                      className="block p-6 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-[#0A0045] dark:hover:bg-[#0A0045] transition-colors duration-300 ease-out"
+                      className="block p-6 bg-surface-muted dark:bg-gray-800 rounded-xl hover:bg-[#0A0045] dark:hover:bg-[#0A0045] transition-colors duration-300 ease-out"
                       onClick={() => handleDropdownToggle(activeDropdown || '')}
                     >
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white hover:text-white transition-colors duration-150 ease-out">
+                      <h3 className="text-lg font-semibold text-heading dark:text-white hover:text-white transition-colors duration-150 ease-out">
                         {dropdownItem.label}
                       </h3>
                     </Link>
@@ -190,201 +192,42 @@ export function Header() {
                />
                
                {/* Drawer */}
-               <div className={`absolute right-0 top-0 h-full w-96 max-w-[90vw] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+               <div className={`absolute right-0 top-0 h-full w-96 max-w-[90vw] bg-surface dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                  {/* Navigation */}
           <nav className="flex-1 overflow-y-auto py-6">
             <div className="space-y-2 px-6">
               {/* Home */}
               <Link 
                 href="/"
-                className="block px-4 py-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
               </Link>
 
-              {/* AI Automation Dropdown */}
-              <div>
-                <button
-                  onClick={() => toggleMobileDropdown('ai-automation')}
-                  className="w-full px-4 py-3 flex items-center justify-between text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
-                >
-                  AI Automation
-                  <svg 
-                    className={`w-4 h-4 transition-transform duration-200 ${openMobileDropdown === 'ai-automation' ? 'rotate-180' : ''}`}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-out ${openMobileDropdown === 'ai-automation' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="ml-4 space-y-1">
-                    <Link
-                      href="/ai-automation/voice-chat"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      AI Voice & Chat Automation
-                    </Link>
-                    <Link
-                      href="/ai-automation/workflow"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Business Workflow Automation
-                    </Link>
-                    <Link
-                      href="/ai-automation/sales-marketing"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      AI Sales & Marketing Automation
-                    </Link>
-                    <Link
-                      href="/ai-automation/data-analytics"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Data, Analytics & AI Insight Systems
-                    </Link>
-                    <Link
-                      href="/ai-automation/custom-agents"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Custom AI Agent Development
-                    </Link>
-                    <Link
-                      href="/ai-automation/web-development"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Web Development
-                    </Link>
-                    <Link
-                      href="/ai-automation/mobile-development"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Mobile App Development
-                    </Link>
-                    <Link
-                      href="/ai-automation/ui-ux"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      UI/UX Design
-                    </Link>
-                    <Link
-                      href="/ai-automation/cloud"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Cloud Application
-                    </Link>
-                    <Link
-                      href="/ai-automation/qa-support"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Quality Assurance, Maintenance & Support
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              {/* AI Automation */}
+              <Link
+                href="/ai-automation"
+                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                AI Automation
+              </Link>
 
-              {/* Ecommerce Dropdown */}
-              <div>
-                <button
-                  onClick={() => toggleMobileDropdown('ecommerce')}
-                  className="w-full px-4 py-3 flex items-center justify-between text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
-                >
-                  Ecommerce
-                  <svg 
-                    className={`w-4 h-4 transition-transform duration-200 ${openMobileDropdown === 'ecommerce' ? 'rotate-180' : ''}`}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-out ${openMobileDropdown === 'ecommerce' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="ml-4 space-y-1">
-                    <Link
-                      href="/ecommerce/store-setup"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Store Setup & Development (Shopify / Woo / Custom)
-                    </Link>
-                    <Link
-                      href="/ecommerce/product-sourcing"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Product Sourcing & Supply Chain Management
-                    </Link>
-                    <Link
-                      href="/ecommerce/marketing-growth"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Marketing & Growth Systems
-                    </Link>
-                    <Link
-                      href="/ecommerce/sales-funnel"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Sales Funnel Optimization
-                    </Link>
-                    <Link
-                      href="/ecommerce/operations-automation"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Operations & Automation (AI + Workflow + Support)
-                    </Link>
-                    <Link
-                      href="/ecommerce/data-analytics"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Data Analytics & Scaling Roadmaps
-                    </Link>
-                    <Link
-                      href="/ecommerce/branding-creative"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Branding & Creative Production
-                    </Link>
-                    <Link
-                      href="/ecommerce/maintenance"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Maintenance & Long-Term Store Management
-                    </Link>
-                    <Link
-                      href="/ecommerce/ai-solutions"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              {/* Ecommerce */}
+              <Link
+                href="/ecommerce"
+                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ecommerce
+              </Link>
 
               {/* What We Are Dropdown */}
               <div>
                 <button
                   onClick={() => toggleMobileDropdown('what-we-are')}
-                  className="w-full px-4 py-3 flex items-center justify-between text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                  className="w-full px-4 py-3 flex items-center justify-between text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
                 >
                   What We Are
                   <svg 
@@ -400,21 +243,21 @@ export function Header() {
                   <div className="ml-4 space-y-1">
                     <Link
                       href="/about"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
+                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       About us
                     </Link>
                     <Link
                       href="/case-studies"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
+                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Case studies
                     </Link>
                     <Link
                       href="/blog"
-                      className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
+                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Blogs
@@ -422,9 +265,16 @@ export function Header() {
                   </div>
                 </div>
               </div>
-              <Link 
+              <Link
+                href="/team"
+                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Team
+              </Link>
+              <Link
                 href="/contact"
-                className="block px-4 py-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
+                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
@@ -433,7 +283,7 @@ export function Header() {
           </nav>
           
           {/* Footer CTA */}
-          <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+          <div className="p-6 border-t border-line dark:border-gray-700 bg-surface dark:bg-gray-900">
             <Link 
               href="/contact" 
               className="block w-full text-center px-6 py-3 bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] text-white font-semibold rounded-lg hover:from-[#070643] hover:to-[#16213e] transition-all duration-300 shadow-lg"

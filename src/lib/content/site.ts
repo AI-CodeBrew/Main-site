@@ -24,6 +24,13 @@ export const siteConfig = {
   voiceDemoNumber: process.env.NEXT_PUBLIC_VOICE_DEMO_NUMBER || "",
 } as const;
 
+export const socialLinks = {
+  facebook: "https://www.facebook.com/share/1ANn1VT2wo/",
+  // QR-code tracking params removed so site clicks aren't reported as QR scans.
+  instagram: "https://www.instagram.com/fynk.tech",
+  linkedin: "https://www.linkedin.com/company/fynktech/",
+} as const;
+
 export function whatsappLink(prefill?: string): string | null {
   if (!siteConfig.whatsappNumber) return null;
   const text = prefill ? `?text=${encodeURIComponent(prefill)}` : "";

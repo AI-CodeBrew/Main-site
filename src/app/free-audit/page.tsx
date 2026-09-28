@@ -42,8 +42,8 @@ export default function FreeAuditPage() {
 
   return (
     <main className="container-page py-16 max-w-2xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Free store audit</h1>
-      <p className="text-gray-600 mb-8">
+      <h1 className="text-3xl font-bold text-heading mb-2">Free store audit</h1>
+      <p className="text-body mb-8">
         Enter your public store URL and email. We fetch the homepage HTML (with safety checks) and
         return top fixes — no invented traffic stats.
       </p>
@@ -55,7 +55,7 @@ export default function FreeAuditPage() {
           placeholder="https://yourstore.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-3"
+          className="w-full rounded-lg border border-line px-4 py-3"
         />
         <input
           required
@@ -63,7 +63,7 @@ export default function FreeAuditPage() {
           placeholder="you@company.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-3"
+          className="w-full rounded-lg border border-line px-4 py-3"
         />
         <button
           type="submit"
@@ -77,10 +77,10 @@ export default function FreeAuditPage() {
       {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
 
       {result && (
-        <div className="mt-8 p-6 rounded-xl bg-gray-50 border border-gray-200">
-          <p className="text-gray-800 mb-4">{result.summary}</p>
+        <div className="mt-8 p-6 rounded-xl bg-surface-muted border border-line">
+          <p className="text-heading mb-4">{result.summary}</p>
           <h2 className="font-semibold mb-2">Top fixes</h2>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700">
+          <ol className="list-decimal list-inside space-y-2 text-body">
             {result.fixes.map((f, i) => (
               <li key={i}>{f}</li>
             ))}
@@ -88,12 +88,12 @@ export default function FreeAuditPage() {
           {siteConfig.bookingUrl ? (
             <a
               href={siteConfig.bookingUrl}
-              className="inline-block mt-6 text-[#0A0045] font-medium underline"
+              className="inline-block mt-6 text-heading font-medium underline"
             >
               Book a call to implement fixes
             </a>
           ) : (
-            <Link href="/contact" className="inline-block mt-6 text-[#0A0045] font-medium underline">
+            <Link href="/contact" className="inline-block mt-6 text-heading font-medium underline">
               Contact us to implement fixes
             </Link>
           )}

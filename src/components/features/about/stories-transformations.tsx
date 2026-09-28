@@ -85,13 +85,13 @@ export function StoriesTransformations() {
               <div className={`absolute inset-0 bg-gradient-to-br ${story.gradient} opacity-20 group-hover:opacity-30 transition-opacity`} />
               <div className="relative p-8 h-full flex flex-col">
                 <div className="text-6xl mb-4 text-center">{story.image}</div>
-                <div className="text-sm text-[#070643] font-medium mb-2">{story.category}</div>
+                <div className="text-sm text-heading font-medium mb-2">{story.category}</div>
                 <h3 className="text-xl font-semibold mb-3">{story.title}</h3>
                 <p className="text-sm leading-relaxed flex-grow" style={{ color: 'var(--muted-foreground)' }}>
                   {story.description}
                 </p>
                 <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-[#070643] text-sm font-medium">Read More →</span>
+                  <span className="text-heading text-sm font-medium">Read More →</span>
                 </div>
               </div>
             </motion.div>

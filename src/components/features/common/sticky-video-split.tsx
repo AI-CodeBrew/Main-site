@@ -120,7 +120,7 @@ export function StickyVideoSplit({
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[200vh] md:min-h-[200vh] min-h-[300vh] bg-white"
+      className="relative min-h-[200vh] md:min-h-[200vh] min-h-[300vh] bg-surface"
     >
       {/* Sticky container */}
       <div className="sticky top-0 h-[100vh] flex items-center justify-center">
@@ -179,7 +179,7 @@ export function StickyVideoSplit({
             )}
 
             <div className="mb-4">
-              <h2 className="text-2xl md:text-4xl font-bold leading-tight text-[#070643]">
+              <h2 className="text-2xl md:text-4xl font-bold leading-tight text-heading">
                 {title}
               </h2>
             </div>
