@@ -8,8 +8,8 @@ export const siteConfig = {
   name: "Fynk Tech",
   url: "https://www.fynktech.com",
   email: "team@fynktech.com",
-  /** TODO: WhatsApp Business number e.g. 923XXXXXXXXX (digits only for wa.me) */
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
+  /** WhatsApp digits only for wa.me (PK 03058877785 → 923058877785) */
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923058877785",
   /** TODO: Cal.com / Calendly booking URL */
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL || "",
   /** @deprecated Prefer getSiteHoursSettings() — env fallback only */
@@ -121,7 +121,7 @@ export const homepageFaq = [
     a: "Yes. We’re based in Lahore and work with clients in the Gulf, UK, and US (remote-first).",
   },
   {
-    q: "Can we start with a free audit or strategy call?",
-    a: "Yes — book a free strategy call or request a free store audit. We’ll tell you honestly if we’re not the right fit.",
+    q: "Can we talk to an expert first?",
+    a: "Yes — use Talk to an expert or WhatsApp us. We’ll tell you honestly if we’re not the right fit.",
   },
 ] as const;

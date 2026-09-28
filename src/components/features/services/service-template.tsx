@@ -291,9 +291,8 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
             Ready to talk?
           </h2>
           <p className="text-gray-200 mb-8 leading-relaxed">
-            Book a free strategy call, message us on WhatsApp
-            {siteConfig.whatsappNumber ? "" : " (number coming soon)"}, or use the site chat
-            when available — we will reply as soon as we are online.
+            Talk to an expert, message us on WhatsApp, or use the site chat when available —
+            we will reply as soon as we are online.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
             <Link
@@ -307,14 +306,14 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
                 })
               }
             >
-              Book a call
+              Talk to an expert
             </Link>
             {wa ? (
               <Link
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold border-2 border-[#01B4D2] text-[#01B4D2] hover:bg-[#01B4D2]/10 transition-colors"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold bg-[#25D366] text-white hover:opacity-90 transition-opacity"
                 onClick={() =>
                   trackEvent("whatsapp_click", {
                     label: "service_cta",
@@ -322,7 +321,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
                   })
                 }
               >
-                WhatsApp
+                WhatsApp Us
               </Link>
             ) : null}
           </div>

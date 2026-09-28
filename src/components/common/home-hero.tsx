@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { DotGlobe } from "./dot-globe";
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
 
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,25 +21,46 @@ export function HomeHero() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative overflow-hidden bg-black"
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",
+      }}
     >
-      {/* Dotted grid background */}
+      <Spotlight className="z-[1]" size={320} fill="white" />
+
+      {/* Fine line grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: "48px 48px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
         }}
       />
 
-      <div className="container-page relative z-10 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] items-center gap-10 pt-10 md:pt-14 pb-20 md:pb-24">
+      {/* Soft center glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 45% at 50% 30%, rgba(90,131,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="container-page relative z-10 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] items-center gap-8 lg:gap-10 pt-10 md:pt-14 pb-20 md:pb-24">
         <div className="text-left">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-white/60 mb-5"
           >
-            AI Automation &amp; E-commerce Agency
+            AI &amp; E-commerce Solutions
           </motion.p>
 
           <motion.h1
@@ -47,9 +69,7 @@ export function HomeHero() {
             transition={{ duration: 0.7 }}
             className="heading-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight text-white"
           >
-            Automate the busywork.
-            <br />
-            <span className="text-white/55">Grow the revenue.</span>
+            AI &amp; E-commerce. Built to Grow.
           </motion.h1>
 
           <motion.p
@@ -70,17 +90,10 @@ export function HomeHero() {
           >
             <Link
               href="/contact?intent=strategy-call"
-              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-base md:text-lg font-semibold bg-white text-black hover:bg-white/85 transition-colors"
+              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-base md:text-lg font-semibold bg-white text-black hover:bg-white/85 transition-colors cursor-pointer"
               onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: "hero" })}
             >
-              Book a Free Strategy Call
-            </Link>
-            <Link
-              href="/free-audit"
-              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-black transition-colors"
-              onClick={() => trackEvent("cta_click", { cta: "free_audit", location: "hero" })}
-            >
-              Get a Free Audit
+              Talk to an expert
             </Link>
           </motion.div>
 
@@ -95,12 +108,16 @@ export function HomeHero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="relative mx-auto w-full max-w-[260px] sm:max-w-[340px] lg:max-w-[440px] aspect-square"
+          className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[480px] cursor-default"
+          aria-label="Interactive AI agent 3D preview"
         >
-          <DotGlobe className="absolute inset-0 h-full w-full" />
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
         </motion.div>
       </div>
 
@@ -108,7 +125,7 @@ export function HomeHero() {
         type="button"
         onClick={scrollPastHero}
         aria-label="Scroll to next section"
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 p-2 text-white/70 hover:text-white transition-colors"
+        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 p-2 text-white/70 hover:text-white transition-colors cursor-pointer"
       >
         <ArrowDown className="h-6 w-6 animate-bounce" />
       </button>

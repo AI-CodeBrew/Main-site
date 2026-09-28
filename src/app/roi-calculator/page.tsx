@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 import { siteConfig } from "@/lib/content/site";
@@ -25,15 +25,11 @@ export default function RoiCalculatorPage() {
     return { hoursSaved: hours, costSaved: cost };
   }, [tickets, minutes, hourly, automationPct]);
 
-  useEffect(() => {
-    trackEvent("calculator_used", { tickets, automationPct });
-  }, [tickets, automationPct]);
-
   async function saveEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
     const utm = getStoredUtms();
-    await fetch("/api/leads", {
+    const response = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,7 +40,18 @@ export default function RoiCalculatorPage() {
         ...utm,
       }),
     });
+    if (!response.ok) return;
+
     setSaved(true);
+    trackEvent("calculator_used", {
+      tickets,
+      minutes,
+      hourly,
+      currency,
+      automation_pct: automationPct,
+      hours_saved: Math.round(hoursSaved),
+      cost_saved: Math.round(costSaved),
+    });
     trackEvent("lead_captured", { source: "calculator" });
   }
 

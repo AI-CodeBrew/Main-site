@@ -8,17 +8,18 @@ type SpotlightProps = {
   className?: string;
   size?: number;
   springOptions?: SpringOptions;
-  /** Optional accent; kept for demo API compat — does not change the system cursor. */
+  /** Spotlight glow color (default white). */
   fill?: string;
 };
 
 /**
- * Decorative spotlight only. pointer-events-none — never changes the page cursor.
+ * Decorative mouse-follow spotlight glow. pointer-events-none.
  */
 export function Spotlight({
   className,
-  size = 200,
+  size = 280,
   springOptions = { bounce: 0 },
+  fill = "white",
 }: SpotlightProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -48,7 +49,7 @@ export function Spotlight({
       mouseX.set(event.clientX - left);
       mouseY.set(event.clientY - top);
     },
-    [mouseX, mouseY, parentElement]
+    [mouseX, mouseY, parentElement],
   );
 
   useEffect(() => {
@@ -72,17 +73,16 @@ export function Spotlight({
     <motion.div
       ref={containerRef}
       className={cn(
-        "pointer-events-none absolute rounded-full bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops),transparent_80%)] blur-xl transition-opacity duration-200",
-        "from-zinc-50 via-zinc-100 to-zinc-200",
+        "pointer-events-none absolute rounded-full blur-2xl transition-opacity duration-200",
         isHovered ? "opacity-100" : "opacity-0",
-        className
+        className,
       )}
       style={{
         width: size,
         height: size,
         left: spotlightLeft,
         top: spotlightTop,
-        cursor: "inherit",
+        background: `radial-gradient(circle at center, ${fill} 0%, transparent 70%)`,
       }}
     />
   );

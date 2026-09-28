@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import posthog from "posthog-js";
 import { trackEvent } from "@/lib/analytics";
 import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { getStoredUtms } from "@/lib/leads/utm";
@@ -21,9 +22,6 @@ function greetingForPath(pathname: string): string {
   }
   if (pathname === "/contact") {
     return "Want to reach the team? I can answer FAQs or connect you with a human.";
-  }
-  if (pathname === "/free-audit") {
-    return "Looking at a free audit? I can explain what we check before you submit.";
   }
   if (pathname === "/roi-calculator") {
     return "Curious about support ROI? I can explain assumptions behind the calculator.";
@@ -91,6 +89,7 @@ export function ChatWidget() {
             messages: next,
             pathname,
             sessionId: sessionId(),
+            distinctId: posthog.get_distinct_id(),
           }),
         });
         const data = (await res.json()) as {

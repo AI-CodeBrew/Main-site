@@ -7,7 +7,7 @@ import { FinalCta } from "@/components/home/final-cta";
 export const metadata: Metadata = {
   title: "AI Automation & Intelligent Agents",
   description:
-    "Fynk Tech builds AI voice and chat agents, workflow automation, sales AI and custom agents for businesses in the Gulf, UK and US. Book a free strategy call.",
+    "Fynk Tech builds AI voice and chat agents, workflow automation, sales AI and custom agents for businesses in the Gulf, UK and US. Talk to an expert.",
 };
 
 export default function AiAutomationPage() {

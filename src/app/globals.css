@@ -140,6 +140,9 @@ html.dark {
   --color-body: var(--body);
   --color-subtle: var(--text-muted);
   --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%);

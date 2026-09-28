@@ -1,11 +1,11 @@
 # Launch checklist — Phases 1–7
 
-Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blog`, `/free-audit`, `/roi-calculator`, `/admin/leads`, and chat/leads/audit APIs.
+Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blog`, `/roi-calculator`, `/admin/leads`, and chat/leads APIs.
 
 ## Must fill before go-live
 
 - [ ] Copy `.env.example` → `.env.local`
-- [ ] `ANTHROPIC_API_KEY` — chat + free audit reports
+- [ ] `ANTHROPIC_API_KEY` — chat assistant
 - [ ] `NEXT_PUBLIC_WHATSAPP_NUMBER` — WhatsApp CTAs
 - [ ] `NEXT_PUBLIC_BOOKING_URL` — embedded calendar
 - [ ] `NEXT_PUBLIC_BUSINESS_HOURS` + `NEXT_PUBLIC_OFFLINE_REPLY_PROMISE` + timezone
@@ -28,18 +28,18 @@ Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blo
 - [ ] Footer: Lahore address only
 - [ ] Chat widget opens, greets by page, privacy before PII, Book / Human / Continue
 - [ ] Chat offline / handoff message when hours closed or simulate-no-agent
-- [ ] `/free-audit` with a public HTTPS store URL
 - [ ] `/roi-calculator` math + optional email lead
 - [ ] Contact form → lead notification
 - [ ] `/admin/login` → `/admin/leads` list/filter/status
-- [ ] Confirm `trackEvent` fires in browser console (dev) for: CTA, chat open, form, audit, calculator, WhatsApp
+- [ ] Confirm `trackEvent` fires in browser console (dev) for: CTA, chat open, form, calculator, WhatsApp
 
 ## Security / ops
 
 - [ ] Chatwoot stub → real API when ready; set `CHAT_HANDOFF_SIMULATE_NO_AGENT=false`
 - [ ] Harden admin auth before heavy traffic
 - [ ] Review privacy policy for chat/lead collection
-- [ ] Wire PostHog inside `src/lib/analytics.ts` only when approved
+- [ ] Wire PostHog: set `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` (+ host) in `.env.local` / Vercel
+- [ ] Confirm `trackEvent` events appear in PostHog (CTA, chat, form, WhatsApp, etc.)
 - [ ] Migrate `middleware.ts` → Next.js “proxy” when adopting that convention
 
 ## Content TODOs still in UI

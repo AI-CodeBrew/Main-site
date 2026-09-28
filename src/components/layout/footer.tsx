@@ -105,7 +105,6 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Resources</h3>
             <ul className="space-y-3 text-sm">
               <li><Link href="/case-studies" className="footer-link">Case Studies</Link></li>
-              <li><Link href="/free-audit" className="footer-link">Free Store Audit</Link></li>
               <li><Link href="/roi-calculator" className="footer-link">ROI Calculator</Link></li>
               <li><Link href="/privacy" className="footer-link">Privacy Policy</Link></li>
               <li><Link href="/terms" className="footer-link">Terms & Conditions</Link></li>

@@ -125,7 +125,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           <CountryDropdown mobileMenuOpen={mobileMenuOpen} />
           <ThemeToggle />
-          <Link href="/contact" className="btn btn-primary hide-mobile-cta">Get a Quote</Link>
+          <Link href="/contact" className="btn btn-primary hide-mobile-cta">Talk to an expert</Link>
           
           {/* Mobile Toggle Button */}
           <button
@@ -289,7 +289,7 @@ export function Header() {
               className="block w-full text-center px-6 py-3 bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] text-white font-semibold rounded-lg hover:from-[#070643] hover:to-[#16213e] transition-all duration-300 shadow-lg"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Get a Quote
+              Talk to an expert
             </Link>
           </div>
         </div>

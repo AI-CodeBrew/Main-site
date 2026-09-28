@@ -214,7 +214,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
             className="btn btn-primary text-base px-7 py-3.5"
             onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: `${category}_services_grid` })}
           >
-            Book a Free Strategy Call
+            Talk to an expert
           </Link>
         </div>
       </div>
