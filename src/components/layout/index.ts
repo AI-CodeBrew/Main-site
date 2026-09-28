@@ -3,3 +3,5 @@ export { Header } from "./header";
 export { Footer } from "./footer";
 export { CookieConsent } from "./cookie-consent";
 export { FynkBot } from "./fynkbot";
+export { ChatWidget } from "./chat-widget";
+export { UtmCapture } from "./utm-capture";

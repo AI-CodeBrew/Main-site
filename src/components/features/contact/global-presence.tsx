@@ -3,57 +3,48 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { companyAddress } from "@/lib/content/company";
 
+/** Markets we serve — links only to existing country routes. */
 const regions = [
   {
     name: "Pakistan",
     image: "/lahore.jpg",
-    description: "Badshahi Mosque, Lahore",
-    path: "/countries/pakistan"
+    description: "Lahore delivery center",
+    path: "/contact",
   },
   {
-    name: "United States of America",
-    image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=300&fit=crop&crop=center&auto=format&q=80",
-    description: "New York City Skyline",
-    path: "/countries/america"
+    name: "United States",
+    image: "/computer-4795762_1280.jpg",
+    description: "US market",
+    path: "/countries/america",
   },
   {
-    name: "United Arab Emirates",
-    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&crop=center&auto=format&q=80",
-    description: "Burj Al Arab, Dubai",
-    path: "/countries/uae"
+    name: "MENA & Gulf",
+    image: "/saudiarabia.jpg",
+    description: "UAE, KSA and MENA",
+    path: "/countries/mena",
   },
   {
     name: "Kingdom of Saudi Arabia",
     image: "/saudiarabia.jpg",
-    description: "Kingdom Centre Tower, Riyadh",
-    path: "/countries/ksa-en"
+    description: "KSA & Gulf",
+    path: "/countries/ksa-en",
   },
   {
     name: "United Kingdom",
     image: "/Towerbridge.jpg",
-    description: "Tower Bridge, London",
-    path: "/countries/europe-uk"
-  }
+    description: "Europe & UK",
+    path: "/countries/europe-uk",
+  },
 ];
-
-const officeInfo = {
-  location: "Riyadh, Saudi Arabia Office",
-  address: "Office # 302, Al Balad Building near Othman Bakerman Exchange, Riyadh",
-  phone: "+966 50 885 4893"
-};
 
 export function GlobalPresence() {
   const router = useRouter();
 
-  const handleCardClick = (path: string) => {
-    router.push(path);
-  };
-
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       <div className="container-page relative">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,14 +52,13 @@ export function GlobalPresence() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            Our Global Presence
+            Markets we serve
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We support clients in 23+ countries and drive continued growth through innovation and transformation.
+            Based in Lahore, we build AI automation and e-commerce systems for clients in Pakistan, the Gulf, the UK and the US.
           </p>
         </motion.div>
 
-        {/* Region Images Gallery */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +72,12 @@ export function GlobalPresence() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group cursor-pointer"
-              onClick={() => handleCardClick(region.path)}
+              onClick={() => router.push(region.path)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") router.push(region.path);
+              }}
+              role="link"
+              tabIndex={0}
             >
               <div className="relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
                 <div className="aspect-[3/4] relative">
@@ -105,22 +100,23 @@ export function GlobalPresence() {
           ))}
         </motion.div>
 
-        {/* Office Information */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="bg-white rounded-2xl p-8 md:p-12 text-left shadow-lg">
+          <div className="bg-white rounded-2xl p-8 md:p-12 text-left shadow-lg border border-gray-100">
             <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
-              {officeInfo.location}
+              {companyAddress.label}
             </h3>
             <p className="text-lg mb-2 text-gray-700">
-              {officeInfo.address}
+              {companyAddress.line1}
+              <br />
+              {companyAddress.line2}, {companyAddress.country}
             </p>
             <p className="text-lg font-medium text-gray-900">
-              Phone: {officeInfo.phone}
+              Email: {companyAddress.email}
             </p>
           </div>
         </motion.div>

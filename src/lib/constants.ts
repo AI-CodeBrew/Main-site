@@ -36,7 +36,7 @@ export const navItems: NavItem[] = [
     dropdown: [
       { href: "/about", label: "About us" },
       { href: "/case-studies", label: "Case studies" },
-      { href: "/insights", label: "Blogs" }
+      { href: "/blog", label: "Blogs" }
     ] as NavDropdownItem[]
   },
   { href: "/contact", label: "Contact" },

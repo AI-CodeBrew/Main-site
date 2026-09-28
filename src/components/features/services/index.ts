@@ -3,4 +3,5 @@ export { ServiceOverview } from "./service-overview";
 export { ServiceDetails } from "./service-details";
 export { ServiceTechStack } from "./service-tech-stack";
 export { ServicePageLayout } from "./service-page-layout";
+export { ServiceTemplate } from "./service-template";
 export { TransformBusiness } from "./transform-business";

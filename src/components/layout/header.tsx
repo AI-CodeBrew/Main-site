@@ -413,7 +413,7 @@ export function Header() {
                       Case studies
                     </Link>
                     <Link
-                      href="/"
+                      href="/blog"
                       className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
                       onClick={() => setMobileMenuOpen(false)}
                     >

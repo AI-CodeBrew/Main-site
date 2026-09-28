@@ -6,7 +6,6 @@ import { ServiceDetails } from "./service-details";
 import { TechStackAI } from "../common/tech-stack-ai";
 import { TechStackEcommerce } from "../common/tech-stack-ecommerce";
 import { CaseStudies } from "../contact/case-studies";
-import { Achievements } from "../about/achievements";
 import { Contact } from "../contact/contact";
 
 interface ServicePageLayoutProps {
@@ -42,7 +41,6 @@ export function ServicePageLayout({ hero, overview, details }: ServicePageLayout
       <ServiceDetails {...details} />
       {hero.category === "ai" ? <TechStackAI /> : <TechStackEcommerce />}
       <CaseStudies />
-      <Achievements />
       <Contact />
     </main>
   );

@@ -1,24 +1,30 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/common/hero";
 import { ClientLogos } from "@/components/common/client-logos";
-import { FeaturedIn } from "@/components/common/featured-in";
-import { TransformBusiness } from "@/components/features/services/transform-business";
-import { IndustriesImpact } from "@/components/features/industries/industries-impact";
-import { StoriesTransformations } from "@/components/features/about/stories-transformations";
-import { Achievements } from "@/components/features/about/achievements";
+import { PackagedOffers } from "@/components/home/packaged-offers";
+import { HowWeWork } from "@/components/home/how-we-work";
 import { CaseStudies } from "@/components/features/contact/case-studies";
-import { Contact } from "@/components/features/contact/contact";
+import { VoiceDemoSection } from "@/components/home/voice-demo-section";
+import { HomepageFaq } from "@/components/home/homepage-faq";
+import { FinalCta } from "@/components/home/final-cta";
+
+export const metadata: Metadata = {
+  title: "AI Agents & E-commerce Systems",
+  description:
+    "Fynk Tech builds AI agents and e-commerce stores that grow revenue for businesses in the Gulf, UK and US. Book a free strategy call or get a free store audit.",
+};
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero />
       <ClientLogos />
-      <FeaturedIn />
-      <TransformBusiness />
-      <IndustriesImpact />
+      <PackagedOffers />
+      <HowWeWork />
       <CaseStudies />
-      <Achievements />
-      <Contact />
+      <VoiceDemoSection />
+      <HomepageFaq />
+      <FinalCta />
     </main>
   );
 }
