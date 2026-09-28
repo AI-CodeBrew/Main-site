@@ -2,14 +2,35 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
+
+const SplineScene = dynamic(
+  () => import("@/components/ui/splite").then((m) => m.SplineScene),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center" aria-hidden>
+        <span className="loader" />
+      </div>
+    ),
+  },
+);
 
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [showRobot, setShowRobot] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const sync = () => setShowRobot(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const scrollPastHero = () => {
     const section = sectionRef.current;
@@ -53,7 +74,11 @@ export function HomeHero() {
         }}
       />
 
-      <div className="container-page relative z-10 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] items-center gap-8 lg:gap-10 pt-10 md:pt-14 pb-20 md:pb-24">
+      <div
+        className={`container-page relative z-10 grid grid-cols-1 items-center gap-8 lg:gap-10 pt-10 md:pt-14 pb-20 md:pb-24 ${
+          showRobot ? "lg:grid-cols-[1.05fr_1fr]" : ""
+        }`}
+      >
         <div className="text-left">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -78,8 +103,7 @@ export function HomeHero() {
             transition={{ delay: 0.15 }}
             className="mt-6 text-base md:text-lg max-w-xl leading-relaxed text-white/75"
           >
-            We build AI agents, workflow automation and high-converting online stores for businesses in Pakistan, the
-            Gulf, the UK and the US — so your team saves time and your sales keep climbing.
+            AI agents, automation and e-commerce that save time and grow sales.
           </motion.p>
 
           <motion.div
@@ -96,29 +120,22 @@ export function HomeHero() {
               Talk to an expert
             </Link>
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.45 }}
-            className="mt-5 text-sm text-white/50"
-          >
-            Free consultation · No obligation · You own everything we build
-          </motion.p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[480px] cursor-default"
-          aria-label="Interactive AI agent 3D preview"
-        >
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-        </motion.div>
+        {showRobot ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[480px] cursor-default"
+            aria-label="Interactive AI agent 3D preview"
+          >
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </motion.div>
+        ) : null}
       </div>
 
       <button

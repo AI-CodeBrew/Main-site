@@ -1,11 +1,37 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
-import { ClientLogos } from "@/components/common/client-logos";
-import { PackagedOffers } from "@/components/home/packaged-offers";
-import { HowWeWork } from "@/components/home/how-we-work";
-import { CaseStudies } from "@/components/features/contact/case-studies";
-import { HomepageFaq } from "@/components/home/homepage-faq";
-import { FinalCta } from "@/components/home/final-cta";
+
+const ClientLogos = dynamic(
+  () => import("@/components/common/client-logos").then((m) => m.ClientLogos),
+  { loading: () => <div className="min-h-[12rem]" aria-hidden /> },
+);
+
+const PackagedOffers = dynamic(
+  () => import("@/components/home/packaged-offers").then((m) => m.PackagedOffers),
+  { loading: () => <div className="min-h-[20rem]" aria-hidden /> },
+);
+
+const HowWeWork = dynamic(
+  () => import("@/components/home/how-we-work").then((m) => m.HowWeWork),
+  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
+);
+
+const CaseStudies = dynamic(
+  () =>
+    import("@/components/features/contact/case-studies").then((m) => m.CaseStudies),
+  { loading: () => <div className="min-h-[20rem]" aria-hidden /> },
+);
+
+const HomepageFaq = dynamic(
+  () => import("@/components/home/homepage-faq").then((m) => m.HomepageFaq),
+  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
+);
+
+const FinalCta = dynamic(
+  () => import("@/components/home/final-cta").then((m) => m.FinalCta),
+  { loading: () => <div className="min-h-[12rem]" aria-hidden /> },
+);
 
 export const metadata: Metadata = {
   title: "AI Agents & E-commerce Systems",
