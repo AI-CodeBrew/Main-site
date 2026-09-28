@@ -25,6 +25,18 @@ export default function AdminHomePage() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Link
+            href="/admin/settings"
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
+              Hours & replies
+            </h2>
+            <p className="text-sm text-gray-600">
+              Edit public business hours, timezone, and offline reply promise.
+            </p>
+          </Link>
+
+          <Link
             href="/admin/media"
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >

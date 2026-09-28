@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isWithinBusinessHours } from "@/lib/chat/business-hours";
 import { chatwootHandoff, notifyTeam, type HandoffPayload } from "@/lib/chat/handoff";
-import { siteConfig } from "@/lib/content/site";
+import { getSiteHoursSettings } from "@/lib/settings/store";
 
-/** Simulated agent wait — set CHAT_HANDOFF_AGENT_TIMEOUT_MS (default 120000). */
 const AGENT_TIMEOUT_MS = Number(process.env.CHAT_HANDOFF_AGENT_TIMEOUT_MS ?? "120000");
 
 export async function POST(req: NextRequest) {
@@ -18,16 +17,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "sessionId required" }, { status: 400 });
   }
 
-  /** Default true until Chatwoot/live agents are wired — set to false when ready. */
   const simulateNoAgent = process.env.CHAT_HANDOFF_SIMULATE_NO_AGENT !== "false";
-
-  const withinHours = isWithinBusinessHours();
+  const hours = await getSiteHoursSettings();
+  const withinHours = isWithinBusinessHours(hours);
 
   if (!withinHours || (simulateNoAgent && AGENT_TIMEOUT_MS >= 0)) {
     return NextResponse.json({
       online: false,
-      message: `Our team is currently offline. ${siteConfig.offlineReplyPromise}`,
-      offlineReplyPromise: siteConfig.offlineReplyPromise,
+      message: `Our team is currently offline. ${hours.offlineReplyPromise}`,
+      offlineReplyPromise: hours.offlineReplyPromise,
+      businessHours: hours.businessHours,
+      timezone: hours.timezone,
     });
   }
 

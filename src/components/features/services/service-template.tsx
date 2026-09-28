@@ -327,10 +327,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
             ) : null}
           </div>
           <p className="mt-6 text-sm text-gray-400">
-            Prefer chat? Open the assistant on any page —{" "}
-            {siteConfig.offlineReplyPromise.includes("TODO")
-              ? "we will follow up when we are back online."
-              : siteConfig.offlineReplyPromise}
+            Prefer chat? Open the assistant on any page — we will follow up using our published reply promise when offline.
           </p>
         </div>
       </section>

@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   const query = lastUser?.content ?? messages.map((m) => m.content).join(" ");
-  const context = retrieveContext(query);
+  const context = await retrieveContext(query);
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   const model = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514";

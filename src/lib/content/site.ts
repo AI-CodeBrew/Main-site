@@ -1,5 +1,7 @@
 /**
- * Site-wide config. Only verified facts — mark TODOs for anything not provided yet.
+ * Site-wide config. Hours / timezone / offline reply are editable in /admin
+ * (Supabase site_settings) — use getSiteHoursSettings() or GET /api/settings/hours.
+ * Env values below are fallbacks only.
  */
 
 export const siteConfig = {
@@ -10,13 +12,14 @@ export const siteConfig = {
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
   /** TODO: Cal.com / Calendly booking URL */
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL || "",
-  /** TODO: e.g. Mon–Sat, 10:00–19:00 */
-  businessHours: process.env.NEXT_PUBLIC_BUSINESS_HOURS || "TODO: set business hours",
-  /** TODO: e.g. Asia/Karachi */
+  /** @deprecated Prefer getSiteHoursSettings() — env fallback only */
+  businessHours: process.env.NEXT_PUBLIC_BUSINESS_HOURS || "Mon–Sat, 10:00–19:00",
+  /** @deprecated Prefer getSiteHoursSettings() — env fallback only */
   timezone: process.env.NEXT_PUBLIC_TIMEZONE || "Asia/Karachi",
-  /** TODO: e.g. within 2 hours */
+  /** @deprecated Prefer getSiteHoursSettings() — env fallback only */
   offlineReplyPromise:
-    process.env.NEXT_PUBLIC_OFFLINE_REPLY_PROMISE || "TODO: set offline reply promise",
+    process.env.NEXT_PUBLIC_OFFLINE_REPLY_PROMISE ||
+    "We will reply within 2 business hours.",
   /** TODO: voice agent demo phone, or leave empty for coming-soon */
   voiceDemoNumber: process.env.NEXT_PUBLIC_VOICE_DEMO_NUMBER || "",
 } as const;

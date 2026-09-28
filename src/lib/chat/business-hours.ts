@@ -1,11 +1,14 @@
-import { siteConfig } from "@/lib/content/site";
+import type { SiteHoursSettings } from "@/lib/settings/store";
 
 /**
- * Loose parser for NEXT_PUBLIC_BUSINESS_HOURS e.g. "Mon–Sat, 10:00–19:00".
- * Falls back to Mon–Fri 09:00–18:00 in site timezone if unparseable.
+ * Loose parser for business hours e.g. "Mon–Sat, 10:00–19:00".
+ * Falls back to Mon–Fri 09:00–18:00 in the given timezone if unparseable.
  */
-export function isWithinBusinessHours(now = new Date()): boolean {
-  const tz = siteConfig.timezone || "UTC";
+export function isWithinBusinessHours(
+  settings: Pick<SiteHoursSettings, "businessHours" | "timezone">,
+  now = new Date()
+): boolean {
+  const tz = settings.timezone || "UTC";
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     weekday: "short",
@@ -19,7 +22,7 @@ export function isWithinBusinessHours(now = new Date()): boolean {
   const minute = Number(parts.find((p) => p.type === "minute")?.value ?? 0);
   const minutes = hour * 60 + minute;
 
-  const raw = siteConfig.businessHours;
+  const raw = settings.businessHours;
   const rangeMatch = raw.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
   let startMin = 9 * 60;
   let endMin = 18 * 60;
@@ -39,7 +42,6 @@ export function isWithinBusinessHours(now = new Date()): boolean {
   };
   const dayNum = dayMap[weekday.slice(0, 3)] ?? 1;
 
-  // Mon–Sat → days 1–6; Mon–Fri → 1–5; default weekdays
   let openDays = new Set([1, 2, 3, 4, 5]);
   if (/sat/i.test(raw) && !/sun/i.test(raw)) {
     openDays = new Set([1, 2, 3, 4, 5, 6]);

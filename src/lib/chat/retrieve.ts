@@ -1,58 +1,11 @@
-import { knowledgeChunks, type KnowledgeChunk } from "./knowledge";
+import { getKnowledgeChunks, knowledgeChunks, type KnowledgeChunk } from "./knowledge";
 
 const STOP = new Set([
-  "a",
-  "an",
-  "the",
-  "and",
-  "or",
-  "but",
-  "in",
-  "on",
-  "at",
-  "to",
-  "for",
-  "of",
-  "is",
-  "are",
-  "was",
-  "were",
-  "be",
-  "been",
-  "being",
-  "have",
-  "has",
-  "had",
-  "do",
-  "does",
-  "did",
-  "will",
-  "would",
-  "could",
-  "should",
-  "may",
-  "might",
-  "must",
-  "can",
-  "this",
-  "that",
-  "these",
-  "those",
-  "i",
-  "you",
-  "we",
-  "they",
-  "it",
-  "what",
-  "how",
-  "when",
-  "where",
-  "why",
-  "who",
-  "me",
-  "my",
-  "your",
-  "our",
+  "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for", "of",
+  "is", "are", "was", "were", "be", "been", "being", "have", "has", "had",
+  "do", "does", "did", "will", "would", "could", "should", "may", "might",
+  "must", "can", "this", "that", "these", "those", "i", "you", "we", "they",
+  "it", "what", "how", "when", "where", "why", "who", "me", "my", "your", "our",
 ]);
 
 function tokenize(text: string): string[] {
@@ -85,27 +38,37 @@ function scoreChunk(queryTokens: string[], chunk: KnowledgeChunk): number {
   return score;
 }
 
-export function retrieveContext(query: string, topK = 6): string {
+function rank(query: string, chunks: KnowledgeChunk[], topK: number): string {
   const queryTokens = tokenize(query);
   if (queryTokens.length === 0) {
-    return knowledgeChunks
+    return chunks
       .slice(0, 3)
       .map((c) => c.text)
       .join("\n\n");
   }
 
-  const ranked = knowledgeChunks
+  const ranked = chunks
     .map((c) => ({ c, score: scoreChunk(queryTokens, c) }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, topK);
 
   if (ranked.length === 0) {
-    return knowledgeChunks
+    return chunks
       .slice(0, 3)
       .map((c) => c.text)
       .join("\n\n");
   }
 
   return ranked.map((r) => r.c.text).join("\n\n");
+}
+
+export async function retrieveContext(query: string, topK = 6): Promise<string> {
+  const chunks = await getKnowledgeChunks();
+  return rank(query, chunks, topK);
+}
+
+/** Sync fallback using static chunks (env hours). */
+export function retrieveContextSync(query: string, topK = 6): string {
+  return rank(query, knowledgeChunks, topK);
 }
