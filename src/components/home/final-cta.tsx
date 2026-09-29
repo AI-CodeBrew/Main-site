@@ -17,13 +17,11 @@ export function FinalCta() {
   const wa = whatsappLink("Hi Fynk Tech — I'd like to talk about a project.");
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden" aria-labelledby="final-cta-heading">
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(135deg, #0A0A3C 0%, #1E3296 40%, #0A0045 100%)",
-        }}
-      />
+    // Same black as the PROJECTS section above, so the two read as one dark block.
+    <section
+      className="py-16 md:py-24 relative overflow-hidden bg-[#121212]"
+      aria-labelledby="final-cta-heading"
+    >
       <div className="container-page relative z-10 text-center text-white">
         <h2 id="final-cta-heading" className="text-3xl md:text-4xl font-bold mb-4">
           Ready to grow with AI or e-commerce?
@@ -35,7 +33,8 @@ export function FinalCta() {
         <div className="flex flex-wrap justify-center gap-4">
           <Link
             href="/contact"
-            className="btn btn-primary inline-flex"
+            // White like the hero's button: the navy .btn-primary disappears on black.
+            className="inline-flex items-center justify-center rounded-full px-7 py-3.5 font-semibold bg-white text-black hover:bg-white/85 transition-colors"
             onClick={() => trackEvent("cta_click", { cta: "talk_to_expert", location: "final_cta" })}
           >
             Talk to an expert

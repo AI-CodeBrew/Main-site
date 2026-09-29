@@ -218,6 +218,30 @@ export function ChatWidget() {
   const [awaitingTeam, setAwaitingTeam] = useState(false);
   const hasStarted = messages.some((m) => m.role === "user");
 
+  // The visible screen area while the chat is open. On phones the keyboard covers the bottom
+  // of the page without moving fixed elements, so the pop-up follows the visual viewport:
+  // it sits just above the keyboard and shrinks to the space that's left.
+  const [viewport, setViewport] = useState<{ height: number; keyboardInset: number } | null>(null);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!open || !vv) return;
+    const update = () => {
+      const keyboardInset = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
+      setViewport({ height: vv.height, keyboardInset });
+      // Keep the latest message in view as the space shrinks.
+      bottomRef.current?.scrollIntoView({ block: "end" });
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+      setViewport(null);
+    };
+  }, [open]);
+
   const intro = useMemo(() => introFor(pathname, visitorName), [pathname, visitorName]);
 
   // The chat starts once the visitor has given their name on the name screen.
@@ -478,14 +502,44 @@ export function ChatWidget() {
   // Admins answer chats from /admin/chats; the visitor widget would only get in the way there.
   if (pathname?.startsWith("/admin")) return null;
 
+  // Phone keyboard open: sit just above it and shrink to the space that's left.
+  const keyboardOpen = viewport !== null && viewport.keyboardInset > 0;
+  const panelHeight = viewport ? Math.min(520, viewport.height - 32) : undefined;
+
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60]">
+    <>
+      {/* Phones: dim the page behind the pop-up; tapping outside closes it. */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            key="chat-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-[59] bg-black/40 md:hidden"
+            aria-hidden
+          />
+        )}
+      </AnimatePresence>
+
+    <div
+      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60]"
+      style={keyboardOpen ? { bottom: viewport.keyboardInset + 8 } : undefined}
+    >
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            // Pops out of the chat button's corner.
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            style={{ transformOrigin: "bottom right", height: panelHeight }}
+            role="dialog"
+            aria-label="Chat with Fynk Tech"
+            // data-lenis-prevent: messages scroll natively instead of the page behind.
+            data-lenis-prevent
             className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden"
           >
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3">
@@ -554,7 +608,7 @@ export function ChatWidget() {
                     maxLength={60}
                     autoFocus
                     required
-                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
                 <label className="block">
@@ -566,7 +620,7 @@ export function ChatWidget() {
                     autoComplete="tel"
                     inputMode="tel"
                     maxLength={20}
-                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
                 <button
@@ -638,7 +692,7 @@ export function ChatWidget() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Type a message…"
-                      className="flex-1 text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                      className="flex-1 min-w-0 text-base md:text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                       disabled={loading}
                     />
                     <button
@@ -680,5 +734,6 @@ export function ChatWidget() {
         </motion.button>
       )}
     </div>
+    </>
   );
 }

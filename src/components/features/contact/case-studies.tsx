@@ -101,6 +101,8 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
 /** PROJECTS is rendered at full-screen width and scaled down, so it stays sharp at its largest. */
 const WORD_MIN_SCALE = 0.45;
 const WORD_END_SCALE = 0.55;
+/** Share of the outro scroll after which the heading starts shrinking. */
+const SHRINK_START = 0.73;
 
 /**
  * `items` come from /admin/projects. Server pages pass them in; client-only parents
@@ -141,20 +143,19 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
     offset: ["start end", "end 60%"],
   });
 
-  // Spread over the whole entry so the zoom-in is gradual.
-  const growScale = useTransform(enterProgress, [0, 1], [WORD_MIN_SCALE, 1], {
-    ease: easeInOut,
+  // One transform over both scroll values, so it always reacts to either of them — even when
+  // the page jumps straight to the end (anchor link, fast scroll, reload mid-page).
+  const targetScale = useTransform([enterProgress, outroProgress], ([enter, outro]: number[]) => {
+    // Shrink: starts only once the last card has moved above the word,
+    // so the shrinking word is never hidden behind pictures.
+    if (outro > SHRINK_START) {
+      const t = easeInOut(Math.min(1, (outro - SHRINK_START) / (1 - SHRINK_START)));
+      return 1 + (WORD_END_SCALE - 1) * t;
+    }
+    // Grow: spread over the whole entry so the zoom-in is gradual.
+    const t = easeInOut(Math.min(1, Math.max(0, enter)));
+    return WORD_MIN_SCALE + (1 - WORD_MIN_SCALE) * t;
   });
-  // Starts only once the last card has moved above the word,
-  // so the shrinking word is never hidden behind pictures.
-  const SHRINK_START = 0.73;
-  const shrinkScale = useTransform(outroProgress, [SHRINK_START, 1], [1, WORD_END_SCALE], {
-    ease: easeInOut,
-  });
-
-  const targetScale = useTransform(() =>
-    outroProgress.get() > SHRINK_START ? shrinkScale.get() : growScale.get(),
-  );
 
   // Light follow so zoom in and out glide instead of tracking every scroll step. No overshoot.
   const wordScale = useSpring(targetScale, {
