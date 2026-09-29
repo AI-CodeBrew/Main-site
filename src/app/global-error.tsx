@@ -1,8 +1,8 @@
 "use client";
 
 import NextError from "next/error";
-import posthog from "posthog-js";
 import { useEffect } from "react";
+import { withPostHog } from "@/lib/posthog-client";
 
 export default function GlobalError({
   error,
@@ -11,7 +11,9 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    posthog.captureException(error);
+    withPostHog((ph) => {
+      ph.captureException(error);
+    });
   }, [error]);
 
   return (

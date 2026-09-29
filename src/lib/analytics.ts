@@ -1,12 +1,20 @@
 /**
  * Central event helper — all key conversion actions go through here.
- * PostHog is initialized in `src/instrumentation-client.ts`.
+ * PostHog loads after idle via `src/lib/posthog-client.ts` (scheduled from
+ * `instrumentation-client.ts`); early events are queued until init finishes.
  */
-import posthog from "posthog-js";
+import { withPostHog } from "@/lib/posthog-client";
 
+/**
+ * Named product events for the Fynk Tech marketing site.
+ * Keep names stable — PostHog dashboards and insights key off these.
+ */
 export type TrackEventName =
   | "cta_click"
+  | "nav_click"
+  | "chat_icon_clicked"
   | "chat_opened"
+  | "chat_started"
   | "lead_captured"
   | "human_handoff"
   | "booking"
@@ -28,9 +36,7 @@ export function trackEvent(name: TrackEventName, props?: TrackEventProps): void 
 
   if (!process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN) return;
 
-  try {
-    posthog.capture(name, payload);
-  } catch (err) {
-    console.error("[trackEvent] PostHog capture failed", err);
-  }
+  withPostHog((ph) => {
+    ph.capture(name, payload);
+  });
 }

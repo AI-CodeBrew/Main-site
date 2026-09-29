@@ -1,9 +1,9 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import posthog from "posthog-js";
 import { Suspense, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { withPostHog } from "@/lib/posthog-client";
 
 const ADMIN_DISTINCT_ID = "admin";
 
@@ -32,7 +32,9 @@ function LoginForm() {
       process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
       process.env.NEXT_PUBLIC_POSTHOG_HOST
     ) {
-      posthog.identify(ADMIN_DISTINCT_ID, { role: "admin" });
+      withPostHog((ph) => {
+        ph.identify(ADMIN_DISTINCT_ID, { role: "admin" });
+      });
       trackEvent("admin_logged_in");
     }
 

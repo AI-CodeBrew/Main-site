@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MessageCircle, Info, MapPin } from "lucide-react";
 import { companyAddress } from "@/lib/content/company";
 import { siteConfig, socialLinks, whatsappLink } from "@/lib/content/site";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/common/social-icons";
+import { trackEvent } from "@/lib/analytics";
 
 export function Footer() {
   const whatsappNumber = siteConfig.whatsappNumber;
@@ -72,7 +75,7 @@ export function Footer() {
               <li><Link href="/" className="footer-link">Home</Link></li>
               <li><Link href="/about" className="footer-link">About Us</Link></li>
               <li><Link href="/blog" className="footer-link">Blog</Link></li>
-              <li><Link href="/contact" className="footer-link">Contact</Link></li>
+              <li><Link href="/contact" className="footer-link" onClick={() => trackEvent("nav_click", { destination: "/contact", label: "Contact", location: "footer" })}>Contact</Link></li>
             </ul>
           </div>
 
@@ -120,7 +123,13 @@ export function Footer() {
               {whatsappNumber && (
                 <li className="flex items-start gap-3">
                   <MessageCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
-                  <a href={whatsappLink() ?? undefined} target="_blank" rel="noopener noreferrer" className="footer-link">
+                  <a
+                    href={whatsappLink() ?? undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-link"
+                    onClick={() => trackEvent("whatsapp_click", { location: "footer" })}
+                  >
                     +{whatsappNumber}
                   </a>
                 </li>

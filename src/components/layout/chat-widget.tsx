@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import posthog from "posthog-js";
 import { trackEvent } from "@/lib/analytics";
 import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { getStoredUtms } from "@/lib/leads/utm";
 import { ChatMarkdown } from "@/components/common/chat-markdown";
 import { ChatLauncherButton } from "./chat-launcher-button";
+import { getPostHog } from "@/lib/posthog-client";
 
 type Msg = { role: "user" | "assistant" | "admin"; content: string };
 type ChatAction = "book" | "human" | "continue";
@@ -381,7 +381,8 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
       setMessages([]);
     }
     setOpen(true);
-    trackEvent("chat_opened", { pathname });
+    trackEvent("chat_icon_clicked", { pathname, source: "widget_reopen" });
+    trackEvent("chat_opened", { pathname, source: "widget_reopen" });
   };
 
   const sendMessage = useCallback(
@@ -394,11 +395,15 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
         base = [{ role: "assistant", content: intro }];
       }
       touchSession();
+      const isFirstMessage = !base.some((m) => m.role === "user");
       const userMsg: Msg = { role: "user", content: text.trim() };
       const next = [...base, userMsg];
       setMessages(next);
       setInput("");
       setLoading(true);
+      if (isFirstMessage) {
+        trackEvent("chat_started", { pathname });
+      }
 
       try {
         const res = await fetch("/api/chat", {
@@ -408,7 +413,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
             messages: next,
             pathname,
             sessionId: sessionId(),
-            distinctId: posthog.get_distinct_id(),
+            distinctId: getPostHog()?.get_distinct_id(),
             visitorName: visitorName ?? undefined,
             visitorPhone: visitorPhone ?? undefined,
           }),

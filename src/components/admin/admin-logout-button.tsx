@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import posthog from "posthog-js";
+import { withPostHog } from "@/lib/posthog-client";
 
 export function AdminLogoutButton() {
   const router = useRouter();
@@ -13,7 +13,9 @@ export function AdminLogoutButton() {
       process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
       process.env.NEXT_PUBLIC_POSTHOG_HOST
     ) {
-      posthog.reset();
+      withPostHog((ph) => {
+        ph.reset();
+      });
     }
 
     router.push("/admin/login");

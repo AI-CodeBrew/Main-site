@@ -32,7 +32,8 @@ export function ChatLauncher() {
       <ChatLauncherButton
         onClick={() => {
           setRequested(true);
-          trackEvent("chat_opened", { pathname });
+          trackEvent("chat_icon_clicked", { pathname });
+          trackEvent("chat_opened", { pathname, source: "launcher" });
         }}
       />
     </div>

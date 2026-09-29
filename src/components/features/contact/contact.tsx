@@ -111,7 +111,7 @@ export function Contact() {
                       alert("Something went wrong. Please try again or email team@fynktech.com.");
                       return;
                     }
-                    trackEvent("form_submit", { source: "contact" });
+                    trackEvent("form_submit", { source: "contact", form: "contact_page" });
                     setDone(true);
                   } finally {
                     setSubmitting(false);

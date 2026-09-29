@@ -1,26 +1,7 @@
-import posthog from "posthog-js";
+/**
+ * Kick off PostHog only after the browser is idle so its ~165 KB bundle (and any
+ * remote extras) never block first paint. See `src/lib/posthog-client.ts`.
+ */
+import { schedulePostHogLoad } from "@/lib/posthog-client";
 
-const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
-
-if (!token || !host) {
-  if (process.env.NODE_ENV === "development") {
-    const missingVariable = token
-      ? "NEXT_PUBLIC_POSTHOG_HOST"
-      : "NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN";
-
-    throw new Error(
-      `${missingVariable} variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once ${missingVariable} is configured`,
-    );
-  }
-} else {
-  posthog.init(token, {
-    api_host: host,
-    defaults: "2025-05-24",
-    capture_pageview: true,
-    capture_pageleave: true,
-    person_profiles: "identified_only",
-  });
-}
-
-export default posthog;
+schedulePostHogLoad();
