@@ -123,10 +123,9 @@ export function HomeHero() {
     <section
       id="home"
       ref={sectionRef}
-      // Phones: fill the whole screen under the 64px menu bar (svh = height with the browser bar showing).
-      // Desktop: reserve the robot's height (480px + padding) from the first paint so the section
-      // doesn't grow when the loader clears and push the ticker down.
-      className="relative overflow-hidden max-md:flex max-md:min-h-[calc(100svh-4rem)] max-md:flex-col max-md:justify-center lg:min-h-[632px]"
+      // flex-1: the page wraps hero + ticker in one screen-tall column; the hero takes the space
+      // left above the ticker (see app/page.tsx) and centers its content in it.
+      className="relative flex flex-1 flex-col justify-center overflow-hidden"
       style={{
         background:
           "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",
@@ -181,7 +180,7 @@ export function HomeHero() {
       />
 
       <div
-        className={`container-page relative z-10 grid grid-cols-1 items-center gap-8 lg:gap-10 pt-10 md:pt-14 pb-20 md:pb-24 ${
+        className={`container-page relative z-10 grid grid-cols-1 items-center gap-8 lg:gap-10 pt-8 pb-16 md:pt-10 lg:py-8 ${
           showRobot ? "lg:grid-cols-[1.05fr_1fr]" : ""
         }`}
       >
@@ -233,7 +232,9 @@ export function HomeHero() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[480px] cursor-default"
+            // Shrinks on short laptop screens so hero + ticker still fit in the first screen
+            // (14rem ≈ menu bar + ticker + hero padding).
+            className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[min(480px,calc(100svh-14rem))] cursor-default"
             aria-label="Interactive AI agent 3D preview"
           >
             <SplineScene

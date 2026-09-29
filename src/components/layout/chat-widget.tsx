@@ -665,7 +665,8 @@ export function ChatWidget() {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           onClick={openChat}
-          className="flex flex-col items-center gap-1 motion-reduce:!transform-none"
+          // mb-5 keeps the icon where it sat when the "Chat with us" label was under it.
+          className="mb-5 block rounded-full motion-reduce:!transform-none"
           aria-label="Chat with us"
         >
           {/* Round blue button with the message icon, which blinks softly. */}
@@ -675,10 +676,6 @@ export function ChatWidget() {
               strokeWidth={2}
               aria-hidden
             />
-          </span>
-          {/* Same blue as the button; steady (only the icon blinks) so it's easy to read. */}
-          <span aria-hidden className="text-xs font-semibold text-[#3B6FF5]">
-            Chat with us
           </span>
         </motion.button>
       )}

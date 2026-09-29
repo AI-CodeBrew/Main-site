@@ -36,8 +36,12 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      <HomeHero />
-      <ServicesTicker />
+      {/* First screen on every device: hero + ticker fill the screen under the 64px menu bar,
+          so the ticker always shows at the bottom of the first view. */}
+      <div className="flex min-h-[calc(100svh-4rem)] flex-col">
+        <HomeHero />
+        <ServicesTicker />
+      </div>
       <ClientLogos />
       <HowWeWork />
       <CaseStudies items={projectCards} />
