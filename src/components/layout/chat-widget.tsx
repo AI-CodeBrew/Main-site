@@ -665,20 +665,20 @@ export function ChatWidget() {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           onClick={openChat}
-          className="flex flex-col items-center gap-1.5 motion-reduce:!transform-none"
+          className="block rounded-full motion-reduce:!transform-none"
           aria-label="Chat with us"
+          title="Chat with us"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#5A83FF] to-[#01B4D2] text-white shadow-md">
-            {/* The icon itself blinks softly. */}
-            <MessageCircleMore
-              className="h-6 w-6 motion-safe:animate-pulse [animation-duration:1.6s]"
-              strokeWidth={2}
-              aria-hidden
-            />
-          </span>
-          {/* Dark pill keeps the white text readable on light sections too. */}
-          <span className="rounded-full bg-[#0A0045]/90 px-2.5 py-0.5 text-[11px] font-semibold text-white shadow-md">
-            Chat with us
+          {/* Two layers only: green outer ring, light blue inner circle (no glow). */}
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#22C55E] p-[5px]">
+            <span className="flex h-full w-full items-center justify-center rounded-full bg-[#38BDF8] text-white">
+              {/* The icon itself blinks softly. */}
+              <MessageCircleMore
+                className="h-6 w-6 motion-safe:animate-pulse [animation-duration:1.6s]"
+                strokeWidth={2}
+                aria-hidden
+              />
+            </span>
           </span>
         </motion.button>
       )}

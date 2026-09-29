@@ -22,27 +22,40 @@ export function ClientLogos() {
             Platforms and tools we use to build AI agents, automation, and e-commerce systems — not a client list.
           </p>
         </div>
+      </div>
 
-        <div className="overflow-hidden">
-          <div className="flex animate-scroll-left">
-            {items.map((tech, index) => (
-              <div key={`${tech.name}-${index}`} className="flex-shrink-0 mx-8 flex flex-col items-center">
-                {/* Brand logos are dark artwork, so give them a light tile in the dark theme. */}
-                <div className="relative w-20 h-16 mb-3 rounded-lg dark:bg-white/95">
-                  <Image
-                    src={tech.logo}
-                    alt={tech.name}
-                    fill
-                    className="object-contain dark:p-2"
-                    sizes="80px"
-                  />
-                </div>
-                <span className="text-xs font-medium text-center leading-tight" style={{ color: 'var(--heading)' }}>
-                  {tech.name}
-                </span>
+      {/* Full screen width like the services ticker; edges fade out instead of cutting logos off. */}
+      <div
+        className="relative z-10 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+          WebkitMaskImage: "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+        }}
+      >
+        {/* w-max + max-w-none: globals.css caps every element at max-width 100%, which squeezed
+            this track to screen width and made the -50% loop jump. */}
+        <div className="flex w-max max-w-none animate-scroll-left">
+          {items.map((tech, index) => (
+            <div
+              key={`${tech.name}-${index}`}
+              className="flex-shrink-0 mx-8 md:mx-12 flex flex-col items-center"
+              aria-hidden={index >= techWeWorkWith.length || undefined}
+            >
+              {/* Brand logos are dark artwork, so give them a light tile in the dark theme. */}
+              <div className="relative w-20 h-16 mb-3 rounded-lg dark:bg-white/95">
+                <Image
+                  src={tech.logo}
+                  alt={tech.name}
+                  fill
+                  className="object-contain dark:p-2"
+                  sizes="80px"
+                />
               </div>
-            ))}
-          </div>
+              <span className="text-xs font-medium text-center leading-tight" style={{ color: 'var(--heading)' }}>
+                {tech.name}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

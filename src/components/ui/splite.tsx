@@ -7,9 +7,11 @@ const Spline = lazy(() => import("@splinetool/react-spline"));
 interface SplineSceneProps {
   scene: string;
   className?: string;
+  /** Fires once the 3D scene has fully loaded and rendered. */
+  onLoad?: () => void;
 }
 
-export function SplineScene({ scene, className }: SplineSceneProps) {
+export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
   return (
     <Suspense
       fallback={
@@ -19,7 +21,7 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
       }
     >
       <div className="spline-host w-full h-full cursor-default">
-        <Spline scene={scene} className={className} />
+        <Spline scene={scene} className={className} onLoad={onLoad ? () => onLoad() : undefined} />
       </div>
     </Suspense>
   );

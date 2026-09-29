@@ -147,7 +147,7 @@ export function BlogsAdminClient() {
                       <div className="h-12 w-20 overflow-hidden rounded-md bg-gray-100">
                         {blog.image ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={blog.image} alt="" className="h-full w-full object-cover" />
+                          <img src={blog.image} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                         ) : null}
                       </div>
                     </td>

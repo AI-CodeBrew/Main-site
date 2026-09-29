@@ -457,7 +457,7 @@ export function ProjectsAdminClient() {
               >
                 <div className="aspect-[1587/2245] w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={project.image_url} alt="" className="h-full w-full object-cover" />
+                  <img src={project.image_url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <p className="font-semibold truncate" style={{ color: "#070643" }}>

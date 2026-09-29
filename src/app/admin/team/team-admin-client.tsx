@@ -355,7 +355,7 @@ export function TeamAdminClient() {
                 <div className="h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                   {member.photo_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={member.photo_url} alt="" className="h-full w-full object-cover object-top" />
+                    <img src={member.photo_url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover object-top" />
                   ) : null}
                 </div>
                 <div className="min-w-0 flex-1">

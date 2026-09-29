@@ -74,7 +74,7 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
               src={item.image}
               alt={item.title}
               fill
-              loading="eager"
+              loading="lazy"
               unoptimized={!canOptimize(item.image)}
               sizes="(max-width: 768px) 92vw, 640px"
               className="object-cover"
