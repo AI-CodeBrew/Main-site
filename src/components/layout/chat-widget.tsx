@@ -221,23 +221,43 @@ export function ChatWidget() {
   // The visible screen area while the chat is open. On phones the keyboard covers the bottom
   // of the page without moving fixed elements, so the pop-up follows the visual viewport:
   // it sits just above the keyboard and shrinks to the space that's left.
-  const [viewport, setViewport] = useState<{ height: number; keyboardInset: number } | null>(null);
+  const [viewport, setViewport] = useState<{
+    height: number;
+    offsetTop: number;
+    keyboardInset: number;
+    isMobile: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const vv = window.visualViewport;
     if (!open || !vv) return;
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
     const update = () => {
       const keyboardInset = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
-      setViewport({ height: vv.height, keyboardInset });
+      setViewport({
+        height: vv.height,
+        offsetTop: vv.offsetTop,
+        keyboardInset,
+        isMobile: mobileQuery.matches,
+      });
       // Keep the latest message in view as the space shrinks.
       bottomRef.current?.scrollIntoView({ block: "end" });
     };
     update();
     vv.addEventListener("resize", update);
     vv.addEventListener("scroll", update);
+    mobileQuery.addEventListener("change", update);
+
+    // Phones: the chat is full screen, so the page behind must not scroll.
+    const html = document.documentElement;
+    const previousOverflow = html.style.overflow;
+    if (mobileQuery.matches) html.style.overflow = "hidden";
+
     return () => {
       vv.removeEventListener("resize", update);
       vv.removeEventListener("scroll", update);
+      mobileQuery.removeEventListener("change", update);
+      html.style.overflow = previousOverflow;
       setViewport(null);
     };
   }, [open]);
@@ -502,27 +522,23 @@ export function ChatWidget() {
   // Admins answer chats from /admin/chats; the visitor widget would only get in the way there.
   if (pathname?.startsWith("/admin")) return null;
 
-  // Phone keyboard open: sit just above it and shrink to the space that's left.
-  const keyboardOpen = viewport !== null && viewport.keyboardInset > 0;
-  const panelHeight = viewport ? Math.min(520, viewport.height - 32) : undefined;
+  // Phones: full screen, like a messaging app. It fills the visible area, so when the keyboard
+  // opens the chat shrinks to the space above it and the message box stays in view.
+  // Desktop: floating pop-up above the button.
+  // Before the first viewport reading, decide from the screen width so a phone never flashes the pop-up.
+  const fullScreen =
+    viewport?.isMobile ??
+    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches);
+  const keyboardOpen = !fullScreen && viewport !== null && viewport.keyboardInset > 0;
+  const panelStyle: React.CSSProperties = fullScreen
+    ? { top: viewport?.offsetTop ?? 0, height: viewport?.height, transformOrigin: "bottom center" }
+    : {
+        transformOrigin: "bottom right",
+        height: viewport ? Math.min(520, viewport.height - 32) : undefined,
+      };
 
   return (
     <>
-      {/* Phones: dim the page behind the pop-up; tapping outside closes it. */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="chat-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[59] bg-black/40 md:hidden"
-            aria-hidden
-          />
-        )}
-      </AnimatePresence>
-
     <div
       className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60]"
       style={keyboardOpen ? { bottom: viewport.keyboardInset + 8 } : undefined}
@@ -530,19 +546,27 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
-            // Pops out of the chat button's corner.
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.6 }}
-            transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            style={{ transformOrigin: "bottom right", height: panelHeight }}
+            // Desktop: pops out of the chat button's corner. Phones: slides up full screen.
+            initial={fullScreen ? { opacity: 0, y: 40 } : { opacity: 0, scale: 0.6 }}
+            animate={fullScreen ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }}
+            exit={fullScreen ? { opacity: 0, y: 40 } : { opacity: 0, scale: 0.6 }}
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            style={panelStyle}
             role="dialog"
             aria-label="Chat with Fynk Tech"
             // data-lenis-prevent: messages scroll natively instead of the page behind.
             data-lenis-prevent
-            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden"
+            className={`bg-surface flex flex-col overflow-hidden ${
+              fullScreen
+                ? "fixed inset-x-0 w-full"
+                : "mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] rounded-2xl shadow-2xl border border-line"
+            }`}
           >
-            <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3">
+            <div
+              className={`bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3 ${
+                fullScreen ? "pt-[max(1rem,env(safe-area-inset-top))]" : ""
+              }`}
+            >
               <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden ring-2 ring-white/20">
                 <Image
                   src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
@@ -675,7 +699,8 @@ export function ChatWidget() {
                   </div>
                 )}
 
-                <div className="p-3 border-t border-line bg-surface space-y-2">
+                {/* Bottom padding clears the iPhone home bar in full-screen mode. */}
+                <div className="p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-line bg-surface space-y-2">
                   {actions.includes("book") && (
                     <div className="flex flex-wrap gap-2">
                       <button

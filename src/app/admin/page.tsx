@@ -101,10 +101,10 @@ export default function AdminHomePage() {
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Leads
+              Leads & messages
             </h2>
             <p className="text-sm text-gray-600">
-              View and update lead status from forms, chat, audit, and calculator.
+              Read contact form messages and reply by email, WhatsApp or phone.
             </p>
           </Link>
         </div>

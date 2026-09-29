@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { getStoredUtms } from "@/lib/leads/utm";
 import { siteConfig, whatsappLink } from "@/lib/content/site";
@@ -245,15 +244,14 @@ export function TalkToExpert() {
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
-              style={{
-                background: "linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%)",
-              }}
+              className="group flex w-full items-center justify-center gap-3 rounded-2xl border border-white/15 py-3 text-base font-semibold text-white transition-colors hover:border-[#25D366]/60 hover:bg-white/5"
               onClick={() => trackEvent("whatsapp_click", { location: "talk_to_expert" })}
             >
-              <WhatsAppIcon className="h-5 w-5" />
-              WhatsApp Us
-              <ArrowRight className="h-5 w-5" strokeWidth={2} />
+              Talk to us on WhatsApp
+              {/* WhatsApp's own green, to the right of the text. */}
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.4)] transition-transform group-hover:scale-105">
+                <WhatsAppIcon className="h-6 w-6" />
+              </span>
             </a>
           </div>
         </div>
