@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/layout/chat-widget";
 import { UtmCapture } from "@/components/layout/utm-capture";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-aeonik" });
@@ -72,6 +73,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <ChatWidget />
+        <Analytics />
       </body>
     </html>
   );
