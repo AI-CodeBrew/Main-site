@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
+import { ServicesTicker } from "@/components/home/services-ticker";
+import { getProjectCards } from "@/lib/projects/store";
 
 const ClientLogos = dynamic(
   () => import("@/components/common/client-logos").then((m) => m.ClientLogos),
@@ -29,13 +31,16 @@ export const metadata: Metadata = {
     "Fynk Tech builds AI agents and e-commerce stores that grow revenue for businesses in the Gulf, UK and US. Talk to an expert or message us on WhatsApp.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const projectCards = await getProjectCards();
+
   return (
     <main className="min-h-screen">
       <HomeHero />
+      <ServicesTicker />
       <ClientLogos />
       <HowWeWork />
-      <CaseStudies />
+      <CaseStudies items={projectCards} />
       <FinalCta />
     </main>
   );

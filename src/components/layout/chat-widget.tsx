@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot } from "lucide-react";
+import { MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -659,16 +659,25 @@ export function ChatWidget() {
       {!open && (
         <motion.button
           type="button"
+          // Gentle float up and down so it reads as a floating button.
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           onClick={openChat}
-          className="flex flex-col items-center gap-1.5"
+          className="flex flex-col items-center gap-1.5 motion-reduce:!transform-none"
           aria-label="Chat with us"
         >
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#5A83FF] to-[#01B4D2] text-white shadow-lg">
-            <Bot className="h-8 w-8" strokeWidth={1.75} aria-hidden />
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#5A83FF] to-[#01B4D2] text-white shadow-md">
+            {/* The icon itself blinks softly. */}
+            <MessageCircleMore
+              className="h-6 w-6 motion-safe:animate-pulse [animation-duration:1.6s]"
+              strokeWidth={2}
+              aria-hidden
+            />
           </span>
-          <span className="text-[11px] font-semibold text-[#0A0045] [text-shadow:0_0_6px_#fff,0_0_6px_#fff]">
+          {/* Dark pill keeps the white text readable on light sections too. */}
+          <span className="rounded-full bg-[#0A0045]/90 px-2.5 py-0.5 text-[11px] font-semibold text-white shadow-md">
             Chat with us
           </span>
         </motion.button>

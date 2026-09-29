@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/layout/chat-widget";
 import { UtmCapture } from "@/components/layout/utm-capture";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -66,6 +67,7 @@ export default function RootLayout({
         className={`${inter.variable} ${plusJakarta.variable} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
       >
+        <SmoothScroll />
         <Suspense fallback={null}>
           <UtmCapture />
         </Suspense>

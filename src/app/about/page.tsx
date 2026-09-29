@@ -3,6 +3,7 @@ import { PageOverview } from "@/components/features/common/page-overview";
 import { About } from "@/components/features/about/about";
 import { ClientLogos } from "@/components/common/client-logos";
 import { CaseStudies } from "@/components/features/contact/case-studies";
+import { getProjectCards } from "@/lib/projects/store";
 import { Contact } from "@/components/features/contact/contact";
 
 const aboutOverview = {
@@ -19,7 +20,8 @@ const aboutOverview = {
   imageAlt: "Fynk Tech Team and Innovation",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const projectCards = await getProjectCards();
   return (
     <main className="min-h-screen">
       <PageHero
@@ -31,7 +33,7 @@ export default function AboutPage() {
       <PageOverview {...aboutOverview} />
       <About />
       <ClientLogos />
-      <CaseStudies />
+      <CaseStudies items={projectCards} />
       <Contact />
     </main>
   );

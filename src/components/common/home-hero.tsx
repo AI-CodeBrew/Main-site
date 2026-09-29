@@ -42,7 +42,8 @@ export function HomeHero() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative overflow-hidden"
+      // Phones: fill the whole screen under the 64px menu bar (svh = height with the browser bar showing).
+      className="relative overflow-hidden max-md:flex max-md:min-h-[calc(100svh-4rem)] max-md:flex-col max-md:justify-center"
       style={{
         background:
           "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",

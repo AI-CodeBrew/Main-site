@@ -73,6 +73,18 @@ export default function AdminHomePage() {
           </Link>
 
           <Link
+            href="/admin/projects"
+            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
+              Projects
+            </h2>
+            <p className="text-sm text-gray-600">
+              Add or replace project images (1587 × 2245 px) in the PROJECTS section.
+            </p>
+          </Link>
+
+          <Link
             href="/admin/team"
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >
