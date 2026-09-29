@@ -11,7 +11,6 @@ export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [dropdownAnimating, setDropdownAnimating] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
   // Prevent body scroll when mobile menu or desktop dropdown is open
@@ -38,10 +37,6 @@ export function Header() {
       document.body.style.top = 'unset';
     };
   }, [mobileMenuOpen, activeDropdown]);
-
-  const toggleMobileDropdown = (dropdownName: string) => {
-    setOpenMobileDropdown(openMobileDropdown === dropdownName ? null : dropdownName);
-  };
 
   const handleDropdownToggle = (dropdownName: string) => {
     if (activeDropdown === dropdownName) {
@@ -74,8 +69,9 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all ${
-        scrolled ? "bg-surface border-b border-line" : "bg-surface"
+      // Light grey bar; a hairline border appears once the page scrolls under it.
+      className={`sticky top-0 z-50 bg-[#F3F4F6] transition-all ${
+        scrolled ? "border-b border-gray-200" : ""
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between">
@@ -90,9 +86,10 @@ export function Header() {
               priority
             />
           </div>
-          <span className="font-semibold text-heading">Fynk Tech</span>
+          <span className="text-lg font-semibold text-heading">Fynk Tech</span>
         </Link>
-        <nav ref={navRef} className="hidden md:flex items-center gap-6 text-sm">
+        {/* Larger, more spaced links; tighter on tablets so they still fit next to the logo and button. */}
+        <nav ref={navRef} className="hidden md:flex items-center gap-6 lg:gap-10 text-[15px] lg:text-base font-medium">
           {navItems.map((item) => (
             <div key={item.label} className="relative">
               {item.href ? (
@@ -219,48 +216,6 @@ export function Header() {
                 Ecommerce
               </Link>
 
-              {/* What We Are Dropdown */}
-              <div>
-                <button
-                  onClick={() => toggleMobileDropdown('what-we-are')}
-                  className="w-full px-4 py-3 flex items-center justify-between text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
-                >
-                  What We Are
-                  <svg 
-                    className={`w-4 h-4 transition-transform duration-200 ${openMobileDropdown === 'what-we-are' ? 'rotate-180' : ''}`}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-out ${openMobileDropdown === 'what-we-are' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="ml-4 space-y-1">
-                    <Link
-                      href="/about"
-                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      About us
-                    </Link>
-                    <Link
-                      href="/case-studies"
-                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Case studies
-                    </Link>
-                    <Link
-                      href="/blog"
-                      className="block px-4 py-2 text-body dark:text-gray-300 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Blogs
-                    </Link>
-                  </div>
-                </div>
-              </div>
               <Link
                 href="/team"
                 className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"

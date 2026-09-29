@@ -1,17 +1,9 @@
-import { NavItem, NavDropdownItem } from "@/types";
+import { NavItem } from "@/types";
 
 export const navItems: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/ai-automation", label: "AI Automation" },
   { href: "/ecommerce", label: "Ecommerce" },
-  { 
-    label: "What We Are", 
-    dropdown: [
-      { href: "/about", label: "About us" },
-      { href: "/case-studies", label: "Case studies" },
-      { href: "/blog", label: "Blogs" }
-    ] as NavDropdownItem[]
-  },
   { href: "/team", label: "Team" },
   { href: "/contact", label: "Contact" },
 ];

@@ -116,14 +116,15 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
   const headingId = `${category}-services-heading`;
 
   return (
-    <section id={`${category}-services`} className="py-24 relative overflow-hidden" aria-labelledby={headingId}>
-      <div
-        className="absolute inset-0"
-        style={{ background: "linear-gradient(135deg, #0A0A3C 0%, #1E3296 35%, #2A2A6A 70%, #0A0A3C 100%)" }}
-      />
+    <section
+      id={`${category}-services`}
+      // Same black as the home page PROJECTS / final CTA sections.
+      className="py-24 relative overflow-hidden bg-[#121212]"
+      aria-labelledby={headingId}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at top center, rgba(128, 223, 255, 0.18) 0%, transparent 60%)" }}
+        style={{ background: "radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.06) 0%, transparent 60%)" }}
       />
 
       <div className="container-page relative z-10">
@@ -178,7 +179,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                       }
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#070643] via-[#070643]/75 to-[#070643]/20 transition-colors duration-300 group-hover:via-[#070643]/85" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20 transition-colors duration-300 group-hover:via-black/85" />
 
                   <span className="absolute top-5 right-5 text-sm font-semibold text-white/50">
                     {String(index + 1).padStart(2, "0")}

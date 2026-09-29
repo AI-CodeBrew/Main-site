@@ -31,7 +31,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, rgba(10,0,69,0.92) 0%, rgba(10,0,69,0.55) 45%, rgba(10,0,69,0.35) 100%)",
+                "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.35) 100%)",
             }}
           />
         </div>
@@ -64,7 +64,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               >
                 <span
                   className="mt-2 h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: "#5A83FF" }}
+                  style={{ backgroundColor: "#121212" }}
                   aria-hidden
                 />
                 {item}
@@ -118,7 +118,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               <li key={step.title} className="flex gap-4">
                 <span
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white font-bold text-sm"
-                  style={{ backgroundColor: "#5A83FF" }}
+                  style={{ backgroundColor: "#121212" }}
                 >
                   {i + 1}
                 </span>
@@ -145,7 +145,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               <span
                 key={tech}
                 className="rounded-full px-4 py-2 text-sm font-medium text-white"
-                style={{ backgroundColor: "#0A0045" }}
+                style={{ backgroundColor: "#121212" }}
               >
                 {tech}
               </span>
@@ -229,8 +229,8 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
 
       {/* CTA */}
       <section
-        className="py-16 md:py-24"
-        style={{ background: "linear-gradient(135deg, #0A0045 0%, #1a1a5e 100%)" }}
+        // Black like the site's other dark sections; the buttons keep their colours.
+        className="py-16 md:py-24 bg-[#121212]"
       >
         <div className="container-page max-w-3xl text-center">
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
