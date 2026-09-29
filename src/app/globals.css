@@ -82,9 +82,9 @@
   --gradient-soft: linear-gradient(135deg, rgba(10, 0, 69, 0.1) 0%, rgba(90, 131, 255, 0.1) 100%);
   --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
 
-  /* Fonts */
-  --font-aeonik: Aeonik, "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-inter: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Fonts — one family (Plus Jakarta Sans, loaded in layout.tsx as --font-aeonik) for body
+     and headings, so the page downloads a single font file. */
+  --font-aeonik: Aeonik, "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 
@@ -111,7 +111,7 @@
   --gradient-soft: radial-gradient(1200px 600px at 10% 10%, rgba(90,131,255,0.25), transparent 60%), radial-gradient(1200px 600px at 90% 10%, rgba(1,180,210,0.25), transparent 60%);
 
   /* Fonts */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-aeonik);
 }
 
 /* Base */
@@ -122,7 +122,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter);
+  font-family: var(--font-aeonik);
   min-height: 100vh;
   overflow-x: hidden;
   cursor: default;

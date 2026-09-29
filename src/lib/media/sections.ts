@@ -8,7 +8,6 @@ export const MEDIA_SECTIONS = [
   { id: "ecommerce", label: "E-commerce" },
   { id: "blog", label: "Blog" },
   { id: "contact", label: "Contact" },
-  { id: "team", label: "Team" },
   { id: "logos", label: "Logos / brands" },
   { id: "videos", label: "Videos" },
   { id: "misc", label: "Misc" },

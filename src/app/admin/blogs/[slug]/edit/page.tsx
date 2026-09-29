@@ -12,7 +12,7 @@ export default async function EditBlogPage({ params }: { params: Promise<{ slug:
 
   if (!result.ok) {
     return (
-      <main className="mx-auto max-w-2xl px-6 py-16">
+      <main className="mx-auto max-w-2xl px-4 py-10 md:px-8">
         <p className="text-red-600 mb-4">Could not load this blog: {result.error}</p>
         <Link href="/admin/blogs" className="text-[#5A83FF] hover:underline">
           ← Back to blogs

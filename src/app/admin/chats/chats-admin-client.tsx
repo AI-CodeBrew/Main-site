@@ -66,12 +66,11 @@ function dayLabel(iso: string): string {
   return d.toLocaleDateString([], { day: "numeric", month: "long", year: "numeric" });
 }
 
-export function ChatsAdminClient({
-  initialConversations,
-}: {
-  initialConversations: ChatConversation[];
-}) {
-  const [conversations, setConversations] = useState(initialConversations);
+export function ChatsAdminClient() {
+  const [conversations, setConversations] = useState<ChatConversation[]>([]);
+  // True until the first list load finishes, so an empty list isn't shown as "No chats yet".
+  const [listLoading, setListLoading] = useState(true);
+  const [listError, setListError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [active, setActive] = useState<ChatConversation | null>(null);
@@ -95,10 +94,21 @@ export function ChatsAdminClient({
   const loadList = useCallback(async () => {
     const params = new URLSearchParams();
     if (search.trim()) params.set("q", search.trim());
-    const res = await fetch(`/api/admin/chats?${params}`, { cache: "no-store" });
-    if (!res.ok) return;
-    const data = (await res.json()) as { conversations: ChatConversation[] };
-    setConversations(data.conversations);
+    try {
+      const res = await fetch(`/api/admin/chats?${params}`, { cache: "no-store" });
+      if (!res.ok) {
+        setListError(res.status === 401 ? "Session expired — sign in again." : "Could not load chats.");
+        return;
+      }
+      const data = (await res.json()) as { conversations: ChatConversation[] };
+      setConversations(data.conversations);
+      setListError(null);
+    } catch {
+      // Network hiccup — the next poll retries.
+      setListError("Could not load chats.");
+    } finally {
+      setListLoading(false);
+    }
   }, [search]);
 
   const loadThread = useCallback(async (id: string) => {
@@ -206,7 +216,7 @@ export function ChatsAdminClient({
   }
 
   return (
-    <div className="flex h-[calc(100vh-10.5rem)] min-h-[520px] overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+    <div className="flex h-[calc(100dvh-10rem)] min-h-[520px] overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm md:h-[calc(100dvh-8.5rem)]">
       {/* ——— Chat list ——— */}
       <aside
         className={`${selectedId ? "hidden md:flex" : "flex"} w-full md:w-[340px] md:shrink-0 flex-col border-r border-gray-100`}
@@ -249,8 +259,22 @@ export function ChatsAdminClient({
           />
         </div>
         <ul className="flex-1 overflow-y-auto">
-          {conversations.length === 0 ? (
-            <li className="p-6 text-center text-sm text-gray-500">No chats yet.</li>
+          {listLoading ? (
+            <li className="space-y-3 p-4" aria-busy="true" aria-label="Loading chats">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <span className="h-11 w-11 shrink-0 animate-pulse rounded-full bg-gray-100" />
+                  <span className="flex-1 space-y-2">
+                    <span className="block h-3 w-2/3 animate-pulse rounded bg-gray-100" />
+                    <span className="block h-3 w-1/2 animate-pulse rounded bg-gray-100" />
+                  </span>
+                </div>
+              ))}
+            </li>
+          ) : conversations.length === 0 ? (
+            <li className={`p-6 text-center text-sm ${listError ? "text-red-600" : "text-gray-500"}`}>
+              {listError ?? "No chats yet."}
+            </li>
           ) : (
             conversations.map((c) => (
               <li key={c.id}>

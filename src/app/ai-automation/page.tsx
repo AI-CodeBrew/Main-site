@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/common/hero";
-import { ClientLogos } from "@/components/common/client-logos";
 import { ServicesGrid } from "@/components/features/services/services-grid";
-import { FinalCta } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
   title: "AI Automation & Intelligent Agents",
@@ -21,8 +19,6 @@ export default function AiAutomationPage() {
         trackingLocation="ai_automation_hero"
       />
       <ServicesGrid category="ai" />
-      <ClientLogos />
-      <FinalCta />
     </main>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AdminLogoutButton } from "@/components/admin/admin-logout-button";
+import { AdminPage, AdminPageHeader } from "@/components/admin/admin-page";
 import { PROJECT_IMAGE } from "@/lib/projects/defaults";
 import type { Project } from "@/lib/projects/store";
 
@@ -262,261 +262,253 @@ export function ProjectsAdminClient() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f8f9fc]">
-      <div className="mx-auto max-w-4xl px-6 py-10">
-        <div className="flex items-start justify-between gap-4 mb-8">
-          <div>
-            <Link href="/admin" className="text-sm text-[#5A83FF] hover:underline">
-              ← Admin
+    <AdminPage>
+      <AdminPageHeader
+        title="Projects"
+        description={
+          <>
+            Add, replace, reorder and hide the project images in the PROJECTS section of the{" "}
+            <Link href="/" target="_blank" className="text-[#5A83FF] hover:underline">
+              home page
             </Link>
-            <h1 className="text-3xl font-bold mt-2" style={{ color: "#070643" }}>
-              Projects
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Add, replace, reorder and hide the project images in the PROJECTS section of the{" "}
-              <Link href="/" target="_blank" className="text-[#5A83FF] hover:underline">
-                home page
-              </Link>
-              .
-            </p>
-          </div>
-          <AdminLogoutButton />
+            .
+          </>
+        }
+      />
+
+      <div className="mb-8 rounded-2xl border border-[#5A83FF]/30 bg-[#5A83FF]/5 p-5 text-sm text-gray-700">
+        <p className="font-semibold" style={{ color: "#070643" }}>
+          Image size
+        </p>
+        <ul className="mt-2 space-y-1">
+          <li>
+            Recommended:{" "}
+            <strong className="font-mono">
+              {PROJECT_IMAGE.width} × {PROJECT_IMAGE.height} px
+            </strong>{" "}
+            — tall portrait (same shape as A4 paper, 1 : 1.414).
+          </li>
+          <li>
+            Minimum:{" "}
+            <strong className="font-mono">
+              {PROJECT_IMAGE.minWidth} × {PROJECT_IMAGE.minHeight} px
+            </strong>{" "}
+            — smaller images look blurry on sharp screens.
+          </li>
+          <li>JPG or WebP, under ~1 MB. Other shapes are cropped to fit — check the preview below.</li>
+        </ul>
+      </div>
+
+      <form
+        onSubmit={onSave}
+        className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5 mb-10"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold" style={{ color: "#070643" }}>
+            {editingId ? "Edit project" : "Add project"}
+          </h2>
+          {editingId && (
+            <button type="button" onClick={startNew} className="text-sm text-[#5A83FF] hover:underline">
+              Cancel edit
+            </button>
+          )}
         </div>
 
-        <div className="mb-8 rounded-2xl border border-[#5A83FF]/30 bg-[#5A83FF]/5 p-5 text-sm text-gray-700">
-          <p className="font-semibold" style={{ color: "#070643" }}>
-            Image size
-          </p>
-          <ul className="mt-2 space-y-1">
-            <li>
-              Recommended:{" "}
-              <strong className="font-mono">
-                {PROJECT_IMAGE.width} × {PROJECT_IMAGE.height} px
-              </strong>{" "}
-              — tall portrait (same shape as A4 paper, 1 : 1.414).
-            </li>
-            <li>
-              Minimum:{" "}
-              <strong className="font-mono">
-                {PROJECT_IMAGE.minWidth} × {PROJECT_IMAGE.minHeight} px
-              </strong>{" "}
-              — smaller images look blurry on sharp screens.
-            </li>
-            <li>JPG or WebP, under ~1 MB. Other shapes are cropped to fit — check the preview below.</li>
-          </ul>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="block text-sm">
+            <span className="font-medium text-gray-700">Title</span>
+            <input
+              value={form.title}
+              onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
+              placeholder="Dialcom"
+              required
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="font-medium text-gray-700">Short description</span>
+            <input
+              value={form.meta}
+              onChange={(e) => setForm((f) => ({ ...f, meta: e.target.value }))}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
+              maxLength={160}
+              placeholder="AI receptionist · CRM · OMS"
+            />
+          </label>
         </div>
 
-        <form
-          onSubmit={onSave}
-          className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5 mb-10"
-        >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold" style={{ color: "#070643" }}>
-              {editingId ? "Edit project" : "Add project"}
-            </h2>
-            {editingId && (
-              <button type="button" onClick={startNew} className="text-sm text-[#5A83FF] hover:underline">
-                Cancel edit
-              </button>
-            )}
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block text-sm">
-              <span className="font-medium text-gray-700">Title</span>
+        <div className="block text-sm">
+          <span className="font-medium text-gray-700">Image</span>
+          <div className="mt-1 flex items-start gap-4">
+            {/* Same shape as the website card, so the admin sees the real crop. */}
+            <div className="aspect-[1587/2245] w-28 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+              {form.image_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={form.image_url} alt="" className="h-full w-full object-cover" />
+              ) : null}
+            </div>
+            <div className="flex-1 space-y-2">
               <input
-                value={form.title}
-                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
-                placeholder="Dialcom"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={uploading}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void onUpload(file);
+                  e.target.value = "";
+                }}
+                className="block w-full text-sm"
+              />
+              <input
+                value={form.image_url}
+                onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
+                className="w-full rounded-lg border border-gray-200 px-3 py-2"
+                placeholder="…or paste an image URL"
                 required
               />
-            </label>
-            <label className="block text-sm">
-              <span className="font-medium text-gray-700">Short description</span>
-              <input
-                value={form.meta}
-                onChange={(e) => setForm((f) => ({ ...f, meta: e.target.value }))}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
-                maxLength={160}
-                placeholder="AI receptionist · CRM · OMS"
-              />
-            </label>
-          </div>
-
-          <div className="block text-sm">
-            <span className="font-medium text-gray-700">Image</span>
-            <div className="mt-1 flex items-start gap-4">
-              {/* Same shape as the website card, so the admin sees the real crop. */}
-              <div className="aspect-[1587/2245] w-28 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                {form.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={form.image_url} alt="" className="h-full w-full object-cover" />
-                ) : null}
-              </div>
-              <div className="flex-1 space-y-2">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  disabled={uploading}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) void onUpload(file);
-                    e.target.value = "";
-                  }}
-                  className="block w-full text-sm"
-                />
-                <input
-                  value={form.image_url}
-                  onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2"
-                  placeholder="…or paste an image URL"
-                  required
-                />
-                <ImageSize src={form.image_url} />
-                {fileNote && <span className="block text-xs text-amber-700">{fileNote}</span>}
-                <span className="text-xs text-gray-400 block">
-                  {uploading
-                    ? "Uploading…"
-                    : `Upload a ${PROJECT_IMAGE.width} × ${PROJECT_IMAGE.height} px image. Uploads go to Bunny under case-studies/.`}
-                </span>
-              </div>
+              <ImageSize src={form.image_url} />
+              {fileNote && <span className="block text-xs text-amber-700">{fileNote}</span>}
+              <span className="text-xs text-gray-400 block">
+                {uploading
+                  ? "Uploading…"
+                  : `Upload a ${PROJECT_IMAGE.width} × ${PROJECT_IMAGE.height} px image. Uploads go to Bunny under case-studies/.`}
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="grid gap-5 sm:grid-cols-[1fr_140px]">
-            <label className="block text-sm">
-              <span className="font-medium text-gray-700">Link (optional)</span>
-              <input
-                value={form.href}
-                onChange={(e) => setForm((f) => ({ ...f, href: e.target.value }))}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
-                placeholder="https://client-site.com or /case-studies"
-              />
-            </label>
-            <label className="block text-sm">
-              <span className="font-medium text-gray-700">Order</span>
-              <input
-                type="number"
-                min={0}
-                value={form.sort_order}
-                onChange={(e) => setForm((f) => ({ ...f, sort_order: Number(e.target.value) || 0 }))}
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
-              />
-            </label>
-          </div>
-
-          <label className="flex items-center gap-2 text-sm text-gray-700">
+        <div className="grid gap-5 sm:grid-cols-[1fr_140px]">
+          <label className="block text-sm">
+            <span className="font-medium text-gray-700">Link (optional)</span>
             <input
-              type="checkbox"
-              checked={form.is_published}
-              onChange={(e) => setForm((f) => ({ ...f, is_published: e.target.checked }))}
+              value={form.href}
+              onChange={(e) => setForm((f) => ({ ...f, href: e.target.value }))}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
+              placeholder="https://client-site.com or /case-studies"
             />
-            Show on the website
           </label>
+          <label className="block text-sm">
+            <span className="font-medium text-gray-700">Order</span>
+            <input
+              type="number"
+              min={0}
+              value={form.sort_order}
+              onChange={(e) => setForm((f) => ({ ...f, sort_order: Number(e.target.value) || 0 }))}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2"
+            />
+          </label>
+        </div>
 
-          <button
-            type="submit"
-            disabled={saving || uploading}
-            className="rounded-full px-6 py-2.5 text-white font-semibold disabled:opacity-60"
-            style={{ background: "#0A0045" }}
-          >
-            {saving ? "Saving…" : editingId ? "Save changes" : "Add project"}
-          </button>
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={form.is_published}
+            onChange={(e) => setForm((f) => ({ ...f, is_published: e.target.checked }))}
+          />
+          Show on the website
+        </label>
 
-          {message && <p className="text-sm text-green-700">{message}</p>}
-          {error && (
-            <p className="text-sm text-red-600 whitespace-pre-wrap">
-              {error}
-              {/projects|PGRST205|schema cache/i.test(error) ? (
-                <>
-                  {"\n"}
-                  Run <code>supabase/migrations/006_projects.sql</code> in the Supabase SQL Editor, then try again.
-                </>
-              ) : null}
-            </p>
-          )}
-        </form>
+        <button
+          type="submit"
+          disabled={saving || uploading}
+          className="rounded-full px-6 py-2.5 text-white font-semibold disabled:opacity-60"
+          style={{ background: "#0A0045" }}
+        >
+          {saving ? "Saving…" : editingId ? "Save changes" : "Add project"}
+        </button>
 
-        <h2 className="text-lg font-semibold mb-4" style={{ color: "#070643" }}>
-          Projects ({projects.length})
-        </h2>
-
-        {loading ? (
-          <p className="text-gray-500">Loading…</p>
-        ) : projects.length === 0 ? (
-          <p className="text-gray-500">
-            No projects yet — the website is showing its built-in placeholder projects. Add the first one above.
+        {message && <p className="text-sm text-green-700">{message}</p>}
+        {error && (
+          <p className="text-sm text-red-600 whitespace-pre-wrap">
+            {error}
+            {/projects|PGRST205|schema cache/i.test(error) ? (
+              <>
+                {"\n"}
+                Run <code>supabase/migrations/006_projects.sql</code> in the Supabase SQL Editor, then try again.
+              </>
+            ) : null}
           </p>
-        ) : (
-          <ul className="space-y-3">
-            {projects.map((project, index) => (
-              <li
-                key={project.id}
-                className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
-              >
-                <div className="aspect-[1587/2245] w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={project.image_url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
-                </div>
-                <div className="min-w-0 flex-1 space-y-1">
-                  <p className="font-semibold truncate" style={{ color: "#070643" }}>
-                    {project.title}
-                    {!project.is_published && (
-                      <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
-                        Hidden
-                      </span>
-                    )}
-                  </p>
-                  {project.meta && <p className="text-sm text-gray-500 truncate">{project.meta}</p>}
-                  <ImageSize src={project.image_url} />
-                </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
-                  <button
-                    type="button"
-                    onClick={() => move(index, -1)}
-                    disabled={index === 0}
-                    className="rounded-lg border border-gray-200 px-2 py-1 disabled:opacity-30"
-                    aria-label="Move up"
-                  >
-                    ↑
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => move(index, 1)}
-                    disabled={index === projects.length - 1}
-                    className="rounded-lg border border-gray-200 px-2 py-1 disabled:opacity-30"
-                    aria-label="Move down"
-                  >
-                    ↓
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => togglePublished(project)}
-                    className="rounded-lg border border-gray-200 px-3 py-1"
-                  >
-                    {project.is_published ? "Hide" : "Show"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => startEdit(project)}
-                    className="rounded-lg border border-gray-200 px-3 py-1 text-[#5A83FF]"
-                  >
-                    Replace / edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => remove(project)}
-                    className="rounded-lg border border-red-100 px-3 py-1 text-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
         )}
-      </div>
-    </main>
+      </form>
+
+      <h2 className="text-lg font-semibold mb-4" style={{ color: "#070643" }}>
+        Projects ({projects.length})
+      </h2>
+
+      {loading ? (
+        <p className="text-gray-500">Loading…</p>
+      ) : projects.length === 0 ? (
+        <p className="text-gray-500">
+          No projects yet — the website is showing its built-in placeholder projects. Add the first one above.
+        </p>
+      ) : (
+        <ul className="space-y-3">
+          {projects.map((project, index) => (
+            <li
+              key={project.id}
+              className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
+            >
+              <div className="aspect-[1587/2245] w-14 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={project.image_url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+              </div>
+              <div className="min-w-0 flex-1 space-y-1">
+                <p className="font-semibold truncate" style={{ color: "#070643" }}>
+                  {project.title}
+                  {!project.is_published && (
+                    <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+                      Hidden
+                    </span>
+                  )}
+                </p>
+                {project.meta && <p className="text-sm text-gray-500 truncate">{project.meta}</p>}
+                <ImageSize src={project.image_url} />
+              </div>
+              <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() => move(index, -1)}
+                  disabled={index === 0}
+                  className="rounded-lg border border-gray-200 px-2 py-1 disabled:opacity-30"
+                  aria-label="Move up"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  onClick={() => move(index, 1)}
+                  disabled={index === projects.length - 1}
+                  className="rounded-lg border border-gray-200 px-2 py-1 disabled:opacity-30"
+                  aria-label="Move down"
+                >
+                  ↓
+                </button>
+                <button
+                  type="button"
+                  onClick={() => togglePublished(project)}
+                  className="rounded-lg border border-gray-200 px-3 py-1"
+                >
+                  {project.is_published ? "Hide" : "Show"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => startEdit(project)}
+                  className="rounded-lg border border-gray-200 px-3 py-1 text-[#5A83FF]"
+                >
+                  Replace / edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => remove(project)}
+                  className="rounded-lg border border-red-100 px-3 py-1 text-red-600"
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </AdminPage>
   );
 }

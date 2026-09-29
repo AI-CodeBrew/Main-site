@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/common/hero";
 import { ServicesGrid } from "@/components/features/services/services-grid";
-import { FinalCta } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
   title: "E-commerce Solutions",
@@ -20,7 +19,6 @@ export default function EcommercePage() {
         trackingLocation="ecommerce_hero"
       />
       <ServicesGrid category="ecommerce" />
-      <FinalCta />
     </main>
   );
 }

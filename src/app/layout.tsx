@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { ChatWidget } from "@/components/layout/chat-widget";
+import { ChatLauncher } from "@/components/layout/chat-launcher";
+import { DeferredAnalytics } from "@/components/layout/deferred-analytics";
+import { SiteChrome } from "@/components/layout/site-chrome";
 import { UtmCapture } from "@/components/layout/utm-capture";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
-import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-aeonik" });
+// One font family for body and headings (see --font-aeonik in globals.css): one file to download.
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-aeonik", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.fynktech.com"),
@@ -64,18 +65,22 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon-32.png" />
       </head>
       <body
-        className={`${inter.variable} ${plusJakarta.variable} antialiased`}
+        className={`${plusJakarta.variable} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
       >
         <SmoothScroll />
         <Suspense fallback={null}>
           <UtmCapture />
         </Suspense>
-        <Header />
+        <SiteChrome>
+          <Header />
+        </SiteChrome>
         {children}
-        <Footer />
-        <ChatWidget />
-        <Analytics />
+        <SiteChrome>
+          <Footer />
+        </SiteChrome>
+        <ChatLauncher />
+        <DeferredAnalytics />
       </body>
     </html>
   );

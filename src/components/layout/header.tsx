@@ -217,13 +217,6 @@ export function Header() {
               </Link>
 
               <Link
-                href="/team"
-                className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Team
-              </Link>
-              <Link
                 href="/contact"
                 className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}

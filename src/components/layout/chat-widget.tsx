@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,6 +10,7 @@ import { trackEvent } from "@/lib/analytics";
 import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { getStoredUtms } from "@/lib/leads/utm";
 import { ChatMarkdown } from "@/components/common/chat-markdown";
+import { ChatLauncherButton } from "./chat-launcher-button";
 
 type Msg = { role: "user" | "assistant" | "admin"; content: string };
 type ChatAction = "book" | "human" | "continue";
@@ -191,9 +191,13 @@ function touchSession() {
   writeSession({ id: sessionId(), lastActive: Date.now() });
 }
 
-export function ChatWidget() {
+/**
+ * The full chat window. `ChatLauncher` mounts this only after the visitor clicks the chat
+ * button (with `defaultOpen`), so this code and its API calls never run on a plain page view.
+ */
+export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -272,7 +276,11 @@ export function ChatWidget() {
   }, [open, intro, messages.length, visitorName]);
 
   // Visitor came back within the time limit (reload, new tab, next visit): restore their chat.
+  // Runs once, the first time the chat is opened — never on a plain page view.
+  const restoreStarted = useRef(false);
   useEffect(() => {
+    if (!open || restoreStarted.current) return;
+    restoreStarted.current = true;
     let cancelled = false;
     void (async () => {
       await loadChatConfig();
@@ -306,7 +314,7 @@ export function ChatWidget() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -518,9 +526,6 @@ export function ChatWidget() {
   };
 
   const wa = whatsappLink("Hi Fynk Tech — I was chatting on your website.");
-
-  // Admins answer chats from /admin/chats; the visitor widget would only get in the way there.
-  if (pathname?.startsWith("/admin")) return null;
 
   // Phones: full screen, like a messaging app. It fills the visible area, so when the keyboard
   // opens the chat shrinks to the space above it and the message box stays in view.
@@ -735,29 +740,7 @@ export function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {!open && (
-        <motion.button
-          type="button"
-          // Gentle float up and down so it reads as a floating button.
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
-          onClick={openChat}
-          // mb-5 keeps the icon where it sat when the "Chat with us" label was under it.
-          className="mb-5 block rounded-full motion-reduce:!transform-none"
-          aria-label="Chat with us"
-        >
-          {/* Round blue button with the message icon, which blinks softly. */}
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#5A83FF] to-[#01B4D2] text-white shadow-lg">
-            <MessageCircleMore
-              className="h-7 w-7 motion-safe:animate-pulse [animation-duration:1.6s]"
-              strokeWidth={2}
-              aria-hidden
-            />
-          </span>
-        </motion.button>
-      )}
+      {!open && <ChatLauncherButton onClick={openChat} />}
     </div>
     </>
   );

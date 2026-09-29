@@ -41,8 +41,8 @@ function LoginForm() {
   }
 
   return (
-    <main className="min-h-[60vh] flex items-center justify-center p-8">
-      <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4 border rounded-xl p-6 shadow-sm">
+    <main className="min-h-screen flex items-center justify-center bg-[#f8f9fc] p-8">
+      <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
         <h1 className="text-xl font-semibold">Admin login</h1>
         {configError && (
           <p className="text-sm text-amber-700">Set ADMIN_PASSWORD in environment to enable admin.</p>

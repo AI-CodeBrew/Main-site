@@ -1,9 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { Mail, MessageCircle, Phone, RefreshCw } from "lucide-react";
-import { AdminLogoutButton } from "@/components/admin/admin-logout-button";
 
 type LeadRow = Record<string, unknown>;
 
@@ -70,19 +68,36 @@ function whatsappUrl(raw: string, text: string): string | null {
 /** Extra form answers worth showing besides the message (e.g. first/last name are skipped). */
 const HIDDEN_QUALIFICATION_KEYS = new Set(["message", "firstName", "lastName", "phone"]);
 
-export function LeadsAdminClient({
-  initialLeads,
-  supabaseEnabled,
-}: {
-  initialLeads: LeadRow[];
-  supabaseEnabled: boolean;
-}) {
-  const [leads, setLeads] = useState(initialLeads);
+export function LeadsAdminClient({ supabaseEnabled }: { supabaseEnabled: boolean }) {
+  const [leads, setLeads] = useState<LeadRow[]>([]);
+  // True until the first load finishes, so an empty inbox isn't shown as "No messages yet".
+  const [loading, setLoading] = useState(supabaseEnabled);
   const [typeFilter, setTypeFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load the inbox when this section opens (not before).
+  useEffect(() => {
+    if (!supabaseEnabled) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/admin/leads", { cache: "no-store" });
+        if (!res.ok) throw new Error("Could not load leads");
+        const data = (await res.json()) as { leads: LeadRow[] };
+        if (!cancelled) setLeads(data.leads);
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Could not load leads");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [supabaseEnabled]);
 
   const visible = useMemo(
     () =>
@@ -129,131 +144,124 @@ export function LeadsAdminClient({
   }
 
   return (
-    <main className="min-h-screen bg-[#f8f9fc]">
-      <div className="mx-auto max-w-6xl px-4 md:px-6 py-10">
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div>
-            <Link href="/admin" className="text-sm text-[#5A83FF] hover:underline">
-              ← Admin
-            </Link>
-            <h1 className="text-3xl font-bold mt-2" style={{ color: "#070643" }}>
-              Leads & messages
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Contact form messages and leads from the website. Reply by email, WhatsApp or phone.
-            </p>
-          </div>
-          <AdminLogoutButton />
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 mb-5">
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
-          >
-            <option value="">All sources</option>
-            {Object.entries(TYPE_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
-          >
-            <option value="">All statuses</option>
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={() => void refresh()}
-            disabled={!supabaseEnabled || refreshing}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#0A0045] px-4 py-2 text-sm text-white disabled:opacity-50"
-          >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} aria-hidden />
-            Refresh
-          </button>
-          <span className="text-sm text-gray-500">
-            {visible.length} shown · <strong className="text-blue-700">{newCount} new</strong>
-          </span>
-        </div>
-
-        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
-
-        {visible.length === 0 ? (
-          <p className="rounded-2xl border border-gray-100 bg-white p-8 text-center text-gray-500">
-            No messages yet.
-          </p>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-[340px_1fr]">
-            {/* Inbox list (on phones it hides while a message is open) */}
-            <ul
-              className={`space-y-2 md:max-h-[75vh] md:overflow-y-auto md:pr-1 ${selected ? "hidden md:block" : ""}`}
-            >
-              {visible.map((lead) => {
-                const id = String(lead.id);
-                const isNew = str(lead.status) === "new";
-                const snippet = messageOf(lead) || str(lead.services_interest) || str(lead.email);
-                return (
-                  <li key={id}>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedId(id)}
-                      className={`w-full rounded-xl border bg-white p-3 text-left shadow-sm transition-colors hover:border-[#5A83FF]/50 ${
-                        id === selectedId ? "border-[#5A83FF] ring-1 ring-[#5A83FF]/30" : "border-gray-100"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        {isNew && <span className="h-2 w-2 shrink-0 rounded-full bg-blue-600" aria-label="New" />}
-                        <span
-                          className={`truncate font-semibold ${isNew ? "text-[#070643]" : "text-gray-700"}`}
-                        >
-                          {str(lead.name) || str(lead.email) || "Unknown"}
-                        </span>
-                        <span className="ml-auto shrink-0 text-xs text-gray-400">{timeAgo(lead.created_at)}</span>
-                      </div>
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">
-                          {typeLabel(lead)}
-                        </span>
-                        {str(lead.services_interest) && (
-                          <span className="truncate text-xs text-gray-500">{str(lead.services_interest)}</span>
-                        )}
-                      </div>
-                      {snippet && <p className="mt-1.5 line-clamp-2 text-sm text-gray-600">{snippet}</p>}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* Message detail */}
-            <section
-              className={`rounded-2xl border border-gray-100 bg-white p-5 md:p-6 shadow-sm ${
-                selected ? "" : "hidden md:block"
-              }`}
-            >
-              {!selected ? (
-                <p className="py-16 text-center text-gray-400">Select a message to read it.</p>
-              ) : (
-                <LeadDetail
-                  lead={selected}
-                  onBack={() => setSelectedId(null)}
-                  onStatus={(status) => void updateStatus(String(selected.id), status)}
-                />
-              )}
-            </section>
-          </div>
-        )}
+    <>
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+        >
+          <option value="">All sources</option>
+          {Object.entries(TYPE_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+        >
+          <option value="">All statuses</option>
+          {STATUSES.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={() => void refresh()}
+          disabled={!supabaseEnabled || refreshing}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#0A0045] px-4 py-2 text-sm text-white disabled:opacity-50"
+        >
+          <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} aria-hidden />
+          Refresh
+        </button>
+        <span className="text-sm text-gray-500">
+          {visible.length} shown · <strong className="text-blue-700">{newCount} new</strong>
+        </span>
       </div>
-    </main>
+
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+
+      {loading ? (
+        <ul className="space-y-2 md:max-w-[340px]" aria-busy="true" aria-label="Loading messages">
+          {[0, 1, 2, 3].map((i) => (
+            <li key={i} className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm">
+              <span className="block h-3 w-1/2 animate-pulse rounded bg-gray-100" />
+              <span className="mt-2 block h-3 w-1/3 animate-pulse rounded bg-gray-100" />
+              <span className="mt-2 block h-3 w-5/6 animate-pulse rounded bg-gray-100" />
+            </li>
+          ))}
+        </ul>
+      ) : visible.length === 0 ? (
+        <p className="rounded-2xl border border-gray-100 bg-white p-8 text-center text-gray-500">
+          No messages yet.
+        </p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-[340px_1fr]">
+          {/* Inbox list (on phones it hides while a message is open) */}
+          <ul
+            className={`space-y-2 md:max-h-[75vh] md:overflow-y-auto md:pr-1 ${selected ? "hidden md:block" : ""}`}
+          >
+            {visible.map((lead) => {
+              const id = String(lead.id);
+              const isNew = str(lead.status) === "new";
+              const snippet = messageOf(lead) || str(lead.services_interest) || str(lead.email);
+              return (
+                <li key={id}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedId(id)}
+                    className={`w-full rounded-xl border bg-white p-3 text-left shadow-sm transition-colors hover:border-[#5A83FF]/50 ${
+                      id === selectedId ? "border-[#5A83FF] ring-1 ring-[#5A83FF]/30" : "border-gray-100"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {isNew && <span className="h-2 w-2 shrink-0 rounded-full bg-blue-600" aria-label="New" />}
+                      <span
+                        className={`truncate font-semibold ${isNew ? "text-[#070643]" : "text-gray-700"}`}
+                      >
+                        {str(lead.name) || str(lead.email) || "Unknown"}
+                      </span>
+                      <span className="ml-auto shrink-0 text-xs text-gray-400">{timeAgo(lead.created_at)}</span>
+                    </div>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">
+                        {typeLabel(lead)}
+                      </span>
+                      {str(lead.services_interest) && (
+                        <span className="truncate text-xs text-gray-500">{str(lead.services_interest)}</span>
+                      )}
+                    </div>
+                    {snippet && <p className="mt-1.5 line-clamp-2 text-sm text-gray-600">{snippet}</p>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Message detail */}
+          <section
+            className={`rounded-2xl border border-gray-100 bg-white p-5 md:p-6 shadow-sm ${
+              selected ? "" : "hidden md:block"
+            }`}
+          >
+            {!selected ? (
+              <p className="py-16 text-center text-gray-400">Select a message to read it.</p>
+            ) : (
+              <LeadDetail
+                lead={selected}
+                onBack={() => setSelectedId(null)}
+                onStatus={(status) => void updateStatus(String(selected.id), status)}
+              />
+            )}
+          </section>
+        </div>
+      )}
+    </>
   );
 }
 

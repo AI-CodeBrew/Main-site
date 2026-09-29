@@ -1,114 +1,31 @@
 import Link from "next/link";
-import { AdminLogoutButton } from "@/components/admin/admin-logout-button";
+import { ADMIN_NAV } from "@/components/admin/admin-nav";
+import { AdminPage, AdminPageHeader } from "@/components/admin/admin-page";
 
 export default function AdminHomePage() {
+  const sections = ADMIN_NAV.filter((item) => item.href !== "/admin");
+
   return (
-    <main className="min-h-screen bg-[#f8f9fc]">
-      <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="flex items-start justify-between gap-4 mb-10">
-          <div>
-            <p
-              className="text-xs font-medium tracking-[0.12em] uppercase mb-2"
-              style={{ color: "#5A83FF" }}
+    <AdminPage>
+      <AdminPageHeader title="Dashboard" description="Pick a section. Each one loads only its own data when opened." />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sections.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
             >
-              Fynk Tech
-            </p>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: "#070643" }}>
-              Admin
-            </h1>
-            <p className="text-gray-600">
-              Manage chats, media and leads. Add more tools here later.
-            </p>
-          </div>
-          <AdminLogoutButton />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Link
-            href="/admin/chats"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Chats
-            </h2>
-            <p className="text-sm text-gray-600">
-              Read website chat conversations and reply to visitors directly.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/settings"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Hours & replies
-            </h2>
-            <p className="text-sm text-gray-600">
-              Edit public business hours, timezone, and offline reply promise.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/media"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Media library
-            </h2>
-            <p className="text-sm text-gray-600">
-              Upload images and videos to Bunny by section. URLs saved in Supabase.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/blogs"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Blogs
-            </h2>
-            <p className="text-sm text-gray-600">
-              Write, edit and publish blog posts with the rich text editor.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/projects"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Projects
-            </h2>
-            <p className="text-sm text-gray-600">
-              Add or replace project images (1587 × 2245 px) in the PROJECTS section.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/team"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Team
-            </h2>
-            <p className="text-sm text-gray-600">
-              Add, edit, reorder and hide team members and photos on the Team page.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/leads"
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <h2 className="text-xl font-semibold mb-2" style={{ color: "#070643" }}>
-              Leads & messages
-            </h2>
-            <p className="text-sm text-gray-600">
-              Read contact form messages and reply by email, WhatsApp or phone.
-            </p>
-          </Link>
-        </div>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5A83FF]/10 text-[#5A83FF] transition-colors group-hover:bg-[#0A0045] group-hover:text-white">
+                <Icon className="h-5 w-5" aria-hidden />
+              </span>
+              <h2 className="mt-4 text-lg font-semibold text-[#070643]">{item.label}</h2>
+              <p className="mt-1 text-sm text-gray-600">{item.description}</p>
+            </Link>
+          );
+        })}
       </div>
-    </main>
+    </AdminPage>
   );
 }

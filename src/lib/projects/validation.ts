@@ -33,4 +33,4 @@ export const projectSchema = z.object({
 // Built from the raw fields (not `.partial()`), so omitted keys stay untouched instead of getting defaults.
 export const projectPatchSchema = z.object(fields).partial();
 
-export { firstIssue } from "@/lib/team/validation";
+export { firstIssue } from "@/lib/blogs/validation";
