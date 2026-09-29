@@ -86,6 +86,33 @@ export function HomeHero() {
   const heroReady =
     loaderTimedOut || (screenChecked && pageLoaded && (!showRobot || robotLoaded));
 
+  // While the loading screen is up: keep the page at the top and block scrolling, so visitors
+  // land on the hero when it appears. Capture-phase listeners run before Lenis's own.
+  useEffect(() => {
+    if (heroReady) return;
+    const block = (e: Event) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    const SCROLL_KEYS = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
+    const blockKeys = (e: KeyboardEvent) => {
+      if (SCROLL_KEYS.has(e.key)) block(e);
+    };
+    const html = document.documentElement;
+    const previousOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+    window.addEventListener("wheel", block, { capture: true, passive: false });
+    window.addEventListener("touchmove", block, { capture: true, passive: false });
+    window.addEventListener("keydown", blockKeys, { capture: true });
+    return () => {
+      html.style.overflow = previousOverflow;
+      window.removeEventListener("wheel", block, { capture: true });
+      window.removeEventListener("touchmove", block, { capture: true });
+      window.removeEventListener("keydown", blockKeys, { capture: true });
+    };
+  }, [heroReady]);
+
   const scrollPastHero = () => {
     const section = sectionRef.current;
     if (!section) return;
@@ -105,16 +132,17 @@ export function HomeHero() {
           "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",
       }}
     >
-      {/* Loading screen: covers the hero (also in the server HTML, so the half-loaded page
-          never flashes) until the 3D robot is ready, then fades away. */}
+      {/* Website loading screen: covers the whole screen, menu bar and chat button included
+          (also in the server HTML, so the half-loaded site never flashes) while the page and
+          3D robot load behind it, then fades away to reveal the finished home page. */}
       <AnimatePresence>
         {!heroReady && (
           <motion.div
-            key="hero-loader"
+            key="site-loader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-black"
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="fixed inset-0 z-[1000] flex flex-col items-center justify-center gap-6 bg-black"
             role="status"
             aria-label="Loading"
           >
