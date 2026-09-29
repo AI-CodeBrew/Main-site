@@ -34,7 +34,7 @@ export function ClientLogos() {
       >
         {/* w-max + max-w-none: globals.css caps every element at max-width 100%, which squeezed
             this track to screen width and made the -50% loop jump. */}
-        <div className="flex w-max max-w-none animate-scroll-left">
+        <div className="flex w-max max-w-none animate-scroll-right">
           {items.map((tech, index) => (
             <div
               key={`${tech.name}-${index}`}
