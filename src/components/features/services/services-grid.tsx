@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
+  ArrowRight,
   ArrowUpRight,
   BarChart3,
   Bot,
@@ -216,6 +217,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
             onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: `${category}_services_grid` })}
           >
             Talk to an expert
+            <ArrowRight className="h-5 w-5" strokeWidth={2.25} aria-hidden />
           </Link>
         </div>
       </div>

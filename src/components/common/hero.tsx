@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 type HeroProps = {
@@ -103,6 +104,7 @@ export function Hero({
             onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: trackingLocation })}
           >
             Talk to an expert
+            <ArrowRight className="h-5 w-5" strokeWidth={2.25} aria-hidden />
           </Link>
         </motion.div>
       </div>

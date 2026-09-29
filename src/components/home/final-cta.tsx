@@ -34,10 +34,11 @@ export function FinalCta() {
           <Link
             href="/contact"
             // White like the hero's button: the navy .btn-primary disappears on black.
-            className="inline-flex items-center justify-center rounded-full px-7 py-3.5 font-semibold bg-white text-black hover:bg-white/85 transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold bg-white text-black hover:bg-white/85 transition-colors"
             onClick={() => trackEvent("cta_click", { cta: "talk_to_expert", location: "final_cta" })}
           >
             Talk to an expert
+            <ArrowRight className="h-5 w-5 text-black" strokeWidth={2.25} aria-hidden />
           </Link>
           {wa ? (
             <a

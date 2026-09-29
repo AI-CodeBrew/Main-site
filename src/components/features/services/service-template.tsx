@@ -5,6 +5,7 @@ import { siteConfig, whatsappLink } from "@/lib/content/site";
 import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 type ServiceTemplateProps = {
   service: ServiceContent;
@@ -243,7 +244,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-white transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-transform hover:scale-[1.02]"
               style={{ backgroundColor: "#5A83FF" }}
               onClick={() =>
                 trackEvent("booking", {
@@ -253,6 +254,7 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
               }
             >
               Talk to an expert
+              <ArrowRight className="h-5 w-5" strokeWidth={2.25} aria-hidden />
             </Link>
             {wa ? (
               <Link

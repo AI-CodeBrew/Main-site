@@ -545,7 +545,9 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
   return (
     <>
     <div
-      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60]"
+      // items-end keeps the launcher pinned to the right edge while the wider panel is still
+      // animating out; otherwise it renders at the panel's left edge and jumps right afterwards.
+      className="fixed bottom-4 right-4 z-[60] flex flex-col items-end md:bottom-6 md:right-6"
       style={keyboardOpen ? { bottom: viewport.keyboardInset + 8 } : undefined}
     >
       <AnimatePresence>

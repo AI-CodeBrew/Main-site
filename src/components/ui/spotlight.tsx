@@ -13,7 +13,7 @@ type SpotlightProps = {
 };
 
 /**
- * Decorative mouse-follow spotlight glow. pointer-events-none.
+ * Decorative mouse-follow spotlight glow. Desktop only (hidden below md).
  */
 export function Spotlight({
   className,
@@ -24,6 +24,7 @@ export function Spotlight({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [parentElement, setParentElement] = useState<HTMLElement | null>(null);
+  const [desktop, setDesktop] = useState(false);
 
   const mouseX = useSpring(0, springOptions);
   const mouseY = useSpring(0, springOptions);
@@ -32,15 +33,25 @@ export function Spotlight({
   const spotlightTop = useTransform(mouseY, (y) => `${y - size / 2}px`);
 
   useEffect(() => {
-    if (containerRef.current) {
-      const parent = containerRef.current.parentElement;
-      if (parent) {
-        parent.style.position = "relative";
-        parent.style.overflow = "hidden";
-        setParentElement(parent);
-      }
-    }
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setDesktop(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
+
+  useEffect(() => {
+    if (!desktop || !containerRef.current) {
+      setParentElement(null);
+      return;
+    }
+    const parent = containerRef.current.parentElement;
+    if (parent) {
+      parent.style.position = "relative";
+      parent.style.overflow = "hidden";
+      setParentElement(parent);
+    }
+  }, [desktop]);
 
   const handleMouseMove = useCallback(
     (event: MouseEvent) => {
@@ -53,7 +64,7 @@ export function Spotlight({
   );
 
   useEffect(() => {
-    if (!parentElement) return;
+    if (!parentElement || !desktop) return;
 
     const onEnter = () => setIsHovered(true);
     const onLeave = () => setIsHovered(false);
@@ -67,7 +78,9 @@ export function Spotlight({
       parentElement.removeEventListener("mouseenter", onEnter);
       parentElement.removeEventListener("mouseleave", onLeave);
     };
-  }, [parentElement, handleMouseMove]);
+  }, [parentElement, handleMouseMove, desktop]);
+
+  if (!desktop) return null;
 
   return (
     <motion.div

@@ -5,7 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { preconnect } from "react-dom";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { Spotlight } from "@/components/ui/spotlight";
 import { IntersectingRings } from "@/components/ui/intersecting-rings";
@@ -219,10 +219,11 @@ export function HomeHero() {
           >
             <Link
               href="/contact?intent=strategy-call"
-              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-base md:text-lg font-semibold bg-white text-black hover:bg-white/85 transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base md:text-lg font-semibold bg-white text-black hover:bg-white/85 transition-colors cursor-pointer"
               onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: "hero" })}
             >
               Talk to an expert
+              <ArrowRight className="h-5 w-5 text-black" strokeWidth={2.25} aria-hidden />
             </Link>
           </motion.div>
         </div>
