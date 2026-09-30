@@ -10,9 +10,12 @@ import { Headset } from "lucide-react";
 export function ChatLauncherButton({
   onClick,
   busy = false,
+  unreadCount = 0,
 }: {
   onClick: () => void;
   busy?: boolean;
+  /** Replies that arrived while the chat was closed; shown as a red badge on the icon. */
+  unreadCount?: number;
 }) {
   return (
     <motion.button
@@ -27,7 +30,11 @@ export function ChatLauncherButton({
       aria-busy={busy || undefined}
       // mb-5 keeps the icon where it sat when the "Chat with us" label was under it.
       className="group relative mb-5 block rounded-full motion-reduce:!transform-none"
-      aria-label="Chat with us"
+      aria-label={
+        unreadCount > 0
+          ? `Chat with us (${unreadCount} new ${unreadCount === 1 ? "reply" : "replies"})`
+          : "Chat with us"
+      }
     >
       {/* Soft cyan halo that breathes behind the button so it reads as "live support". */}
       <span
@@ -41,6 +48,15 @@ export function ChatLauncherButton({
       <span className="relative flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-[#0A0045] to-[#1a1a2e] text-white shadow-[0_8px_32px_rgba(10,0,69,0.4),0_4px_16px_rgba(26,26,46,0.3)] transition-shadow duration-300 group-hover:shadow-[0_12px_40px_rgba(1,180,210,0.35),0_4px_16px_rgba(10,0,69,0.4)]">
         <Headset className="h-7 w-7" strokeWidth={1.9} aria-hidden />
       </span>
+
+      {unreadCount > 0 && (
+        <span
+          aria-hidden
+          className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white"
+        >
+          {unreadCount > 9 ? "9+" : unreadCount}
+        </span>
+      )}
     </motion.button>
   );
 }

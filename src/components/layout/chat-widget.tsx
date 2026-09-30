@@ -186,6 +186,16 @@ function cleanPhone(raw: string): string {
   return raw.replace(/[^\d+\s-]/g, "").replace(/\s+/g, " ").trim().slice(0, 20);
 }
 
+/** Plain-text version of a markdown reply, short enough for the preview next to the chat icon. */
+function previewText(markdown: string): string {
+  const text = markdown
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/[*_`#>~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > 120 ? `${text.slice(0, 117)}…` : text;
+}
+
 /** Marks the chat as active now, restarting the 1-hour window. */
 function touchSession() {
   writeSession({ id: sessionId(), lastActive: Date.now() });
@@ -221,6 +231,25 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const lastAdminAt = useRef<string | null>(null);
   const [awaitingTeam, setAwaitingTeam] = useState(false);
   const hasStarted = messages.some((m) => m.role === "user");
+
+  // Replies that arrive while the chat is closed (the bot finishing its answer, or the team
+  // replying) show as a badge on the chat icon plus a short preview next to it.
+  const openRef = useRef(open);
+  const [unread, setUnread] = useState<{ count: number; preview: string } | null>(null);
+  const [previewDismissed, setPreviewDismissed] = useState(false);
+  const noteReplies = useCallback((replies: string[]) => {
+    if (openRef.current || replies.length === 0) return;
+    setUnread((u) => ({
+      count: (u?.count ?? 0) + replies.length,
+      preview: previewText(replies[replies.length - 1]),
+    }));
+    setPreviewDismissed(false);
+  }, []);
+
+  useEffect(() => {
+    openRef.current = open;
+    if (open) setUnread(null);
+  }, [open]);
 
   // The visible screen area while the chat is open. On phones the keyboard covers the bottom
   // of the page without moving fixed elements, so the pop-up follows the visual viewport:
@@ -320,9 +349,10 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading, awaitingTeam]);
 
-  // Pick up replies the team sends from /admin/chats.
+  // Pick up replies the team sends from /admin/chats. Keeps polling while the chat is closed,
+  // so a reply that lands after the visitor closes it still shows on the chat icon.
   useEffect(() => {
-    if (!open || !hasStarted) return;
+    if (!hasStarted) return;
     let cancelled = false;
     const poll = async () => {
       // Expired chats are not polled; the next message starts a fresh chat.
@@ -346,6 +376,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
           ...prev,
           ...fresh.map((m) => ({ role: "admin" as const, content: m.content })),
         ]);
+        noteReplies(fresh.map((m) => m.content));
       } catch {
         // Network hiccup — try again on the next tick.
       }
@@ -356,7 +387,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
       cancelled = true;
       clearInterval(timer);
     };
-  }, [open, hasStarted]);
+  }, [hasStarted, noteReplies]);
 
   // Don't show "Thinking…" forever if the team doesn't answer.
   useEffect(() => {
@@ -439,11 +470,12 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
         setMessages((m) => [...m, { role: "assistant", content: reply }]);
         setActions(data.actions ?? ["continue", "human"]);
         setNeedsPrivacy(Boolean(data.needsPrivacyConsent));
+        noteReplies([reply]);
       } finally {
         setLoading(false);
       }
     },
-    [loading, messages, pathname, intro, visitorName, visitorPhone],
+    [loading, messages, pathname, intro, visitorName, visitorPhone, noteReplies],
   );
 
   const captureLead = async (fields: {
@@ -747,7 +779,34 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
         )}
       </AnimatePresence>
 
-      {!open && <ChatLauncherButton onClick={openChat} />}
+      {!open && unread && !previewDismissed && (
+        <motion.div
+          initial={{ opacity: 0, y: 8, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 380, damping: 28 }}
+          className="relative mb-3 w-[min(280px,calc(100vw-2rem))] rounded-2xl rounded-br-sm border border-line bg-surface p-3 pr-8 shadow-xl"
+        >
+          <button
+            type="button"
+            onClick={openChat}
+            className="block w-full text-left"
+            aria-label="Open chat to read the new reply"
+          >
+            <span className="block text-xs font-semibold text-heading">Fynk Tech Assistant</span>
+            <span className="mt-0.5 line-clamp-2 block text-sm text-body">{unread.preview}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreviewDismissed(true)}
+            className="absolute right-2 top-2 p-1 text-xs text-subtle hover:text-heading"
+            aria-label="Dismiss preview"
+          >
+            ✕
+          </button>
+        </motion.div>
+      )}
+
+      {!open && <ChatLauncherButton onClick={openChat} unreadCount={unread?.count ?? 0} />}
     </div>
     </>
   );
