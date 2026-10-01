@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
 import { ServicesTicker } from "@/components/home/services-ticker";
 import { JsonLd } from "@/components/seo/json-ld";
+import { listBlogs } from "@/lib/blogs/store";
 import { getProjectCards } from "@/lib/projects/store";
 import {
   buildPageMetadata,
@@ -45,7 +46,18 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Home() {
-  const projectCards = await getProjectCards();
+  const [projectCards, blogsResult] = await Promise.all([
+    getProjectCards(),
+    listBlogs(),
+  ]);
+  const blogPosts = blogsResult.ok
+    ? blogsResult.data.slice(0, 12).map((b) => ({
+        slug: b.slug,
+        title: b.title,
+        description: b.description,
+        image: b.card_image || b.image,
+      }))
+    : [];
 
   return (
     <main className="min-h-screen">
@@ -58,7 +70,7 @@ export default async function Home() {
       <ClientLogos />
       <HowWeWork />
       <CaseStudies items={projectCards} />
-      <ProvenResults />
+      <ProvenResults posts={blogPosts} />
       <FinalCta />
     </main>
   );

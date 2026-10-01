@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const result = await getBlogBySlug(slug);
   const blog = result.ok ? result.data : null;
-  if (!blog) return buildPageMetadata({ title: "Blog", description: "Post not found.", path: "/blogs" });
+  if (!blog) return buildPageMetadata({ title: "Blogs", description: "Post not found.", path: "/blogs" });
 
   const title = blog.meta_title || blog.title;
   const description =
@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Blog", path: "/blogs" },
+          { name: "Blogs", path: "/blogs" },
           { name: blog.title, path: `/blogs/${blog.slug}` },
         ])}
       />

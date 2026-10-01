@@ -74,7 +74,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li><Link href="/" className="footer-link">Home</Link></li>
               <li><Link href="/about" className="footer-link">About Us</Link></li>
-              <li><Link href="/blogs" className="footer-link">Blog</Link></li>
+              <li><Link href="/blogs" className="footer-link">Blogs</Link></li>
               <li><Link href="/contact" className="footer-link" onClick={() => trackEvent("nav_click", { destination: "/contact", label: "Contact", location: "footer" })}>Contact</Link></li>
             </ul>
           </div>

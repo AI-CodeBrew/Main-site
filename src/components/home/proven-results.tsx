@@ -1,39 +1,81 @@
+"use client";
+
+import { useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Code2, ShoppingBag, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const CARDS = [
-  {
-    tag: "AI Automation",
-    icon: Sparkles,
-    title: "AI Agents & Voice Automation",
-    description:
-      "Intelligent agents that handle conversations, qualify leads and automate your workflows.",
-    image: "/Business-Cards/AI Voice & Chat Automation.png",
-    href: "/ai-automation/voice-chat",
-  },
-  {
-    tag: "E-commerce",
-    icon: ShoppingBag,
-    title: "B2B E-commerce Platforms",
-    description:
-      "Modern marketplaces that connect businesses with trending products and reliable sourcing.",
-    image: "/Business-Cards/StoreSetup&Development.png",
-    href: "/ecommerce/store-setup",
-  },
-  {
-    tag: "Custom Software",
-    icon: Code2,
-    title: "Web & Mobile Applications",
-    description:
-      "Scalable, high-performance applications built for your unique business needs.",
-    image: "/Business-Cards/webdevelopment.png",
-    href: "/ai-automation/web-development",
-  },
+export type ResultsBlogCard = {
+  slug: string;
+  title: string;
+  description: string | null;
+  image: string | null;
+};
+
+const STATS = [
+  { value: "Dialcom", label: "AI receptionist, CRM & OMS shipped", href: "https://dialcom.ai/" },
+  { value: "24/7", label: "AI agents that qualify and hand off", href: "/ai-automation/voice-chat" },
+  { value: "Global", label: "clients · engineered in Lahore", href: "/contact" },
 ] as const;
 
-/** Featured work: heading + three service cards on the home page's black / purple backdrop. */
-export function ProvenResults() {
+const FALLBACK_CARDS: ResultsBlogCard[] = [
+  {
+    slug: "case-studies",
+    title: "How we build AI receptionists, CRM and OMS for lending platforms",
+    description: "Dialcom",
+    image:
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    slug: "ai-automation/voice-chat",
+    title: "AI voice & chat agents that qualify leads and hand off cleanly",
+    description: "AI Agents",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    slug: "ecommerce/store-setup",
+    title: "Shopify and WooCommerce stores built to convert and scale",
+    description: "E-commerce",
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
+const CARD_H = "h-[358px]";
+
+function cardHref(card: ResultsBlogCard): string {
+  if (card.slug.includes("/")) return `/${card.slug}`;
+  if (card.slug === "case-studies") return "/case-studies";
+  return `/blogs/${card.slug}`;
+}
+
+function canOptimize(src: string): boolean {
+  if (src.startsWith("/")) return true;
+  try {
+    const host = new URL(src).hostname;
+    return host.endsWith(".b-cdn.net") || host === "images.unsplash.com";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Proven-results + story carousel.
+ * Default (img 1): bright photo, title only — no button.
+ * Hover (img 2): image dims, white “Read More >” pill appears.
+ */
+export function ProvenResults({ posts = [] }: { posts?: ResultsBlogCard[] }) {
+  const scrollerRef = useRef<HTMLUListElement>(null);
+  const cards = posts.length > 0 ? posts : FALLBACK_CARDS;
+
+  const scrollByCard = useCallback((dir: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const amount = Math.min(320, el.clientWidth * 0.85);
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  }, []);
+
   return (
     <section
       className="relative overflow-hidden bg-black py-16 md:py-24"
@@ -47,86 +89,142 @@ export function ProvenResults() {
         }}
         aria-hidden
       />
-      <div
-        className="pointer-events-none absolute -right-40 top-0 h-80 w-80 rounded-full opacity-50 blur-[120px]"
-        style={{ background: "rgba(124,58,237,0.6)" }}
-        aria-hidden
-      />
 
       <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-6">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
-            <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-[#A78BFA]">
-              Featured work
-              <span className="h-px w-10 bg-[#A78BFA]/60" aria-hidden />
-            </p>
-            <h2
-              id="proven-results-heading"
-              className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-[44px] md:leading-[1.12] md:tracking-[-0.02em]"
+        <h2
+          id="proven-results-heading"
+          className="max-w-3xl text-2xl font-semibold tracking-tight text-white md:text-[36px] md:leading-[44px] md:tracking-[-0.02em]"
+        >
+          Proven results from businesses like yours
+        </h2>
+
+        <div className="relative mt-10 lg:mt-14">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-stretch lg:gap-5">
+            <aside
+              className={`w-full shrink-0 overflow-hidden rounded-2xl bg-[#121213] lg:w-[300px] ${CARD_H}`}
             >
-              Built for businesses ready to <span className="text-[#A855F7]">move faster.</span>
-            </h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">
-              We build AI-powered solutions, modern e-commerce platforms, and custom software that
-              help businesses automate, grow and scale.
-            </p>
+              <div className="flex h-full flex-col justify-center gap-6 px-8 py-6">
+                {STATS.map((stat) => (
+                  <div key={stat.label}>
+                    {stat.href.startsWith("http") ? (
+                      <a
+                        href={stat.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block transition-opacity hover:opacity-80"
+                      >
+                        <p className="text-[2.5rem] leading-none tracking-[-0.04em] text-white md:text-[3rem]">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-sm leading-5 text-[#CDCDCF]">{stat.label}</p>
+                      </a>
+                    ) : (
+                      <Link href={stat.href} className="block transition-opacity hover:opacity-80">
+                        <p className="text-[2.5rem] leading-none tracking-[-0.04em] text-white md:text-[3rem]">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-sm leading-5 text-[#CDCDCF]">{stat.label}</p>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </aside>
+
+            <div className="min-w-0 flex-1">
+              <div className="relative">
+                <div
+                  className="pointer-events-none absolute inset-y-0 right-0 z-20 w-10 bg-gradient-to-l from-black to-transparent md:w-36"
+                  aria-hidden
+                />
+                <ul
+                  ref={scrollerRef}
+                  className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-6"
+                >
+                  {cards.map((card) => {
+                    const href = cardHref(card);
+                    const img = card.image ?? FALLBACK_CARDS[0].image!;
+                    const label = card.description?.trim() || null;
+
+                    return (
+                      <li
+                        key={card.slug + card.title}
+                        className="w-[min(300px,82vw)] shrink-0 snap-start"
+                      >
+                        <Link
+                          href={href}
+                          className={`group relative isolate block ${CARD_H} overflow-hidden rounded-2xl ring-1 ring-[#3D3D40]`}
+                        >
+                          <Image
+                            src={img}
+                            alt=""
+                            fill
+                            unoptimized={!canOptimize(img)}
+                            sizes="300px"
+                            className="object-cover transition-[filter] duration-500 group-hover:brightness-[0.4]"
+                          />
+
+                          {/* Default bottom fade for title readability */}
+                          <div
+                            className="absolute inset-x-0 bottom-0 z-[1] h-[45%] bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-0"
+                            aria-hidden
+                          />
+
+                          {/* Hover dim (img 2) */}
+                          <div
+                            className="absolute inset-0 z-[1] bg-black/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            aria-hidden
+                          />
+
+                          {label ? (
+                            <div className="absolute left-0 top-0 z-[2] p-6 transition-transform duration-500 group-hover:-translate-y-[120%]">
+                              <span className="text-lg font-semibold tracking-tight text-white drop-shadow-md md:text-xl">
+                                {label}
+                              </span>
+                            </div>
+                          ) : null}
+
+                          <div className="absolute inset-x-0 bottom-0 z-[3] flex flex-col items-start gap-3 px-6 pb-6">
+                            <h3 className="line-clamp-4 text-base font-medium leading-snug text-white">
+                              {card.title}
+                            </h3>
+
+                            {/* Default: no button. Hover: Read More pill (img 2). Touch: always show. */}
+                            <span className="inline-flex max-h-10 items-center gap-2 overflow-hidden rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-[#212123] opacity-100 transition-all duration-500 ease-out [@media(hover:hover)]:max-h-0 [@media(hover:hover)]:py-0 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:max-h-10 [@media(hover:hover)]:group-hover:py-1.5 [@media(hover:hover)]:group-hover:opacity-100">
+                              Read More
+                              <ChevronRight className="h-4 w-4" aria-hidden />
+                            </span>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                  <li className="w-3 shrink-0" aria-hidden />
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <Link
-            href="/case-studies"
-            className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-[#A855F7] hover:bg-[#A855F7]/10 md:self-auto"
-          >
-            Explore our work
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
+          {/* Mobile: below carousel, centered. Desktop: above, right-aligned with heading. */}
+          <div className="mt-4 flex justify-center gap-1 lg:absolute lg:right-0 lg:top-0 lg:z-30 lg:mt-0 lg:justify-end lg:-translate-y-[calc(100%+0.35rem)]">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Previous stories"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white transition-colors hover:text-[#96BDFF]"
+            >
+              <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Next stories"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white transition-colors hover:text-[#96BDFF]"
+            >
+              <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
+            </button>
+          </div>
         </div>
-
-        <ul className="mt-10 grid gap-5 md:grid-cols-3 lg:mt-14 lg:gap-6">
-          {CARDS.map((card) => (
-            <li key={card.title}>
-              <Link
-                href={card.href}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0D0718] transition-colors duration-300 hover:border-[#A855F7]/60"
-              >
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <Image
-                    src={card.image}
-                    alt=""
-                    fill
-                    sizes="(max-width: 768px) 92vw, 380px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                  {/* Purple wash so the three photos read as one set, fading into the card body. */}
-                  <div
-                    className="absolute inset-0 bg-[#6D28D9]/45 mix-blend-multiply"
-                    aria-hidden
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-[#0D0718] via-[#0D0718]/20 to-transparent"
-                    aria-hidden
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col px-6 pb-6 pt-1">
-                  <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-[#A855F7]/40 bg-[#A855F7]/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-[#C4B5FD]">
-                    <card.icon className="h-3 w-3" aria-hidden />
-                    {card.tag}
-                  </span>
-                  <h3 className="mt-4 text-lg font-semibold tracking-tight text-white">
-                    {card.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/65">{card.description}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#C4B5FD] transition-colors group-hover:text-white">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current">
-                      <ArrowRight className="h-3 w-3" aria-hidden />
-                    </span>
-                    Learn more
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
