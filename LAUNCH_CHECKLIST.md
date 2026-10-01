@@ -6,6 +6,7 @@ Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blo
 
 - [ ] Copy `.env.example` → `.env.local`
 - [ ] `OPENAI_API_KEY` — chat assistant (`gpt-4o-mini` by default)
+- [ ] Mem0 OSS: run `supabase/migrations/007_mem0_vector_store.sql` + set `MEM0_ENABLED=true` (uses OpenAI + Supabase; no Mem0 API key)
 - [ ] `NEXT_PUBLIC_WHATSAPP_NUMBER` — WhatsApp CTAs
 - [ ] `NEXT_PUBLIC_BOOKING_URL` — embedded calendar
 - [ ] `NEXT_PUBLIC_BUSINESS_HOURS` + `NEXT_PUBLIC_OFFLINE_REPLY_PROMISE` + timezone

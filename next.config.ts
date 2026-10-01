@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // mem0ai optionally imports AWS Bedrock / sqlite / pg — don't bundle those into routes
+  serverExternalPackages: ["mem0ai", "better-sqlite3", "pg"],
   // Dev only: let shared tunnel links (VS Code Ports, Cloudflare) load the dev server's scripts.
   allowedDevOrigins: ["*.devtunnels.ms", "*.trycloudflare.com", "*.loca.lt"],
   images: {

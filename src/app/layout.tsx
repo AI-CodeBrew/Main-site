@@ -9,30 +9,36 @@ import { DeferredAnalytics } from "@/components/layout/deferred-analytics";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { UtmCapture } from "@/components/layout/utm-capture";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { SITE_URL } from "@/lib/seo";
 
-// One font family for body and headings (see --font-aeonik in globals.css): one file to download.
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-aeonik", display: "swap" });
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-aeonik",
+  display: "swap",
+  preload: true,
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.fynktech.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "FynkTech",
-    template: "%s — Fynk Tech",
+    default: "Fynk Tech | AI Agents & E-commerce Stores",
+    template: "%s | Fynk Tech",
   },
   description:
-    "Fynk Tech empowers businesses with AI automation, intelligent agents, and end-to-end e‑commerce solutions.",
+    "Fynk Tech builds AI agents and e-commerce stores for businesses in the Gulf, UK and US. Talk to an expert today.",
+  applicationName: "Fynk Tech",
   openGraph: {
-    title: "FynkTech",
+    title: "Fynk Tech | AI Agents & E-commerce Stores",
     description:
-      "AI automation, intelligent agents, and full‑stack e‑commerce solutions.",
-    url: "https://www.fynktech.com",
-    siteName: "FynkTech",
+      "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
+    url: SITE_URL,
+    siteName: "Fynk Tech",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "FynkTech",
+        alt: "Fynk Tech",
       },
     ],
     locale: "en_US",
@@ -40,16 +46,24 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FynkTech",
+    title: "Fynk Tech | AI Agents & E-commerce Stores",
     description:
-      "Fynk Tech empowers businesses with AI automation, intelligent agents, and end-to-end e‑commerce solutions.",
+      "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
     images: ["/og.png"],
   },
+  robots: { index: true, follow: true },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon-48.png",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
@@ -59,11 +73,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-        <link rel="shortcut icon" href="/favicon-32.png" />
-        <link rel="apple-touch-icon" href="/favicon-32.png" />
-      </head>
       <body
         className={`${plusJakarta.variable} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}

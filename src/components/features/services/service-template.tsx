@@ -23,10 +23,11 @@ export function ServiceTemplate({ service }: ServiceTemplateProps) {
         <div className="absolute inset-0">
           <Image
             src={service.heroImage}
-            alt=""
+            alt={service.headline}
             fill
             className="object-cover"
             priority
+            sizes="100vw"
           />
           <div
             className="absolute inset-0"

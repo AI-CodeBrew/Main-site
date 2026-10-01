@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { PageHero } from "@/components/common/page-hero";
+import { buildPageMetadata } from "@/lib/seo";
 
+export const metadata: Metadata = buildPageMetadata({
+  title: "Terms & Conditions",
+  description:
+    "Terms governing use of fynktech.com and related Fynk Tech services. Read before using the site, or contact us for help.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

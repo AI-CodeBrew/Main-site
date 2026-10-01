@@ -1,14 +1,8 @@
-import { ServiceTemplate } from "@/components/features/services/service-template";
-import { getService } from "@/lib/content/services";
 import type { Metadata } from "next";
+import { ServiceSeoPage, servicePageMetadata } from "@/components/seo/service-seo-page";
 
-const service = getService("mobile-development");
-
-export const metadata: Metadata = {
-  title: service.headline,
-  description: service.subheadline,
-};
+export const metadata: Metadata = servicePageMetadata("ai", "mobile-development");
 
 export default function Page() {
-  return <ServiceTemplate service={service} />;
+  return <ServiceSeoPage category="ai" slug="mobile-development" />;
 }

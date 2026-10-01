@@ -81,7 +81,7 @@ export function Header() {
           <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-white/20">
             <Image
               src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
-              alt="Fynk Tech logo"
+              alt="Fynk Tech"
               width={32}
               height={32}
               className="h-full w-full object-cover"

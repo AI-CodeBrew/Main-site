@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/common/hero";
 import { ServicesGrid } from "@/components/features/services/services-grid";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "AI Automation & Intelligent Agents",
+export const metadata: Metadata = buildPageMetadata({
+  title: "AI Automation & Agents",
   description:
-    "Fynk Tech builds AI voice and chat agents, workflow automation, sales AI and custom agents for businesses in the Gulf, UK and US. Talk to an expert.",
-};
+    "AI voice and chat agents, workflow automation, sales AI and custom agents for Gulf, UK and US businesses. Talk to Fynk Tech.",
+  path: "/ai-automation",
+});
 
 export default function AiAutomationPage() {
   return (
     <main className="min-h-screen">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "AI Automation", path: "/ai-automation" },
+        ])}
+      />
       <Hero
         videos={["/videos/220941_small.mp4"]}
         eyebrow="AI Automation"

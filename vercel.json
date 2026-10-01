@@ -1,4 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["sin1"]
+  "regions": ["sin1"],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "fynktech.com" }],
+      "destination": "https://www.fynktech.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.fynktech.com" }, { "type": "header", "key": "x-forwarded-proto", "value": "http" }],
+      "destination": "https://www.fynktech.com/:path*",
+      "permanent": true
+    }
+  ]
 }

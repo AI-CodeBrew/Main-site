@@ -3,19 +3,28 @@ import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { PageHero } from "@/components/common/page-hero";
 import { Contact } from "@/components/features/contact/contact";
+import { JsonLd } from "@/components/seo/json-ld";
 import { projects } from "@/lib/content/company";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Case Studies",
   description:
-    "Selected Fynk Tech projects — real client work we can name publicly, starting with Dialcom.",
-};
+    "Selected Fynk Tech client work, starting with Dialcom. See how we build AI and e-commerce systems — then talk to us.",
+  path: "/case-studies",
+});
 
 export default function CaseStudiesPage() {
   const dialcom = projects[0];
 
   return (
     <main className="min-h-screen">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Case Studies", path: "/case-studies" },
+        ])}
+      />
       <PageHero
         title="Case Studies"
         subtitle="Selected work"

@@ -18,6 +18,14 @@ import {
 import { callOpenAI, chatModel } from "@/lib/chat/openai";
 import { getChatSettings } from "@/lib/chat/settings";
 import { prepareHistory } from "@/lib/chat/history";
+import {
+  addMemoryTurn,
+  formatMemoryBlock,
+  isMem0Enabled,
+  MEM0_RECENT_LIMIT,
+  resolveMemoryUserId,
+  searchMemories,
+} from "@/lib/chat/memory";
 
 export type ChatAction = "book" | "human" | "continue";
 
@@ -199,7 +207,20 @@ export async function POST(req: NextRequest) {
   }
 
   const query = lastUser?.content ?? messages.map((m) => m.content).join(" ");
-  const context = await retrieveContext(query);
+  const mem0On = isMem0Enabled();
+  const memoryUserId = mem0On
+    ? resolveMemoryUserId({
+        sessionId,
+        visitorPhone,
+        conversation,
+      })
+    : null;
+
+  // Knowledge RAG + Mem0 search in parallel; Mem0 is fail-open / time-boxed.
+  const [context, memoryHits] = await Promise.all([
+    retrieveContext(query),
+    memoryUserId ? searchMemories(query, memoryUserId) : Promise.resolve([]),
+  ]);
 
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json({
@@ -211,14 +232,24 @@ export async function POST(req: NextRequest) {
   }
 
   const settings = await getChatSettings();
-  let history: { role: ChatMessage["role"]; content: string }[] = settings.historyLimitEnabled
-    ? messages.slice(-settings.historyLimit)
+  // With Mem0: short recent window + no summary LLM (facts live in Mem0 → lower OpenAI cost).
+  const historySettings = mem0On
+    ? {
+        ...settings,
+        historyLimitEnabled: true,
+        historyLimit: Math.min(settings.historyLimit, MEM0_RECENT_LIMIT),
+        summaryEnabled: false,
+      }
+    : settings;
+
+  let history: { role: ChatMessage["role"]; content: string }[] = historySettings.historyLimitEnabled
+    ? messages.slice(-historySettings.historyLimit)
     : messages;
   let summary: string | null = null;
   if (conversation) {
     const saved = await getConversationMessages(conversation.id);
     if (saved.length > 0) {
-      const prepared = await prepareHistory(conversation, saved, settings);
+      const prepared = await prepareHistory(conversation, saved, historySettings);
       history = prepared.history;
       summary = prepared.summary;
     }
@@ -228,6 +259,7 @@ export async function POST(req: NextRequest) {
   const nameBlock = knownName
     ? `VISITOR NAME: ${knownName} (already collected — use it naturally and do not ask for their name again).\n\n`
     : "";
+  const memoryBlock = formatMemoryBlock(memoryHits);
   const summaryBlock = summary ? `SUMMARY OF EARLIER MESSAGES IN THIS CHAT:\n${summary}\n\n` : "";
   const contextBlock = `RETRIEVED CONTEXT:\n${context}\n\nSite booking URL: ${siteConfig.bookingUrl || "TODO: set NEXT_PUBLIC_BOOKING_URL"}`;
 
@@ -249,7 +281,10 @@ export async function POST(req: NextRequest) {
   const startedAt = performance.now();
   const result = await callOpenAI(
     [
-      { role: "system", content: `${CHAT_SYSTEM_PROMPT}\n\n${nameBlock}${summaryBlock}${contextBlock}` },
+      {
+        role: "system",
+        content: `${CHAT_SYSTEM_PROMPT}\n\n${nameBlock}${memoryBlock}${summaryBlock}${contextBlock}`,
+      },
       ...history.map((m) => ({
         role: m.role === "user" ? ("user" as const) : ("assistant" as const),
         content: m.content,
@@ -337,6 +372,21 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error("[chat] failed to save assistant reply", err);
     }
+  }
+
+  // Persist durable facts after the response — does not block the visitor.
+  if (memoryUserId && lastUser) {
+    const uid = memoryUserId;
+    const turnUserText = lastUser.content;
+    after(() =>
+      addMemoryTurn({
+        userId: uid,
+        userText: turnUserText,
+        assistantText: finalReply,
+        sessionId,
+        conversationId: conversation?.id ?? null,
+      }),
+    );
   }
 
   return NextResponse.json({

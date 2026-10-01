@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/common/page-hero";
 import { Contact } from "@/components/features/contact/contact";
+import { JsonLd } from "@/components/seo/json-ld";
 import { listBlogs } from "@/lib/blogs/store";
+import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Blog",
   description:
-    "Insights on AI automation, e-commerce growth, and building systems that scale — from the Fynk Tech team.",
-};
+    "Insights on AI automation, e-commerce growth, and systems that scale — from the Fynk Tech team. Read more and get in touch.",
+  path: "/blog",
+});
 
 // Posts are managed in /admin/blogs, so always read the latest list.
 export const dynamic = "force-dynamic";
@@ -21,6 +24,12 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+        ])}
+      />
       <PageHero
         title="Blog"
         subtitle="Insights"
@@ -56,7 +65,7 @@ export default async function BlogPage() {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={post.image}
-                          alt=""
+                          alt={post.title}
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
