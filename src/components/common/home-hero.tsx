@@ -143,11 +143,11 @@ export function HomeHero() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="fixed inset-0 z-[1000] flex flex-col items-center justify-center gap-6 bg-black"
             role="status"
-            aria-label="Loading"
+            aria-label="Welcome"
           >
             <IntersectingRings tone="light" size={96} />
             <span className="text-sm md:text-base font-medium uppercase tracking-[0.35em] text-white/60">
-              Loading
+              Welcome
             </span>
           </motion.div>
         )}
