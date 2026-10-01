@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export function BlogPreview() {
   const posts = [
-    { title: "AI Automation Trends", href: "/blog/ai-automation-trends" },
-    { title: "Scaling E‑commerce with AI", href: "/blog/scaling-ecommerce" },
-    { title: "From MVP to Product", href: "/blog/mvp-to-product" },
+    { title: "AI Automation Trends", href: "/blogs/ai-automation-trends" },
+    { title: "Scaling E‑commerce with AI", href: "/blogs/scaling-ecommerce" },
+    { title: "From MVP to Product", href: "/blogs/mvp-to-product" },
   ];
 
   return (

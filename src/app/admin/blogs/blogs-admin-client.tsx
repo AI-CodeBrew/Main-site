@@ -136,9 +136,9 @@ export function BlogsAdminClient() {
                 <tr key={blog.id} className={busyId === blog.id ? "opacity-50" : undefined}>
                   <td className="px-4 py-3">
                     <div className="h-12 w-20 overflow-hidden rounded-md bg-gray-100">
-                      {blog.image ? (
+                      {(blog.card_image || blog.image) ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={blog.image} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                        <img src={blog.card_image || blog.image!} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                       ) : null}
                     </div>
                   </td>
@@ -175,7 +175,7 @@ export function BlogsAdminClient() {
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
                       {blog.status === "published" && (
-                        <Link href={`/blog/${blog.slug}`} target="_blank" className={btn}>
+                        <Link href={`/blogs/${blog.slug}`} target="_blank" className={btn}>
                           View
                         </Link>
                       )}

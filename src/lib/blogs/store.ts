@@ -1,3 +1,6 @@
+import type { BlogStory } from "./story";
+import { parseBlogStory } from "./story";
+
 export type BlogStatus = "draft" | "published";
 
 export type Blog = {
@@ -8,6 +11,10 @@ export type Blog = {
   meta_title: string | null;
   meta_description: string | null;
   image: string | null;
+  /** Homepage carousel tile — prefer this over `image` when set. */
+  card_image: string | null;
+  /** Case-study layout fields (stats, TL;DR, goals, quote, meta). */
+  story: BlogStory;
   content: string | null;
   status: BlogStatus;
   sort_order: number;
@@ -16,15 +23,21 @@ export type Blog = {
 };
 
 export type BlogInput = Pick<Blog, "slug" | "title" | "status" | "sort_order"> &
-  Partial<Pick<Blog, "description" | "meta_title" | "meta_description" | "image" | "content">>;
+  Partial<Pick<Blog, "description" | "meta_title" | "meta_description" | "image" | "card_image" | "content">> &
+  Partial<{ story: Record<string, unknown> | BlogStory }>;
 
 /** Columns for list views — skips the (potentially large) HTML content. */
-const LIST_COLUMNS = "id,slug,title,description,image,status,sort_order,created_at,updated_at";
+const LIST_COLUMNS =
+  "id,slug,title,description,image,card_image,status,sort_order,created_at,updated_at";
 
 const supabaseUrl = () => process.env.SUPABASE_URL;
 const supabaseKey = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export type Result<T> = { ok: true; data: T } | { ok: false; error: string; status?: number };
+
+function normalizeBlog<T extends { story?: unknown }>(row: T): T & { story: BlogStory } {
+  return { ...row, story: parseBlogStory(row.story) };
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<Result<T>> {
   const url = supabaseUrl();
@@ -54,7 +67,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<Result<T>> 
   return { ok: true, data: (await res.json()) as T };
 }
 
-export type BlogListItem = Omit<Blog, "content" | "meta_title" | "meta_description">;
+export type BlogListItem = Omit<Blog, "content" | "meta_title" | "meta_description" | "story">;
 
 export async function listBlogs(opts?: { includeDrafts?: boolean }): Promise<Result<BlogListItem[]>> {
   const params = new URLSearchParams({
@@ -71,23 +84,31 @@ export async function getBlogBySlug(
 ): Promise<Result<Blog | null>> {
   const params = new URLSearchParams({ select: "*", slug: `eq.${slug}`, limit: "1" });
   if (!opts?.includeDrafts) params.set("status", "eq.published");
-  const res = await request<Blog[]>(`blogs?${params}`);
-  return res.ok ? { ok: true, data: res.data[0] ?? null } : res;
+  const res = await request<Array<Omit<Blog, "story"> & { story?: unknown }>>(`blogs?${params}`);
+  if (!res.ok) return res;
+  const row = res.data[0];
+  return { ok: true, data: row ? normalizeBlog(row) : null };
 }
 
 export async function createBlog(input: BlogInput): Promise<Result<Blog>> {
-  const res = await request<Blog[]>("blogs", { method: "POST", body: JSON.stringify(input) });
-  return res.ok ? { ok: true, data: res.data[0] } : res;
+  const res = await request<Array<Omit<Blog, "story"> & { story?: unknown }>>("blogs", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+  return res.ok ? { ok: true, data: normalizeBlog(res.data[0]) } : res;
 }
 
 export async function updateBlog(id: string, patch: Partial<BlogInput>): Promise<Result<Blog>> {
-  const res = await request<Blog[]>(`blogs?id=eq.${encodeURIComponent(id)}`, {
-    method: "PATCH",
-    body: JSON.stringify({ ...patch, updated_at: new Date().toISOString() }),
-  });
+  const res = await request<Array<Omit<Blog, "story"> & { story?: unknown }>>(
+    `blogs?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ ...patch, updated_at: new Date().toISOString() }),
+    }
+  );
   if (!res.ok) return res;
   if (!res.data[0]) return { ok: false, error: "Not found", status: 404 };
-  return { ok: true, data: res.data[0] };
+  return { ok: true, data: normalizeBlog(res.data[0]) };
 }
 
 export async function deleteBlog(id: string): Promise<Result<null>> {

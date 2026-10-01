@@ -17,43 +17,52 @@ export function FinalCta() {
   const wa = whatsappLink("Hi Fynk Tech — I'd like to talk about a project.");
 
   return (
-    // Same black as the PROJECTS section above, so the two read as one dark block.
+    // Same black as Proven Results above — one continuous dark block, no separate shade.
     <section
-      className="py-16 md:py-24 relative overflow-hidden bg-[#121212]"
+      className="relative overflow-hidden border-t border-white/10 bg-black py-10 md:py-14"
       aria-labelledby="final-cta-heading"
     >
+      {/* Soft blue glow along the bottom edge */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-52"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(30, 64, 175, 0.55) 0%, rgba(90, 131, 255, 0.18) 40%, transparent 72%)",
+        }}
+        aria-hidden
+      />
+
       <div className="container-page relative z-10 text-center text-white">
-        <h2 id="final-cta-heading" className="text-3xl md:text-4xl font-bold mb-4">
+        <h2 id="final-cta-heading" className="mb-3 text-2xl font-bold md:text-3xl">
           Ready to grow with AI or e-commerce?
         </h2>
-        <p className="text-lg text-white/80 max-w-2xl mx-auto mb-10">
+        <p className="mx-auto mb-7 max-w-2xl text-base text-white/80 md:text-lg">
           Talk to an expert or message us on WhatsApp.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-nowrap items-center justify-center gap-2 sm:gap-4">
           <Link
             href="/contact"
-            // White like the hero's button: the navy .btn-primary disappears on black.
-            className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold bg-white text-black hover:bg-white/85 transition-colors"
+            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-white/85 sm:gap-2 sm:px-7 sm:py-3.5 sm:text-base"
             onClick={() => trackEvent("cta_click", { cta: "talk_to_expert", location: "final_cta" })}
           >
             Talk to an expert
-            <ArrowRight className="h-5 w-5 text-black" strokeWidth={2.25} aria-hidden />
+            <ArrowRight className="h-4 w-4 text-black sm:h-5 sm:w-5" strokeWidth={2.25} aria-hidden />
           </Link>
           {wa ? (
             <a
               href={wa}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 font-semibold text-white hover:opacity-90 transition-opacity"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,211,102,0.28)] transition-all hover:brightness-110 hover:shadow-[0_10px_28px_rgba(37,211,102,0.38)] sm:gap-2.5 sm:px-7 sm:py-3.5 sm:text-base"
               style={{
-                background: "linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%)",
+                background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
               }}
               onClick={() => trackEvent("whatsapp_click", { location: "final_cta" })}
             >
-              <WhatsAppIcon className="w-5 h-5" />
+              <WhatsAppIcon className="h-4 w-4 sm:h-5 sm:w-5" />
               WhatsApp Us
-              <ArrowRight className="w-5 h-5" strokeWidth={2} />
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
             </a>
           ) : null}
         </div>

@@ -83,7 +83,7 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
         </a>
 
         {/* Title card — always visible, top-right on all breakpoints */}
-        <div className="pointer-events-none absolute right-[5%] top-0 z-[9] bg-[#121212] px-4 py-3 sm:px-[30px] sm:py-5">
+        <div className="pointer-events-none absolute right-[5%] top-0 z-[9] bg-black/85 px-4 py-3 backdrop-blur-sm sm:px-[30px] sm:py-5">
           <h4 className="pb-[5px] text-base font-medium leading-tight text-white sm:text-xl">{item.title}</h4>
           <p className="text-xs text-white sm:text-sm">{item.meta}</p>
         </div>
@@ -162,10 +162,50 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
   return (
     <section
       ref={trackRef}
-      className="relative bg-[#121212]"
+      className="relative bg-black"
       style={{ overflow: "clip" }}
       aria-labelledby="projects-heading"
     >
+      {/* Atmosphere — soft black + grid + glows (not flat solid) */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 50% at 50% 0%, #12121f 0%, #0a0a12 40%, #000000 100%)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "56px 56px",
+          maskImage: "radial-gradient(ellipse 85% 70% at 50% 30%, black 15%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 85% 70% at 50% 30%, black 15%, transparent 80%)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-64 w-[min(92vw,720px)] -translate-x-1/2 -translate-y-1/4 rounded-full opacity-60 blur-[110px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(124,58,237,0.4) 0%, rgba(90,131,255,0.2) 45%, transparent 70%)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-72"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(30,64,175,0.35) 0%, transparent 70%)",
+        }}
+        aria-hidden
+      />
+
       {/* Browser-native pin (Axtra pins its heading with pinSpacing: false): cards scroll over it. */}
       {/* 60dvh block: the word sits ~30% down the screen, and when the section ends the next
           section shows in the bottom 40% instead of a screen of empty dark space. */}

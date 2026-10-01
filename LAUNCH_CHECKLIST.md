@@ -1,6 +1,6 @@
 # Launch checklist — Phases 1–7
 
-Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blog`, `/roi-calculator`, `/admin/leads`, and chat/leads APIs.
+Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blogs`, `/roi-calculator`, `/admin/leads`, and chat/leads APIs.
 
 ## Must fill before go-live
 
@@ -24,8 +24,8 @@ Build status: `npm run build` passes (Next.js 16.2.11). New routes include `/blo
 
 - [ ] Homepage: hero CTAs, tech strip, offers, process, Dialcom, voice demo, FAQ, final CTA
 - [ ] Mobile + desktop on home, contact, one AI service, one ecommerce service
-- [ ] `/blog` loads (coming soon state)
-- [ ] Nav “Blogs” → `/blog` (desktop + mobile)
+- [ ] `/blogs` loads (coming soon state)
+- [ ] Nav “Blogs” → `/blogs` (desktop + mobile)
 - [ ] Footer: Lahore address only
 - [ ] Chat widget opens, greets by page, privacy before PII, Book / Human / Continue
 - [ ] Chat offline / handoff message when hours closed or simulate-no-agent

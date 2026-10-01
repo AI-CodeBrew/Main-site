@@ -1,18 +1,25 @@
 import { z } from "zod";
 import { SLUG_PATTERN } from "./slug";
+import { serializeBlogStory, parseBlogStory } from "./story";
 
 // Empty string / null clear the field; a missing key stays undefined so PATCH leaves it untouched.
 const emptyToNull = (v: string | null | undefined) => (v === undefined ? undefined : v || null);
 
 const optionalText = (max: number) => z.string().trim().max(max).nullish().transform(emptyToNull);
 
-const httpsImage = z
-  .string()
-  .trim()
-  .max(1000)
-  .refine((v) => v === "" || /^https:\/\//i.test(v), "Cover image must be an https:// URL")
-  .nullish()
-  .transform(emptyToNull);
+const httpsImage = (label: string) =>
+  z
+    .string()
+    .trim()
+    .max(1000)
+    .refine((v) => v === "" || /^https:\/\//i.test(v), `${label} must be an https:// URL`)
+    .nullish()
+    .transform(emptyToNull);
+
+const storyField = z
+  .unknown()
+  .optional()
+  .transform((v) => (v === undefined ? undefined : serializeBlogStory(parseBlogStory(v))));
 
 const fields = {
   slug: z.string().trim().min(1, "Slug is required").max(120).regex(SLUG_PATTERN, "Use lowercase letters, numbers and dashes"),
@@ -20,7 +27,9 @@ const fields = {
   description: optionalText(1000),
   meta_title: optionalText(200),
   meta_description: optionalText(500),
-  image: httpsImage,
+  image: httpsImage("Cover image"),
+  card_image: httpsImage("Tile card image"),
+  story: storyField,
   content: z
     .string()
     .max(500_000)
@@ -34,6 +43,7 @@ export const blogSchema = z.object({
   ...fields,
   status: fields.status.default("published"),
   sort_order: fields.sort_order.default(0),
+  story: storyField.default({}),
 });
 
 // Built from the raw fields (not `.partial()`), so omitted keys stay untouched instead of getting defaults.

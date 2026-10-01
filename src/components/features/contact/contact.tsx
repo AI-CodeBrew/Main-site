@@ -33,21 +33,44 @@ export function Contact() {
   const [done, setDone] = useState(false);
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
+    <section id="contact" className="relative overflow-hidden py-24 text-white">
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, #0A0A3C 0%, #1E3296 30%, #2A2A6A 70%, #0A0A3C 100%)",
+            "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",
         }}
       />
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: "48px 48px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at top center, rgba(30, 50, 150, 0.3) 0%, transparent 60%)",
-          filter: "blur(1px)",
+            "radial-gradient(ellipse 55% 45% at 50% 30%, rgba(90,131,255,0.08) 0%, transparent 70%)",
         }}
+        aria-hidden
+      />
+      {/* Top purple glow — respond.io / proven-results style */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-48 w-[min(92vw,720px)] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-70 blur-[100px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(124,58,237,0.55) 0%, rgba(90,131,255,0.25) 45%, transparent 70%)",
+        }}
+        aria-hidden
       />
 
       <div className="container-page relative z-10">
@@ -55,12 +78,10 @@ export function Contact() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: "#80DFFF" }}>
-            Ready To Get Started
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto" style={{ color: "#FFFFFF" }}>
+          <h2 className="mb-6 text-4xl font-bold text-white md:text-5xl">Ready To Get Started</h2>
+          <p className="mx-auto max-w-3xl text-xl text-white/75">
             Connect with us to explore how our expertise can drive value to your needs.
           </p>
         </motion.div>
@@ -184,12 +205,11 @@ export function Contact() {
                 />
 
                 <button
-                  className="w-full text-lg py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-60"
+                  className="w-full rounded-lg py-4 text-lg font-semibold text-white transition-all duration-300 hover:scale-105 disabled:opacity-60"
                   type="submit"
                   disabled={submitting}
                   style={{
-                    background: "linear-gradient(135deg, #4A4A9A 0%, #2A2A6A 100%)",
-                    color: "#FFFFFF",
+                    background: "linear-gradient(135deg, #5A83FF 0%, #3D5FCC 100%)",
                     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.3)",
                   }}
                 >
@@ -206,30 +226,30 @@ export function Contact() {
             className="space-y-8 flex flex-col justify-start"
           >
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 min-h-[200px] flex flex-col justify-center">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#0A0045] to-[#0B0050] flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-white" />
+                <div className="mb-4 flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#5A83FF]/20 ring-1 ring-[#5A83FF]/30">
+                    <Bot className="h-6 w-6 text-[#96BDFF]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">Based in Lahore</h3>
                 </div>
-                <h3 className="text-xl font-semibold">Based in Lahore</h3>
+                <p className="text-white/70">
+                  Delivery center in DHA Phase 6, Lahore — serving clients in Pakistan, the Gulf, the UK
+                  and the US.
+                </p>
               </div>
-              <p className="text-zinc-300">
-                Delivery center in DHA Phase 6, Lahore — serving clients in Pakistan, the Gulf, the UK
-                and the US.
-              </p>
-            </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 min-h-[200px] flex flex-col justify-center">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#0A0045] to-[#0B0050] flex items-center justify-center">
-                  <Crown className="w-6 h-6 text-white" />
+              <div className="flex min-h-[200px] flex-col justify-center rounded-2xl border border-white/10 bg-white/10 p-8 backdrop-blur-sm">
+                <div className="mb-4 flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#5A83FF]/20 ring-1 ring-[#5A83FF]/30">
+                    <Crown className="h-6 w-6 text-[#96BDFF]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">Global Leaders</h3>
                 </div>
-                <h3 className="text-xl font-semibold">Global Leaders</h3>
+                <p className="text-white/70">
+                  Our leadership team comprises industry veterans and innovators dedicated to driving
+                  success and innovation in every project.
+                </p>
               </div>
-              <p className="text-zinc-300">
-                Our leadership team comprises industry veterans and innovators dedicated to driving
-                success and innovation in every project.
-              </p>
-            </div>
           </motion.div>
         </div>
       </div>

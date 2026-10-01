@@ -165,7 +165,7 @@ export const STATIC_PUBLIC_PATHS = [
   "/",
   "/about",
   "/contact",
-  "/blog",
+  "/blogs",
   "/case-studies",
   "/roi-calculator",
   "/privacy",

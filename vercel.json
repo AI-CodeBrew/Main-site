@@ -13,6 +13,8 @@
       "has": [{ "type": "host", "value": "www.fynktech.com" }, { "type": "header", "key": "x-forwarded-proto", "value": "http" }],
       "destination": "https://www.fynktech.com/:path*",
       "permanent": true
-    }
+    },
+    { "source": "/blog", "destination": "/blogs", "permanent": true },
+    { "source": "/blog/:slug", "destination": "/blogs/:slug", "permanent": true }
   ]
 }
