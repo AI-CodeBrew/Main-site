@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { DeferredChatLauncher } from "@/components/layout/deferred-chat-launcher";
 import { DeferredAnalytics } from "@/components/layout/deferred-analytics";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { UtmCapture } from "@/components/layout/utm-capture";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { SITE_URL } from "@/lib/seo";
-
-const DeferredChatLauncher = dynamic(
-  () => import("@/components/layout/chat-launcher").then((m) => m.ChatLauncher),
-  { ssr: false },
-);
 
 // Single family for body + hero headings. preload + display swap keeps LCP text visible.
 const plusJakarta = Plus_Jakarta_Sans({
