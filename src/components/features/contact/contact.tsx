@@ -233,8 +233,7 @@ export function Contact() {
                   <h3 className="text-xl font-semibold text-white">Based in Lahore</h3>
                 </div>
                 <p className="text-white/70">
-                  Delivery center in DHA Phase 6, Lahore — serving clients in Pakistan, the Gulf, the UK
-                  and the US.
+                  Delivery center in DHA Phase 6, Lahore — serving clients worldwide.
                 </p>
               </div>
 

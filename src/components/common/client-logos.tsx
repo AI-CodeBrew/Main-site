@@ -35,17 +35,19 @@ export function ClientLogos() {
         {/* w-max + max-w-none: globals.css caps every element at max-width 100%, which squeezed
             this track to screen width and made the -50% loop jump. */}
         <div className="flex w-max max-w-none animate-scroll-right">
-          {items.map((tech, index) => (
+          {items.map((tech, index) => {
+            const isDuplicate = index >= techWeWorkWith.length;
+            return (
             <div
               key={`${tech.name}-${index}`}
               className="flex-shrink-0 mx-8 md:mx-12 flex flex-col items-center"
-              aria-hidden={index >= techWeWorkWith.length || undefined}
+              aria-hidden={isDuplicate || undefined}
             >
               {/* Brand logos are dark artwork, so give them a light tile in the dark theme. */}
               <div className="relative w-20 h-16 mb-3 rounded-lg dark:bg-white/95">
                 <Image
                   src={tech.logo}
-                  alt={tech.name}
+                  alt={isDuplicate ? "" : tech.name}
                   fill
                   className="object-contain dark:p-2"
                   sizes="80px"
@@ -55,7 +57,8 @@ export function ClientLogos() {
                 {tech.name}
               </span>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

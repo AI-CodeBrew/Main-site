@@ -12,19 +12,19 @@ import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "About Us",
   description:
-    "Meet Fynk Tech — AI agents, automation and e-commerce systems for Pakistan, the Gulf, UK and US. Talk to our team today.",
+    "Meet Fynk Tech — AI agents, automation and e-commerce systems for businesses worldwide. Delivery center in Lahore, Pakistan.",
   path: "/about",
 });
 
 const aboutOverview = {
   title: "AI automation and e-commerce for growing businesses",
   description:
-    "Fynk Tech builds AI agents, workflow automation, and e-commerce systems for companies in Pakistan, the Gulf, the UK and the US. We ship production software — not slide decks.",
+    "Fynk Tech builds AI agents, workflow automation, and e-commerce systems for companies worldwide. We ship production software from Lahore — not slide decks.",
   features: [
     "AI voice & chat agents with human handoff",
     "CRM, OMS, and workflow automation",
     "Shopify / WooCommerce store builds and growth systems",
-    "Based in Lahore, serving regional and international clients",
+    "Global clients · delivery center in Lahore, Pakistan",
   ],
   image: "/about.jpeg",
   imageAlt: "Fynk Tech Team and Innovation",

@@ -30,9 +30,9 @@ export default async function BlogPage() {
     : [];
 
   const stats = [
-    { value: "10+", label: "Clients served" },
-    { value: "Global", label: "Coverage across regions" },
-    { value: "24/7", label: "AI agents that never sleep" },
+    { value: "Dialcom", label: "AI receptionist, CRM & OMS shipped" },
+    { value: "24/7", label: "AI agents that qualify and hand off" },
+    { value: "Global", label: "clients · engineered in Lahore" },
   ];
 
   return (

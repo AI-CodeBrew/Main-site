@@ -7,7 +7,7 @@ import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "AI Automation & Agents",
   description:
-    "AI voice and chat agents, workflow automation, sales AI and custom agents for Gulf, UK and US businesses. Talk to Fynk Tech.",
+    "AI voice and chat agents, workflow automation, sales AI and custom agents for businesses worldwide. Talk to Fynk Tech.",
   path: "/ai-automation",
 });
 

@@ -22,8 +22,8 @@ const defaultVideos = [
 export function Hero({
   videos = defaultVideos,
   eyebrow = "Fynk Tech",
-  title = "We build AI agents and e-commerce stores that grow revenue for businesses in the Gulf, UK and US",
-  description = "From AI receptionists and CRM/OMS systems to Shopify launches — shipped from Lahore, built for real operations.",
+  title = "We build AI agents and e-commerce stores that grow revenue for businesses worldwide",
+  description = "From AI receptionists and CRM/OMS systems to Shopify launches — engineered in Lahore, built for real operations.",
   trackingLocation = "hero",
 }: HeroProps) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);

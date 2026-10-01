@@ -11,7 +11,7 @@ const POSTS = [
     description: "AI Agents",
     meta_title: "AI Lead Qualification Agents | Fynk Tech",
     meta_description:
-      "How AI voice and chat agents qualify leads around the clock, hand off to humans, and shorten sales cycles for Gulf, UK and US teams.",
+      "How AI voice and chat agents qualify leads around the clock, hand off to humans, and shorten sales cycles for teams that sell worldwide.",
     image:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=675&q=80",
     card_image:
@@ -62,7 +62,7 @@ const POSTS = [
     description: "E-commerce",
     meta_title: "Conversion-Ready Shopify Stores | Fynk Tech",
     meta_description:
-      "Launch or rebuild a Shopify store with clear funnels, payments, and growth systems — for brands selling in the Gulf, UK and US.",
+      "Launch or rebuild a Shopify store with clear funnels, payments, and growth systems — for brands selling worldwide.",
     image:
       "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&h=900&q=80",
     card_image:

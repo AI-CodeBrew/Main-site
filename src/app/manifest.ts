@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Fynk Tech",
     short_name: "Fynk Tech",
     description:
-      "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
+      "AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

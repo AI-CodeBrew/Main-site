@@ -13,9 +13,9 @@ export type ResultsBlogCard = {
 };
 
 const STATS = [
-  { value: "60%", label: "faster sales cycle" },
-  { value: "81%", label: "conversion rate with AI Agents" },
-  { value: "42.5x", label: "more ROI" },
+  { value: "Dialcom", label: "AI receptionist, CRM & OMS shipped", href: "https://dialcom.ai/" },
+  { value: "24/7", label: "AI agents that qualify and hand off", href: "/ai-automation/voice-chat" },
+  { value: "Global", label: "clients · engineered in Lahore", href: "/contact" },
 ] as const;
 
 const FALLBACK_CARDS: ResultsBlogCard[] = [
@@ -106,10 +106,26 @@ export function ProvenResults({ posts = [] }: { posts?: ResultsBlogCard[] }) {
               <div className="flex h-full flex-col justify-center gap-6 px-8 py-6">
                 {STATS.map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-[3.25rem] leading-none tracking-[-0.04em] text-white md:text-[3.75rem]">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-sm leading-5 text-[#CDCDCF]">{stat.label}</p>
+                    {stat.href.startsWith("http") ? (
+                      <a
+                        href={stat.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block transition-opacity hover:opacity-80"
+                      >
+                        <p className="text-[2.5rem] leading-none tracking-[-0.04em] text-white md:text-[3rem]">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-sm leading-5 text-[#CDCDCF]">{stat.label}</p>
+                      </a>
+                    ) : (
+                      <Link href={stat.href} className="block transition-opacity hover:opacity-80">
+                        <p className="text-[2.5rem] leading-none tracking-[-0.04em] text-white md:text-[3rem]">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-sm leading-5 text-[#CDCDCF]">{stat.label}</p>
+                      </Link>
+                    )}
                   </div>
                 ))}
               </div>

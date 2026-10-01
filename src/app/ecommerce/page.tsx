@@ -7,7 +7,7 @@ import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "E-commerce Solutions",
   description:
-    "Shopify and WooCommerce stores, sourcing, marketing, funnels and AI support for Gulf, UK and US brands. Start with Fynk Tech.",
+    "Shopify and WooCommerce stores, sourcing, marketing, funnels and AI support for brands worldwide. Start with Fynk Tech.",
   path: "/ecommerce",
 });
 

@@ -68,11 +68,12 @@ export function TrustedBy() {
               <div
                 key={`upper-2-${index}`}
                 className="flex-shrink-0 mx-8 flex items-center justify-center"
+                aria-hidden="true"
               >
                 <div className="relative w-32 h-16 opacity-60 hover:opacity-100 transition-opacity duration-300">
                   <Image
                     src={brand.logo}
-                    alt={brand.alt}
+                    alt=""
                     fill
                     className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     sizes="128px"
@@ -108,11 +109,12 @@ export function TrustedBy() {
               <div
                 key={`lower-2-${index}`}
                 className="flex-shrink-0 mx-8 flex items-center justify-center"
+                aria-hidden="true"
               >
                 <div className="relative w-32 h-16 opacity-60 hover:opacity-100 transition-opacity duration-300">
                   <Image
                     src={brand.logo}
-                    alt={brand.alt}
+                    alt=""
                     fill
                     className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     sizes="128px"

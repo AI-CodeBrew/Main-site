@@ -190,7 +190,7 @@ export function HomeHero() {
             animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-white/60 mb-5"
           >
-            AI &amp; E-commerce Solutions
+            AI Agents · E-commerce · Global
           </motion.p>
 
           <motion.h1
@@ -199,7 +199,7 @@ export function HomeHero() {
             transition={{ duration: 0.7 }}
             className="heading-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight text-white"
           >
-            AI &amp; E-commerce. Built to Grow.
+            AI Agents &amp; Stores Built for Global Growth
           </motion.h1>
 
           <motion.p
@@ -208,7 +208,7 @@ export function HomeHero() {
             transition={{ delay: 0.15 }}
             className="mt-6 text-base md:text-lg max-w-xl leading-relaxed text-white/75"
           >
-            AI agents, automation and e-commerce that save time and grow sales.
+            Voice and chat agents, workflow automation, and revenue-ready Shopify systems for teams that sell worldwide — engineered from our Lahore delivery center.
           </motion.p>
 
           <motion.div

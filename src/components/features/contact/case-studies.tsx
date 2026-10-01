@@ -216,7 +216,7 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
           style={{ scale: wordScale }}
           className="whitespace-nowrap text-center text-[17vw] font-medium uppercase leading-none tracking-tight text-white"
         >
-          projects
+          PROJECTS
         </motion.h2>
       </div>
 

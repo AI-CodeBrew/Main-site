@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MessageCircle, Info, MapPin } from "lucide-react";
+import { Mail, MessageCircle, MapPin } from "lucide-react";
 import { companyAddress } from "@/lib/content/company";
 import { siteConfig, socialLinks, whatsappLink } from "@/lib/content/site";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/common/social-icons";
@@ -46,7 +46,7 @@ export function Footer() {
               <span className="font-semibold text-xl" style={{ color: 'var(--foreground)' }}>Fynk Tech</span>
             </div>
             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted-foreground)' }}>
-              AI automation and e-commerce systems for businesses in Pakistan, the Gulf, the UK and the US.
+              AI automation and e-commerce systems for businesses worldwide. Delivery center in Lahore, Pakistan.
             </p>
             <div className="flex gap-3">
               {[
@@ -134,10 +134,6 @@ export function Footer() {
                   </a>
                 </li>
               )}
-              <li className="flex items-start gap-3">
-                <Info className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
-                <Link href="/about" className="footer-link">About Us</Link>
-              </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
                 <span style={{ color: 'var(--muted-foreground)' }}>

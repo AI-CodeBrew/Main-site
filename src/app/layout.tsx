@@ -25,12 +25,12 @@ export const metadata: Metadata = {
     template: "%s | Fynk Tech",
   },
   description:
-    "Fynk Tech builds AI agents and e-commerce stores for businesses in the Gulf, UK and US. Talk to an expert today.",
+    "Fynk Tech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert today.",
   applicationName: "Fynk Tech",
   openGraph: {
     title: "Fynk Tech | AI Agents & E-commerce Stores",
     description:
-      "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
+      "AI agents and e-commerce stores for global businesses — engineered in Lahore.",
     url: SITE_URL,
     siteName: "Fynk Tech",
     images: [
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Fynk Tech | AI Agents & E-commerce Stores",
     description:
-      "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
+      "AI agents and e-commerce stores for global businesses — engineered in Lahore.",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },

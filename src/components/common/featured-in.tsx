@@ -33,15 +33,22 @@ export function FeaturedIn() {
           {/* Revolving animation - scrolling right */}
           <div className="overflow-hidden">
             <div className="flex animate-scroll-right">
-              {duplicatedMedia.map((outlet, index) => (
-                <div key={`right-${index}`} className="flex-shrink-0 mx-8">
+              {duplicatedMedia.map((outlet, index) => {
+                const isDuplicate = index >= media.length;
+                return (
+                <div
+                  key={`right-${index}`}
+                  className="flex-shrink-0 mx-8"
+                  aria-hidden={isDuplicate || undefined}
+                >
                   <div className="relative px-6 py-4">
                     <span className="text-lg font-bold text-center transition-colors duration-300 whitespace-nowrap" style={{ color: 'var(--heading)' }}>
                       {outlet}
                     </span>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
