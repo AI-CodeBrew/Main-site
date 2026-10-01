@@ -81,7 +81,7 @@ Travel & Hospitality, Telecommunication, Oil/Gas & Energy, E-commerce, Healthcar
    → https://www.fynktech.com/ecommerce/branding-creative
 8. Maintenance & Long-Term Store Management – ongoing store care.
    → https://www.fynktech.com/ecommerce/maintenance
-9. AI for eCommerce – support bots, return bots, upsell AI, review generation.
+9. AI for E-commerce – support bots, return bots, upsell AI, review generation.
    → https://www.fynktech.com/ecommerce/ai-solutions
 
 ## Technology (mention only if asked)

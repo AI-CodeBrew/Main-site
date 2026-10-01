@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SlidersHorizontal } from "lucide-react";
 
 export type BlogIndexCard = {
   id: string;
@@ -38,6 +39,8 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
   }, [posts]);
 
   const [active, setActive] = useState<string[]>([]);
+  // Only matters below lg — on desktop the filter column is always shown.
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
     if (active.length === 0) return posts;
@@ -55,7 +58,36 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
     <div className="mx-auto w-full max-w-6xl px-5 py-12 md:px-6 md:py-16">
       {categories.length > 0 ? (
         <div className="mb-10 flex flex-col gap-8 lg:mb-14 lg:flex-row lg:gap-12">
-          <aside className="w-full shrink-0 lg:w-52">
+          {/* Phones / tablets: filters sit behind a button on the right instead of taking the top of the page. */}
+          <div className="flex items-center justify-between gap-3 lg:hidden">
+            <p className="text-sm text-subtle">
+              {filtered.length} {filtered.length === 1 ? "story" : "stories"}
+            </p>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((open) => !open)}
+              aria-expanded={filtersOpen}
+              aria-controls="blog-filters"
+              className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-medium text-heading transition-colors hover:border-[#5A83FF] hover:text-[#5A83FF]"
+            >
+              <SlidersHorizontal className="h-4 w-4" aria-hidden />
+              Filter
+              {active.length > 0 ? (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#5A83FF] px-1.5 text-xs font-semibold text-white">
+                  {active.length}
+                </span>
+              ) : null}
+            </button>
+          </div>
+
+          <aside
+            id="blog-filters"
+            className={`w-full shrink-0 lg:block lg:w-52 ${
+              filtersOpen
+                ? "-mt-4 rounded-2xl border border-line p-5 lg:mt-0 lg:rounded-none lg:border-0 lg:p-0"
+                : "hidden"
+            }`}
+          >
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="text-sm font-semibold text-heading">Filter by</h2>
               {active.length > 0 ? (

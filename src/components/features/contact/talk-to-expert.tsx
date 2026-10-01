@@ -40,12 +40,13 @@ const platforms = [
   { name: "Shopify", logo: "/brands/shopify.svg" },
 ];
 
+// Same figures as the About page and the chat assistant prompt — keep all three in sync.
 const trust = [
-  { value: "3,000+", label: "Successful Projects" },
-  { value: "1,200+", label: "Global Experts" },
-  { value: "15+", label: "Years of Excellence" },
+  { value: "500+", label: "Successful Projects" },
+  { value: "12+", label: "In-House Experts" },
+  { value: "8+", label: "Years of Experience" },
   { value: "250+", label: "Happy Clients" },
-  { value: "23+", label: "Countries Served" },
+  { value: "20+", label: "Countries Served" },
 ];
 
 type FormValues = {
@@ -260,13 +261,17 @@ export function TalkToExpert() {
 
       <section className="container-page pb-20 md:pb-28" aria-label="Trust">
         <div className="rounded-2xl border border-white/10 bg-[#080c12] px-4 py-8 md:px-6 md:py-10">
-          <div className="grid grid-cols-2 md:grid-cols-5 divide-y md:divide-y-0 divide-white/10">
+          {/* Phones: 2 columns, the 5th item spans both. Borders are set per cell so the
+              dividers line up in both layouts. */}
+          <div className="grid grid-cols-2 md:grid-cols-5">
             {trust.map((item, index) => (
               <div
                 key={item.label}
-                className={`text-center px-3 py-5 md:py-2 ${
-                  index > 0 ? "md:border-l md:border-white/10" : ""
-                }`}
+                className={`text-center px-3 py-5 md:py-2 border-white/10 md:border-t-0 ${
+                  index >= 2 ? "border-t" : ""
+                } ${index % 2 === 1 ? "border-l" : ""} ${
+                  index > 0 ? "md:border-l" : "md:border-l-0"
+                } ${index === trust.length - 1 ? "col-span-2 md:col-span-1" : ""}`}
               >
                 <p className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
                   {item.value}

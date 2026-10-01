@@ -92,7 +92,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Ecommerce</h3>
+            <h3 className="font-semibold mb-4">E-commerce</h3>
             <ul className="space-y-3 text-sm">
               <li><Link href="/ecommerce/store-setup" className="footer-link">Store Setup & Development</Link></li>
               <li><Link href="/ecommerce/product-sourcing" className="footer-link">Product Sourcing & Supply Chain</Link></li>

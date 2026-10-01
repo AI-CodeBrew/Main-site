@@ -1248,7 +1248,7 @@ const allServices: ServiceContent[] = [
     slug: "ai-solutions",
     category: "ecommerce",
     path: "/ecommerce/ai-solutions",
-    headline: "AI for eCommerce",
+    headline: "AI for E-commerce",
     subheadline:
       "Enhance your store with AI — support bots, recommendations, returns automation, upsell logic, and ops intelligence.",
     whoFor: [

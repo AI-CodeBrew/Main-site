@@ -120,7 +120,7 @@ const ecommerceServices = [
   },
   {
     icon: Bot,
-    title: "AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)",
+    title: "AI for E-commerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)",
     description: "AI-powered e-commerce solutions and automation",
     image: "/Business-Cards/AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation).png"
   }
@@ -157,7 +157,7 @@ export function TransformBusiness() {
       'Data Analytics & Scaling Roadmaps': '/ecommerce/data-analytics',
       'Branding & Creative Production': '/ecommerce/branding-creative',
       'Maintenance & Long-Term Store Management': '/ecommerce/maintenance',
-      'AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)': '/ecommerce/ai-solutions'
+      'AI for E-commerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation)': '/ecommerce/ai-solutions'
     };
     
     return routeMap[title] || '#';
@@ -266,7 +266,7 @@ export function TransformBusiness() {
               className="text-3xl font-bold mb-8 text-center"
               style={{ color: '#80DFFF' }}
             >
-              Ecommerce
+              E-commerce
             </motion.h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

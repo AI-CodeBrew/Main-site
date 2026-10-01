@@ -40,9 +40,16 @@ export function HowWeWork() {
         </div>
 
         <ol className="mt-10 space-y-8 md:hidden">
-          {howWeWork.map((item) => (
+          {howWeWork.map((item, index) => (
             <li key={item.step} className="relative pl-8">
-              <span className="absolute left-0 top-1 h-3 w-3 rounded-full bg-[#C8F24A]" />
+              {/* Dotted connector from this dot down to the next step's dot (spans the space-y-8 gap). */}
+              {index < howWeWork.length - 1 ? (
+                <span
+                  aria-hidden
+                  className="absolute -bottom-8 left-[5px] top-5 border-l-2 border-dotted border-[#C4C4CC]"
+                />
+              ) : null}
+              <span className="absolute left-0 top-1 z-10 h-3 w-3 rounded-full bg-[#C8F24A]" />
               <p className="text-sm font-medium text-[#111111]">
                 Step {String(item.step).padStart(2, "0")}
               </p>

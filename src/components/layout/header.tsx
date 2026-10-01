@@ -226,11 +226,11 @@ export function Header() {
                 href="/ecommerce"
                 className="block px-4 py-3 text-body dark:text-gray-200 hover:text-heading dark:hover:text-white hover:bg-surface-muted dark:hover:bg-gray-800 rounded-lg transition-all duration-200 font-medium"
                 onClick={() => {
-                  trackNav("/ecommerce", "Ecommerce", "header_mobile");
+                  trackNav("/ecommerce", "E-commerce", "header_mobile");
                   setMobileMenuOpen(false);
                 }}
               >
-                Ecommerce
+                E-commerce
               </Link>
 
               <Link

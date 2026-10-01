@@ -819,7 +819,7 @@ export function TechStack() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
-            Tech Stack Ecommerce
+            Tech Stack E-commerce
           </h2>
           <p className="text-xl" style={{ color: 'var(--text-muted)' }}>
             Comprehensive ecommerce tools and platforms for building successful online stores

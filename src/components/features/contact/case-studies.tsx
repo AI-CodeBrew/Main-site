@@ -95,6 +95,8 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
 /** PROJECTS is rendered at full-screen width and scaled down, so it stays sharp at its largest. */
 const WORD_MIN_SCALE = 0.45;
 const WORD_END_SCALE = 0.55;
+/** Phones: the word is already small at 17vw, so it barely shrinks and doesn't leave an empty block. */
+const WORD_END_SCALE_MOBILE = 0.85;
 /** Share of the outro scroll after which the heading starts shrinking. */
 const SHRINK_START = 0.73;
 
@@ -124,6 +126,18 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
   const trackRef = useRef<HTMLElement>(null);
   const outroRef = useRef<HTMLDivElement>(null);
 
+  // Below Tailwind's md breakpoint. A ref, so the scroll transform reads it without re-subscribing.
+  const isMobileRef = useRef(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767px)");
+    const update = () => {
+      isMobileRef.current = query.matches;
+    };
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
   // Grow: 0 when the section's top enters the bottom of the screen, 1 when it reaches the top.
   const { scrollYProgress: enterProgress } = useScroll({
     target: trackRef,
@@ -144,7 +158,8 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
     // so the shrinking word is never hidden behind pictures.
     if (outro > SHRINK_START) {
       const t = easeInOut(Math.min(1, (outro - SHRINK_START) / (1 - SHRINK_START)));
-      return 1 + (WORD_END_SCALE - 1) * t;
+      const endScale = isMobileRef.current ? WORD_END_SCALE_MOBILE : WORD_END_SCALE;
+      return 1 + (endScale - 1) * t;
     }
     // Grow: spread over the whole entry so the zoom-in is gradual.
     const t = easeInOut(Math.min(1, Math.max(0, enter)));
@@ -208,8 +223,10 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
 
       {/* Browser-native pin (Axtra pins its heading with pinSpacing: false): cards scroll over it. */}
       {/* 60dvh block: the word sits ~30% down the screen, and when the section ends the next
-          section shows in the bottom 40% instead of a screen of empty dark space. */}
-      <div className="pointer-events-none sticky top-0 z-[1] flex h-[60dvh] items-center justify-center overflow-hidden">
+          section shows in the bottom 40% instead of a screen of empty dark space.
+          Phones: 36dvh, pushed below the fixed header — the word is much shorter there, so a 60dvh
+          block was mostly empty black. */}
+      <div className="pointer-events-none sticky top-0 z-[1] flex h-[36dvh] items-center justify-center overflow-hidden pt-14 md:h-[60dvh] md:pt-0">
         {/* 17vw keeps all 8 letters inside the screen width at full size, on phones too. */}
         <motion.h2
           id="projects-heading"
@@ -220,9 +237,9 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
         </motion.h2>
       </div>
 
-      <div className="relative z-[2] mx-auto -mt-[60dvh] w-full max-w-[1320px] px-4 md:px-3">
+      <div className="relative z-[2] mx-auto -mt-[36dvh] w-full max-w-[1320px] px-4 md:-mt-[60dvh] md:px-3">
         {/* Axtra: the list starts right under the heading block. */}
-        <div className="h-[45dvh] md:h-[350px]" aria-hidden />
+        <div className="h-[36dvh] md:h-[350px]" aria-hidden />
 
         {/* md bottom padding = half a card: the right column is pushed down by `top: 50%`,
             which layout doesn't count, so reserve that space or the last card overlaps the outro. */}
