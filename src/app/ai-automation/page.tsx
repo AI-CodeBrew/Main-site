@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Hero } from "@/components/common/hero";
-import { ServicesGrid } from "@/components/features/services/services-grid";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
+
+const ServicesGrid = dynamic(
+  () => import("@/components/features/services/services-grid").then((m) => m.ServicesGrid),
+  { loading: () => <div className="min-h-[28rem]" aria-hidden /> },
+);
 
 export const metadata: Metadata = buildPageMetadata({
   title: "AI Automation & Agents",
   description:
-    "AI voice and chat agents, workflow automation, sales AI and custom agents for businesses worldwide. Talk to Fynk Tech.",
+    "AI voice and chat agents, workflow automation, sales AI and custom agents for businesses worldwide. Talk to FynkTech.",
   path: "/ai-automation",
 });
 

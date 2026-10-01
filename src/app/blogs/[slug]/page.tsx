@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     blog.meta_description ||
     blog.story.tldr ||
     blog.description ||
-    "Insights from Fynk Tech on AI automation and e-commerce. Read the full article.";
+    "Insights from FynkTech on AI automation and e-commerce. Read the full article.";
 
   return buildPageMetadata({
     title: title.slice(0, 50),

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export type BlogIndexCard = {
@@ -11,6 +12,16 @@ export type BlogIndexCard = {
   image: string | null;
   card_image: string | null;
 };
+
+function canOptimizeImage(src: string): boolean {
+  if (src.startsWith("/")) return true;
+  try {
+    const host = new URL(src).hostname;
+    return host.endsWith(".b-cdn.net") || host === "images.unsplash.com";
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Customers-style listing: category filters + image / tag / title cards.
@@ -101,20 +112,23 @@ function StoryGrid({ posts }: { posts: BlogIndexCard[] }) {
 
   return (
     <ul className="grid gap-8 sm:grid-cols-2 sm:gap-x-7 sm:gap-y-10 lg:grid-cols-3">
-      {posts.map((post) => {
+      {posts.map((post, index) => {
         const img = post.card_image || post.image;
         const category = post.description?.trim() || null;
+        const aboveFold = index < 3;
         return (
           <li key={post.id}>
             <Link href={`/blogs/${post.slug}`} className="group block">
-              <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-surface-muted">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-surface-muted">
                 {img ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={img}
                     alt=""
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    loading="lazy"
+                    fill
+                    priority={aboveFold}
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    unoptimized={!canOptimizeImage(img)}
                   />
                 ) : null}
               </div>

@@ -6,7 +6,7 @@ import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Support ROI Calculator",
   description:
-    "Estimate hours and cost saved by automating support with AI. Free ROI calculator from Fynk Tech — then talk to an expert.",
+    "Estimate hours and cost saved by automating support with AI. Free ROI calculator from FynkTech — then talk to an expert.",
   path: "/roi-calculator",
 });
 

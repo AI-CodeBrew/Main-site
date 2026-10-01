@@ -6,7 +6,7 @@
 import { withPostHog } from "@/lib/posthog-client";
 
 /**
- * Named product events for the Fynk Tech marketing site.
+ * Named product events for the FynkTech marketing site.
  * Keep names stable — PostHog dashboards and insights key off these.
  */
 export type TrackEventName =

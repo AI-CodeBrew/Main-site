@@ -8,7 +8,7 @@ import { callOpenAI } from "./openai";
 import type { ChatSettings } from "./settings";
 import { addChatUsage, updateConversation, type ChatConversation, type ChatMessageRow } from "./store";
 
-const SUMMARY_PROMPT = `You keep a running summary of a website chat between a visitor and Fynk Tech's assistant.
+const SUMMARY_PROMPT = `You keep a running summary of a website chat between a visitor and FynkTech's assistant.
 Update the summary with the new messages. Keep only what helps continue the conversation:
 - who the visitor is (name, company, country, email or WhatsApp they shared)
 - their business and what they want to build or fix

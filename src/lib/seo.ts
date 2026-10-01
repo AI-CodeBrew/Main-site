@@ -21,11 +21,11 @@ function clampDescription(text: string, max = 158): string {
 }
 
 type PageMetaInput = {
-  /** Page topic only — template appends "| Fynk Tech" unless absoluteTitle is set */
+  /** Page topic only — template appends "| FynkTech" unless absoluteTitle is set */
   title: string;
   description: string;
   path: string;
-  /** Full document title, e.g. homepage starting with "Fynk Tech" */
+  /** Full document title, e.g. homepage starting with "FynkTech" */
   absoluteTitle?: string;
   ogType?: "website" | "article";
   image?: string;
@@ -44,7 +44,7 @@ export function buildPageMetadata({
 }: PageMetaInput): Metadata {
   const desc = clampDescription(description);
   const canonical = path === "/" ? absUrl("/") : absUrl(path);
-  const ogTitle = absoluteTitle ?? `${title} | Fynk Tech`;
+  const ogTitle = absoluteTitle ?? `${title} | FynkTech`;
 
   return {
     title: absoluteTitle ? { absolute: absoluteTitle } : title,
@@ -54,7 +54,7 @@ export function buildPageMetadata({
       title: ogTitle,
       description: desc,
       url: canonical,
-      siteName: "Fynk Tech",
+      siteName: "FynkTech",
       type: ogType,
       locale: "en_US",
       images: [
@@ -62,7 +62,7 @@ export function buildPageMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: "Fynk Tech",
+          alt: "FynkTech",
         },
       ],
     },
@@ -80,8 +80,8 @@ export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Fynk Tech",
-    alternateName: ["FynkTech", "fynktech.com"],
+    name: "FynkTech",
+    alternateName: ["fynktech.com"],
     url: absUrl("/"),
     logo: absUrl(LOGO_SQUARE_PATH),
     email: siteConfig.email,
@@ -108,10 +108,10 @@ export function websiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Fynk Tech",
-    alternateName: ["FynkTech", "fynktech.com"],
+    name: "FynkTech",
+    alternateName: ["fynktech.com"],
     url: absUrl("/"),
-    publisher: { "@type": "Organization", name: "Fynk Tech", url: absUrl("/") },
+    publisher: { "@type": "Organization", name: "FynkTech", url: absUrl("/") },
   };
 }
 
@@ -141,7 +141,7 @@ export function serviceJsonLd(input: {
     url: absUrl(input.path),
     provider: {
       "@type": "Organization",
-      name: "Fynk Tech",
+      name: "FynkTech",
       url: absUrl("/"),
     },
     areaServed: ["AE", "SA", "GB", "US", "PK", "QA", "KW", "BH", "OM"],

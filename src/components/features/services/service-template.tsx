@@ -13,7 +13,7 @@ type ServiceTemplateProps = {
 
 export function ServiceTemplate({ service }: ServiceTemplateProps) {
   const wa = whatsappLink(
-    `Hi Fynk Tech — I'm interested in ${service.headline}.`,
+    `Hi FynkTech — I'm interested in ${service.headline}.`,
   );
 
   return (

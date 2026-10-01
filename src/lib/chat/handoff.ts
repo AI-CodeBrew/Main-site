@@ -41,7 +41,7 @@ export class ChatwootHandoffStub implements ChatwootHandoff {
 
 export async function notifyTeam(payload: HandoffPayload & { subject?: string }): Promise<void> {
   const subject =
-    payload.subject ?? `[Fynk Tech] Chat handoff — ${payload.email ?? payload.sessionId}`;
+    payload.subject ?? `[FynkTech] Chat handoff — ${payload.email ?? payload.sessionId}`;
   const body = [
     `Session: ${payload.sessionId}`,
     payload.pathname ? `Page: ${payload.pathname}` : null,
@@ -74,7 +74,7 @@ export async function notifyTeam(payload: HandoffPayload & { subject?: string })
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.RESEND_FROM ?? "Fynk Tech <onboarding@resend.dev>",
+        from: process.env.RESEND_FROM ?? "FynkTech <onboarding@resend.dev>",
         to: [to],
         subject,
         text: body,

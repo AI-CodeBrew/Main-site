@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Terms & Conditions",
   description:
-    "Terms governing use of fynktech.com and related Fynk Tech services. Read before using the site, or contact us for help.",
+    "Terms governing use of fynktech.com and related FynkTech services. Read before using the site, or contact us for help.",
   path: "/terms",
 });
 

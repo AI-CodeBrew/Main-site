@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy",
   description:
-    "How Fynk Tech collects and uses personal data on fynktech.com. Read our privacy policy, then contact us with questions.",
+    "How FynkTech collects and uses personal data on fynktech.com. Read our privacy policy, then contact us with questions.",
   path: "/privacy",
 });
 

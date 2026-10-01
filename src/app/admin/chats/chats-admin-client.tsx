@@ -337,7 +337,7 @@ export function ChatsAdminClient() {
       <section className={`${selectedId ? "flex" : "hidden md:flex"} min-w-0 flex-1 flex-col`}>
         {!selectedId || !active ? (
           <div className="flex flex-1 flex-col items-center justify-center bg-[#f8f9fc] p-8 text-center">
-            <p className="text-lg font-semibold text-[#070643]">Fynk Tech Chats</p>
+            <p className="text-lg font-semibold text-[#070643]">FynkTech Chats</p>
             <p className="mt-2 max-w-sm! text-sm text-gray-500">
               Select a chat to read the conversation. Replying takes the chat over from the bot.
             </p>

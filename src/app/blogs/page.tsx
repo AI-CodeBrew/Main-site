@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import nextDynamic from "next/dynamic";
 import { BlogsIndex } from "@/components/features/blog/blogs-index";
-import { Contact } from "@/components/features/contact/contact";
 import { JsonLd } from "@/components/seo/json-ld";
 import { listBlogs } from "@/lib/blogs/store";
 import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
+const Contact = nextDynamic(
+  () => import("@/components/features/contact/contact").then((m) => m.Contact),
+  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
+);
+
 export const metadata: Metadata = buildPageMetadata({
   title: "Stories",
   description:
-    "Customer stories and practical notes on AI agents, automation, and e-commerce from the Fynk Tech team.",
+    "Customer stories and practical notes on AI agents, automation, and e-commerce from the FynkTech team.",
   path: "/blogs",
 });
 
@@ -79,7 +84,7 @@ export default async function BlogPage() {
             <span aria-hidden>🎉</span> Customer stories
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">
-            How teams use Fynk Tech AI agents and e-commerce systems to reply faster, qualify better,
+            How teams use FynkTech AI agents and e-commerce systems to reply faster, qualify better,
             and grow revenue.
           </p>
         </div>

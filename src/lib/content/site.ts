@@ -5,7 +5,7 @@
  */
 
 export const siteConfig = {
-  name: "Fynk Tech",
+  name: "FynkTech",
   url: "https://www.fynktech.com",
   email: "umer@fynktech.com",
   /** WhatsApp digits only for wa.me (PK 03058877785 → 923058877785) */

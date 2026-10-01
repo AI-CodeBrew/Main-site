@@ -37,22 +37,22 @@ export function Footer() {
               <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-gray-200">
                 <Image
                   src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
-                  alt="Fynk Tech"
+                  alt="FynkTech"
                   width={32}
                   height={32}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <span className="font-semibold text-xl" style={{ color: 'var(--foreground)' }}>Fynk Tech</span>
+              <span className="font-semibold text-xl" style={{ color: 'var(--foreground)' }}>FynkTech</span>
             </div>
             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted-foreground)' }}>
               AI automation and e-commerce systems for businesses worldwide. Delivery center in Lahore, Pakistan.
             </p>
             <div className="flex gap-3">
               {[
-                { href: socialLinks.facebook, label: "Fynk Tech on Facebook", Icon: FacebookIcon },
-                { href: socialLinks.instagram, label: "Fynk Tech on Instagram", Icon: InstagramIcon },
-                { href: socialLinks.linkedin, label: "Fynk Tech on LinkedIn", Icon: LinkedInIcon },
+                { href: socialLinks.facebook, label: "FynkTech on Facebook", Icon: FacebookIcon },
+                { href: socialLinks.instagram, label: "FynkTech on Instagram", Icon: InstagramIcon },
+                { href: socialLinks.linkedin, label: "FynkTech on LinkedIn", Icon: LinkedInIcon },
               ].map(({ href, label, Icon }) => (
                 <a
                   key={label}
@@ -147,7 +147,7 @@ export function Footer() {
 
         <div className="border-t pt-8 text-center" style={{ borderColor: 'var(--border)' }}>
           <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
-            © {new Date().getFullYear()} Fynk Tech. All rights reserved.
+            © {new Date().getFullYear()} FynkTech. All rights reserved.
           </p>
         </div>
       </div>

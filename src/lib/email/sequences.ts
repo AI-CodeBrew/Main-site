@@ -38,7 +38,7 @@ export const emailSequences: Record<LeadType, SequenceEmail[]> = {
   contact: [
     {
       day: 0,
-      subject: "We received your message — Fynk Tech",
+      subject: "We received your message — FynkTech",
       body: "Thanks for reaching out. A team member will reply within our business hours. TODO: set SLA from siteConfig.",
     },
     {
@@ -66,7 +66,7 @@ export const emailSequences: Record<LeadType, SequenceEmail[]> = {
     {
       day: 0,
       subject: "Following up on our chat",
-      body: "Thanks for chatting with Fynk Tech. Here is a recap of what you asked about. TODO: insert transcript summary.",
+      body: "Thanks for chatting with FynkTech. Here is a recap of what you asked about. TODO: insert transcript summary.",
     },
     {
       day: 2,

@@ -1,4 +1,4 @@
-# 🏗️ Fynk Tech - Modular Project Structure
+# 🏗️ FynkTech - Modular Project Structure
 
 ## 📁 New Folder Organization
 

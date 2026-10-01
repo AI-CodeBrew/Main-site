@@ -45,11 +45,11 @@ function greetingForPath(pathname: string): string {
   if (pathname === "/roi-calculator") {
     return "Curious about support ROI? I can explain assumptions behind the calculator.";
   }
-  return "Ask about Fynk Tech services, process, or how to get started.";
+  return "Ask about FynkTech services, process, or how to get started.";
 }
 
 function introFor(pathname: string, name: string | null): string {
-  return `Hi${name ? ` ${name}` : ""} — I'm the Fynk Tech site assistant. ${greetingForPath(pathname)}`;
+  return `Hi${name ? ` ${name}` : ""} — I'm the FynkTech site assistant. ${greetingForPath(pathname)}`;
 }
 
 // A chat is kept for a while after the visitor's last activity (admin setting, default 1 hour):
@@ -562,7 +562,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
     }
   };
 
-  const wa = whatsappLink("Hi Fynk Tech — I was chatting on your website.");
+  const wa = whatsappLink("Hi FynkTech — I was chatting on your website.");
 
   // Phones: full screen, like a messaging app. It fills the visible area, so when the keyboard
   // opens the chat shrinks to the space above it and the message box stays in view.
@@ -597,7 +597,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
             style={panelStyle}
             role="dialog"
-            aria-label="Chat with Fynk Tech"
+            aria-label="Chat with FynkTech"
             // data-lenis-prevent: messages scroll natively instead of the page behind.
             data-lenis-prevent
             className={`bg-surface flex flex-col overflow-hidden ${
@@ -614,14 +614,14 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
               <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden ring-2 ring-white/20">
                 <Image
                   src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
-                  alt="Fynk Tech"
+                  alt="FynkTech"
                   width={40}
                   height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-white font-semibold text-sm truncate">Fynk Tech Assistant</h3>
+                <h3 className="text-white font-semibold text-sm truncate">FynkTech Assistant</h3>
               </div>
               <span className="relative inline-flex shrink-0">
                 <span
@@ -663,7 +663,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
                 className="flex-1 flex flex-col justify-center gap-4 p-6 bg-surface-muted"
               >
                 <div className="text-center">
-                  <p className="text-lg font-semibold text-heading">Welcome to Fynk Tech</p>
+                  <p className="text-lg font-semibold text-heading">Welcome to FynkTech</p>
                   <p className="mt-1 text-sm text-body">Enter your name to start. Phone is optional.</p>
                 </div>
                 <label className="block">
@@ -792,7 +792,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
             className="block w-full text-left"
             aria-label="Open chat to read the new reply"
           >
-            <span className="block text-xs font-semibold text-heading">Fynk Tech Assistant</span>
+            <span className="block text-xs font-semibold text-heading">FynkTech Assistant</span>
             <span className="mt-0.5 line-clamp-2 block text-sm text-body">{unread.preview}</span>
           </button>
           <button

@@ -60,7 +60,7 @@ function Brand({ onNavigate }: { onNavigate?: () => void }) {
         F
       </span>
       <span className="leading-tight">
-        <span className="block text-sm font-bold text-[#070643]">Fynk Tech</span>
+        <span className="block text-sm font-bold text-[#070643]">FynkTech</span>
         <span className="block text-[11px] uppercase tracking-[0.12em] text-gray-400">Admin</span>
       </span>
     </Link>

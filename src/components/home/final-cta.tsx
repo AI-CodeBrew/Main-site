@@ -14,7 +14,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 export function FinalCta() {
-  const wa = whatsappLink("Hi Fynk Tech — I'd like to talk about a project.");
+  const wa = whatsappLink("Hi FynkTech — I'd like to talk about a project.");
 
   return (
     // Same black as Proven Results above — one continuous dark block, no separate shade.

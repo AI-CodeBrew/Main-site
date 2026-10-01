@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     email: lead.email ?? undefined,
     whatsapp: lead.whatsapp ?? undefined,
     message: message || lead.services_interest || undefined,
-    subject: `[Fynk Tech] New lead — ${lead.lead_type ?? "contact"}`,
+    subject: `[FynkTech] New lead — ${lead.lead_type ?? "contact"}`,
   });
 
   return NextResponse.json({ ok: true, id: result.id, stored: result.ok });

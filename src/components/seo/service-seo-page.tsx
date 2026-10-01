@@ -37,7 +37,7 @@ const SEO_TITLE: Partial<Record<`${ServiceCategory}/${ServiceSlug}`, string>> = 
 
 function ctaDescription(subheadline: string): string {
   const base = subheadline.replace(/\s+/g, " ").trim();
-  const cta = " Book a free consultation with Fynk Tech.";
+  const cta = " Book a free consultation with FynkTech.";
   if (base.length + cta.length <= 158) return base + cta;
   return `${base.slice(0, 158 - cta.length - 1).trimEnd()}…${cta}`;
 }

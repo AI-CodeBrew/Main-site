@@ -7,7 +7,7 @@ export function StickyVideoSplitExample() {
     <StickyVideoSplit
       videoSrc="/videos/6719ad0ceed6d5aa24a83d61_6748168d07d698d005cc4116_careers -transcode.mp4"
       title="Join Our Team"
-      subtitle="Careers at Fynk Tech"
+      subtitle="Careers at FynkTech"
       description="We're building the future of technology with innovative solutions that transform businesses worldwide. Join our team of passionate developers, designers, and innovators."
       features={[
         "Competitive salary and benefits",

@@ -1,44 +1,51 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { ChatLauncher } from "@/components/layout/chat-launcher";
 import { DeferredAnalytics } from "@/components/layout/deferred-analytics";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { UtmCapture } from "@/components/layout/utm-capture";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { SITE_URL } from "@/lib/seo";
 
+const DeferredChatLauncher = dynamic(
+  () => import("@/components/layout/chat-launcher").then((m) => m.ChatLauncher),
+  { ssr: false },
+);
+
+// Single family for body + hero headings. preload + display swap keeps LCP text visible.
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-aeonik",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Fynk Tech | AI Agents & E-commerce Stores",
-    template: "%s | Fynk Tech",
+    default: "FynkTech | AI Agents & E-commerce Stores",
+    template: "%s | FynkTech",
   },
   description:
-    "Fynk Tech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert today.",
-  applicationName: "Fynk Tech",
+    "FynkTech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert today.",
+  applicationName: "FynkTech",
   openGraph: {
-    title: "Fynk Tech | AI Agents & E-commerce Stores",
+    title: "FynkTech | AI Agents & E-commerce Stores",
     description:
       "AI agents and e-commerce stores for global businesses — engineered in Lahore.",
     url: SITE_URL,
-    siteName: "Fynk Tech",
+    siteName: "FynkTech",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Fynk Tech",
+        alt: "FynkTech",
       },
     ],
     locale: "en_US",
@@ -46,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fynk Tech | AI Agents & E-commerce Stores",
+    title: "FynkTech | AI Agents & E-commerce Stores",
     description:
       "AI agents and e-commerce stores for global businesses — engineered in Lahore.",
     images: ["/og.png"],
@@ -74,7 +81,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakarta.variable} antialiased`}
+        className={`${plusJakarta.variable} ${plusJakarta.className} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
       >
         <SmoothScroll />
@@ -88,7 +95,7 @@ export default function RootLayout({
         <SiteChrome>
           <Footer />
         </SiteChrome>
-        <ChatLauncher />
+        <DeferredChatLauncher />
         <DeferredAnalytics />
       </body>
     </html>

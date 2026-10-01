@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Page Not Found",
   description:
-    "That page doesn’t exist on Fynk Tech. Go home or contact us for AI agents and e-commerce help.",
+    "That page doesn’t exist on FynkTech. Go home or contact us for AI agents and e-commerce help.",
   path: "/404",
   noIndex: true,
 });

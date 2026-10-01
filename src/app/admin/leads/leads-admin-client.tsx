@@ -279,7 +279,7 @@ function LeadDetail({
   const phone = str(lead.whatsapp) || str(qualificationOf(lead).phone);
   const message = messageOf(lead);
   const status = str(lead.status) || "new";
-  const replyText = `Hi ${name}, thanks for contacting Fynk Tech.`;
+  const replyText = `Hi ${name}, thanks for contacting FynkTech.`;
   const wa = phone ? whatsappUrl(phone, replyText) : null;
 
   const extras = Object.entries(qualificationOf(lead)).filter(
@@ -338,7 +338,7 @@ function LeadDetail({
       <div className="mt-5 flex flex-wrap gap-2">
         {email && (
           <a
-            href={`mailto:${email}?subject=${encodeURIComponent("Re: your message to Fynk Tech")}&body=${encodeURIComponent(`${replyText}\n\n`)}`}
+            href={`mailto:${email}?subject=${encodeURIComponent("Re: your message to FynkTech")}&body=${encodeURIComponent(`${replyText}\n\n`)}`}
             onClick={markContacted}
             className="inline-flex items-center gap-2 rounded-full bg-[#0A0045] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
           >

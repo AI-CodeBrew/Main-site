@@ -82,9 +82,8 @@
   --gradient-soft: linear-gradient(135deg, rgba(10, 0, 69, 0.1) 0%, rgba(90, 131, 255, 0.1) 100%);
   --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
 
-  /* Fonts — one family (Plus Jakarta Sans, loaded in layout.tsx as --font-aeonik) for body
-     and headings, so the page downloads a single font file. */
-  --font-aeonik: Aeonik, "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  /* --font-aeonik is set by next/font (layout.tsx) on <body>. Do not redefine it here or
+     the preloaded Plus Jakarta Sans file won't be the family the hero/body actually use. */
 }
 
 
@@ -122,7 +121,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-aeonik);
+  font-family: var(--font-aeonik), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   cursor: default;
@@ -392,8 +391,8 @@ section {
   animation: scroll-right 20s linear infinite; 
 }
 
-.heading-display { font-family: var(--font-aeonik); font-weight: 800; letter-spacing: -0.02em; }
-.heading-title { font-family: var(--font-aeonik); font-weight: 700; letter-spacing: -0.01em; }
+.heading-display { font-family: var(--font-aeonik), ui-sans-serif, system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+.heading-title { font-family: var(--font-aeonik), ui-sans-serif, system-ui, sans-serif; font-weight: 700; letter-spacing: -0.01em; }
 .text-muted { color: hsl(var(--muted-foreground)); }
 
 /* Hero animated gradient background */

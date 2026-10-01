@@ -50,7 +50,7 @@ export function GlobalLeadership() {
             Our Global Leadership
           </h2>
           <p className="text-xl max-w-3xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
-            Meet the visionary leaders driving innovation and excellence at Fynk Tech
+            Meet the visionary leaders driving innovation and excellence at FynkTech
           </p>
         </motion.div>
         

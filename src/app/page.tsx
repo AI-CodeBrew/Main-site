@@ -39,9 +39,9 @@ const FinalCta = dynamic(
 
 export const metadata: Metadata = buildPageMetadata({
   title: "AI Agents & E-commerce",
-  absoluteTitle: "Fynk Tech | AI Agents & E-commerce Stores for Global Growth",
+  absoluteTitle: "FynkTech | AI Agents & E-commerce Stores for Global Growth",
   description:
-    "Fynk Tech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert or WhatsApp us today.",
+    "FynkTech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert or WhatsApp us today.",
   path: "/",
 });
 

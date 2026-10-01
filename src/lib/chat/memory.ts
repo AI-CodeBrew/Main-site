@@ -16,7 +16,7 @@ export const MEM0_RECENT_LIMIT = (() => {
   return Number.isFinite(n) && n >= 2 && n <= 12 ? Math.round(n) : 4;
 })();
 
-const CUSTOM_INSTRUCTIONS = `Your Task: Extract durable sales / lead facts about the website visitor for Fynk Tech.
+const CUSTOM_INSTRUCTIONS = `Your Task: Extract durable sales / lead facts about the website visitor for FynkTech.
 
 Information to Extract:
 1. Identity: name, company, role, country/city, preferred contact (email or WhatsApp) when they share it
@@ -33,7 +33,7 @@ Exclude:
 - Passwords, payment card numbers, government IDs
 - Exact full message transcripts
 - Greetings, acknowledgements ("ok", "thanks"), privacy consent alone
-- Fynk Tech marketing copy or generic service lists the bot already knows`;
+- FynkTech marketing copy or generic service lists the bot already knows`;
 
 const SKIP_ADD =
   /^(hi|hello|hey|salam|assalam|thanks|thank you|ok|okay|yes|no|sure|cool|great|nice|bye|i agree|privacy)\b[.!?]*$/i;

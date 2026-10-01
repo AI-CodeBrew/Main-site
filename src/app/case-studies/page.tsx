@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ExternalLink } from "lucide-react";
 import { PageHero } from "@/components/common/page-hero";
-import { Contact } from "@/components/features/contact/contact";
 import { JsonLd } from "@/components/seo/json-ld";
 import { projects } from "@/lib/content/company";
 import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
+const Contact = dynamic(
+  () => import("@/components/features/contact/contact").then((m) => m.Contact),
+  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
+);
+
 export const metadata: Metadata = buildPageMetadata({
   title: "Case Studies",
   description:
-    "Selected Fynk Tech client work, starting with Dialcom. See how we build AI and e-commerce systems — then talk to us.",
+    "Selected FynkTech client work, starting with Dialcom. See how we build AI and e-commerce systems — then talk to us.",
   path: "/case-studies",
 });
 

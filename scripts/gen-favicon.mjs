@@ -45,7 +45,7 @@ async function ogImage() {
         </linearGradient>
       </defs>
       <rect width="100%" height="100%" fill="url(#g)"/>
-      <text x="120" y="280" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700" fill="#ffffff">Fynk Tech</text>
+      <text x="120" y="280" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700" fill="#ffffff">FynkTech</text>
       <text x="120" y="360" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#c9d2ff">AI Agents &amp; E-commerce Stores</text>
       <text x="120" y="420" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#9aa8e8">Gulf · UK · US</text>
     </svg>
@@ -71,8 +71,8 @@ async function faviconIco() {
 async function webManifestStatic() {
   // App Router also serves manifest.ts; keep a static fallback for crawlers that hit /site.webmanifest
   const manifest = {
-    name: "Fynk Tech",
-    short_name: "Fynk Tech",
+    name: "FynkTech",
+    short_name: "FynkTech",
     description: "AI agents and e-commerce stores for businesses in the Gulf, UK and US.",
     start_url: "/",
     display: "standalone",

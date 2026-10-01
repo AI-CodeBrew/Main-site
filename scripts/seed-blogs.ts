@@ -9,7 +9,7 @@ const POSTS = [
     slug: "ai-agents-that-qualify-leads-24-7",
     title: "AI Agents That Qualify Leads 24/7 — Without Losing the Human Touch",
     description: "AI Agents",
-    meta_title: "AI Lead Qualification Agents | Fynk Tech",
+    meta_title: "AI Lead Qualification Agents | FynkTech",
     meta_description:
       "How AI voice and chat agents qualify leads around the clock, hand off to humans, and shorten sales cycles for teams that sell worldwide.",
     image:
@@ -22,7 +22,7 @@ const POSTS = [
         { value: "3×", label: "faster first reply" },
         { value: "90%", label: "routine questions handled by AI" },
       ],
-      tldr: "Teams lose deals when leads wait. Fynk Tech AI agents qualify on WhatsApp, web chat, and voice — then hand off clean context to humans so sales stays focused on buyers who are ready.",
+      tldr: "Teams lose deals when leads wait. FynkTech AI agents qualify on WhatsApp, web chat, and voice — then hand off clean context to humans so sales stays focused on buyers who are ready.",
       goals: [
         "Qualify inbound leads before sales follow-up",
         "Answer after-hours without hiring a night shift",
@@ -35,8 +35,8 @@ const POSTS = [
         "WhatsApp, web, and voice in one flow",
         "CRM sync so nothing falls through",
       ],
-      quote: "We needed something that sounded human, qualified properly, and never slept. That is exactly what we shipped with Fynk Tech.",
-      quote_author: "Fynk Tech delivery team",
+      quote: "We needed something that sounded human, qualified properly, and never slept. That is exactly what we shipped with FynkTech.",
+      quote_author: "FynkTech delivery team",
       website: "fynktech.com",
       location: "Lahore, Pakistan",
       industry: "AI Agents",
@@ -45,7 +45,7 @@ const POSTS = [
     content: `
 <h2>Why lead response time still decides deals</h2>
 <p>Most teams lose pipeline in the first minutes — after hours, weekends, and busy midday spikes. An AI agent on WhatsApp, web chat, or voice can greet, ask the right questions, and book the next step while your team sleeps.</p>
-<h2>What a Fynk Tech agent actually does</h2>
+<h2>What a FynkTech agent actually does</h2>
 <ul>
 <li>Answers FAQs in English, Urdu, or Arabic</li>
 <li>Qualifies budget, timeline, and use case</li>
@@ -60,7 +60,7 @@ const POSTS = [
     slug: "shopify-stores-built-to-convert",
     title: "Shopify Stores Built to Convert — Not Just Look Pretty",
     description: "E-commerce",
-    meta_title: "Conversion-Ready Shopify Stores | Fynk Tech",
+    meta_title: "Conversion-Ready Shopify Stores | FynkTech",
     meta_description:
       "Launch or rebuild a Shopify store with clear funnels, payments, and growth systems — for brands selling worldwide.",
     image:
@@ -86,7 +86,7 @@ const POSTS = [
     slug: "workflow-automation-that-cuts-busywork",
     title: "Workflow Automation That Cuts Busywork Across Your Tools",
     description: "Automation",
-    meta_title: "Business Workflow Automation | Fynk Tech",
+    meta_title: "Business Workflow Automation | FynkTech",
     meta_description:
       "Connect CRM, support, and ops tools with reliable automations — fewer manual steps, faster handoffs, clearer pipelines.",
     image:
@@ -104,7 +104,7 @@ const POSTS = [
 <li>Order events → inventory, shipping, and customer messages</li>
 </ul>
 <h2>Talk to us</h2>
-<p>Explore <a href="/ai-automation/workflow">workflow automation</a> or <a href="/contact">book a call</a> with Fynk Tech.</p>
+<p>Explore <a href="/ai-automation/workflow">workflow automation</a> or <a href="/contact">book a call</a> with FynkTech.</p>
 `.trim(),
   },
 ] as const;

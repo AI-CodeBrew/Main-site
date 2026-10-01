@@ -3,8 +3,8 @@ import { SITE_URL } from "@/lib/seo";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Fynk Tech",
-    short_name: "Fynk Tech",
+    name: "FynkTech",
+    short_name: "FynkTech",
     description:
       "AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan.",
     start_url: "/",

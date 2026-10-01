@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Globe, MapPin, MessageCircle, Mic, Wrench, Zap } from "lucide-react";
 import type { Blog, BlogListItem } from "@/lib/blogs/store";
 import {
@@ -16,6 +17,16 @@ type Props = {
   related: BlogListItem[];
 };
 
+function canOptimizeImage(src: string): boolean {
+  if (src.startsWith("/")) return true;
+  try {
+    const host = new URL(src).hostname;
+    return host.endsWith(".b-cdn.net") || host === "images.unsplash.com";
+  } catch {
+    return false;
+  }
+}
+
 function channelIcon(label: string) {
   const key = label.toLowerCase();
   if (key.includes("whatsapp") || key.includes("chat") || key.includes("message")) {
@@ -29,7 +40,7 @@ function channelIcon(label: string) {
 
 function channelHref(label: string): string | null {
   const key = label.toLowerCase();
-  if (key.includes("whatsapp")) return whatsappLink("Hi Fynk Tech — I saw your story and want to talk.") || null;
+  if (key.includes("whatsapp")) return whatsappLink("Hi FynkTech — I saw your story and want to talk.") || null;
   if (key.includes("web") || key.includes("chat")) return "/contact";
   if (key.includes("voice") || key.includes("call")) return "/contact";
   return null;
@@ -111,9 +122,16 @@ export function BlogStoryArticle({ blog, related }: Props) {
             </div>
 
             {blog.image ? (
-              <div className="overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={blog.image} alt="" className="aspect-[16/11] w-full object-cover" />
+              <div className="relative aspect-[16/11] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
+                <Image
+                  src={blog.image}
+                  alt=""
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  unoptimized={!canOptimizeImage(blog.image)}
+                />
               </div>
             ) : null}
           </div>
@@ -228,7 +246,7 @@ export function BlogStoryArticle({ blog, related }: Props) {
               />
               <div className="relative">
                 <p className="text-lg font-semibold md:text-xl">Want results like this for your team?</p>
-                <p className="mt-2 text-sm text-white/70">Talk to Fynk Tech about AI agents and automation.</p>
+                <p className="mt-2 text-sm text-white/70">Talk to FynkTech about AI agents and automation.</p>
                 <Link
                   href="/contact"
                   className="mt-6 inline-flex rounded-full bg-[#5A83FF] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#96BDFF] hover:text-[#070643]"
@@ -242,7 +260,7 @@ export function BlogStoryArticle({ blog, related }: Props) {
           {/* Sticky sidebar — stays while left content scrolls */}
           <aside className="order-first lg:order-none lg:sticky lg:top-28 lg:z-10 lg:self-start">
             <div className="space-y-7">
-              <p className="text-sm font-bold tracking-tight text-heading">Fynk Tech</p>
+              <p className="text-sm font-bold tracking-tight text-heading">FynkTech</p>
 
               <div className="flex gap-3">
                 <Globe className="mt-0.5 h-4 w-4 shrink-0 text-[#5A83FF]" aria-hidden />

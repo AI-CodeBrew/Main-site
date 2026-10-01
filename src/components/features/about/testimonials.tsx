@@ -22,7 +22,7 @@ export function Testimonials() {
       name: "Abdulrahman Al-Mansouri",
       title: "CEO, Riyadh Tech Solutions",
       company: "Riyadh Tech Solutions",
-      quote: "Fynk Tech transformed our entire operation. Their AI automation solutions increased our efficiency by 70% in just 6 weeks. The ROI was immediate and substantial.",
+      quote: "FynkTech transformed our entire operation. Their AI automation solutions increased our efficiency by 70% in just 6 weeks. The ROI was immediate and substantial.",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format&q=80",
       rating: 5,
       results: "70% efficiency increase"

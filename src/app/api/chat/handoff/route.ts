@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  await notifyTeam({ ...payload, subject: "[Fynk Tech] Live chat handoff" });
+  await notifyTeam({ ...payload, subject: "[FynkTech] Live chat handoff" });
   const chatwoot = await chatwootHandoff.createConversation(payload);
 
   return NextResponse.json({

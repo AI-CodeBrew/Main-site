@@ -38,7 +38,7 @@ function MyPage() {
     <StickyVideoSplit
       videoSrc="/videos/6719ad0ceed6d5aa24a83d61_6748168d07d698d005cc4116_careers -transcode.mp4"
       title="Join Our Team"
-      subtitle="Careers at Fynk Tech"
+      subtitle="Careers at FynkTech"
       description="We're building the future of technology with innovative solutions that transform businesses worldwide."
       features={[
         "Competitive salary and benefits",
@@ -81,7 +81,7 @@ function MyPage() {
 
 ## Styling
 
-The component uses Tailwind CSS classes and can be customized by modifying the component file. The color scheme follows the Fynk Tech brand colors:
+The component uses Tailwind CSS classes and can be customized by modifying the component file. The color scheme follows the FynkTech brand colors:
 
 - Primary text: `#070643` (dark blue)
 - Secondary text: `#4A5568` (gray)

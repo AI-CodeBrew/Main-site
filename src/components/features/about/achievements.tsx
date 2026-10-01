@@ -37,11 +37,11 @@ export function Achievements() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--heading)' }}>
-            Fynk Tech's Achievements
+            FynkTech's Achievements
           </h2>
           <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--text-muted)' }}>
             We take pride in empowering businesses worldwide with innovative solutions. 
-            Fynk Tech brings an unwavering commitment to excellence, backed by a global presence.
+            FynkTech brings an unwavering commitment to excellence, backed by a global presence.
           </p>
         </motion.div>
         

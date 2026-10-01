@@ -22,6 +22,7 @@ export function ServiceHero({ title, description, image, category }: ServiceHero
           fill
           className="object-cover"
           priority
+          sizes="100vw"
         />
       </div>
 

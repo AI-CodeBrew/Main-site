@@ -21,9 +21,9 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 const WHATSAPP_HREF =
-  whatsappLink("Hi Fynk Tech — I'd like to talk to an expert.") ||
+  whatsappLink("Hi FynkTech — I'd like to talk to an expert.") ||
   `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(
-    "Hi Fynk Tech — I'd like to talk to an expert.",
+    "Hi FynkTech — I'd like to talk to an expert.",
   )}`;
 
 const lookingFor = [
@@ -115,6 +115,7 @@ export function TalkToExpert() {
                     src={item.logo}
                     alt={item.name}
                     fill
+                    priority
                     className="object-contain object-left brightness-0 invert"
                     sizes="96px"
                   />
