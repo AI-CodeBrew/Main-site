@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const achievements = [
   {
-    number: "500+",
+    number: "100+",
     label: "Successful Projects",
     description: "Delivered innovative solutions across industries"
   },
@@ -19,7 +19,7 @@ const achievements = [
     description: "Global presence with local expertise"
   },
   {
-    number: "8+",
+    number: "3+",
     label: "Years of Experience",
     description: "Proven track record of excellence"
   }

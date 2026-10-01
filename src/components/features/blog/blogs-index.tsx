@@ -24,6 +24,9 @@ function canOptimizeImage(src: string): boolean {
   }
 }
 
+/** Order of the category pills in the featured-work bar. */
+const PILL_ORDER = ["AI Agents", "E-commerce", "Automation"];
+
 /**
  * Customers-style listing: category filters + image / tag / title cards.
  * Layout inspired by respond.io/customers, in Fynk colors.
@@ -39,7 +42,7 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
   }, [posts]);
 
   const [active, setActive] = useState<string[]>([]);
-  // Only matters below lg — on desktop the filter column is always shown.
+  // Only matters below lg — desktop filters with the featured-work bar instead.
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
@@ -54,7 +57,59 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
     setActive((prev) => (prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]));
   }
 
+  // Pills follow PILL_ORDER; any other category from the posts is added after them.
+  const pillCategories = useMemo(() => {
+    const rank = (cat: string) => {
+      const index = PILL_ORDER.indexOf(cat);
+      return index === -1 ? PILL_ORDER.length : index;
+    };
+    return [...categories].sort((a, b) => rank(a) - rank(b));
+  }, [categories]);
+
+  const pillBase =
+    "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200";
+  const pillOn = "bg-[#0A0045] text-white";
+  const pillOff = "text-[#111111] hover:bg-[#0A0045]/[0.08]";
+
   return (
+    <>
+      {/* Featured-work bar, desktop only: category pills drive the same `active` filter as the
+          checkboxes, which are the phone / tablet version (Filter button below). */}
+      {categories.length > 0 ? (
+        <section className="hidden bg-[#F5F5F8] lg:block" aria-label="Filter stories by category">
+          <div className="flex flex-col gap-3 px-5 py-4 md:min-h-[96px] md:flex-row md:items-center md:justify-between md:gap-8 md:px-10 md:py-0 lg:px-[68px]">
+            <h2 className="shrink-0 text-sm font-semibold uppercase tracking-[0.14em] text-[#0A0045] md:text-[15px]">
+              Featured work
+            </h2>
+            {/* Phones / tablets: pills scroll sideways instead of wrapping. */}
+            <div className="-mx-5 flex gap-2 overflow-x-auto px-5 [-ms-overflow-style:none] [scrollbar-width:none] md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+              <button
+                type="button"
+                onClick={() => setActive([])}
+                aria-pressed={active.length === 0}
+                className={`${pillBase} ${active.length === 0 ? pillOn : pillOff}`}
+              >
+                All
+              </button>
+              {pillCategories.map((cat) => {
+                const on = active.includes(cat);
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActive([cat])}
+                    aria-pressed={on}
+                    className={`${pillBase} ${on ? pillOn : pillOff}`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
     <div className="mx-auto w-full max-w-6xl px-5 py-12 md:px-6 md:py-16">
       {categories.length > 0 ? (
         <div className="mb-10 flex flex-col gap-8 lg:mb-14 lg:flex-row lg:gap-12">
@@ -82,10 +137,8 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
 
           <aside
             id="blog-filters"
-            className={`w-full shrink-0 lg:block lg:w-52 ${
-              filtersOpen
-                ? "-mt-4 rounded-2xl border border-line p-5 lg:mt-0 lg:rounded-none lg:border-0 lg:p-0"
-                : "hidden"
+            className={`w-full shrink-0 lg:hidden ${
+              filtersOpen ? "-mt-4 rounded-2xl border border-line p-5" : "hidden"
             }`}
           >
             <div className="flex items-baseline justify-between gap-3">
@@ -129,6 +182,7 @@ export function BlogsIndex({ posts }: { posts: BlogIndexCard[] }) {
         <StoryGrid posts={filtered} />
       )}
     </div>
+    </>
   );
 }
 

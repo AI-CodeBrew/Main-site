@@ -95,8 +95,6 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
 /** PROJECTS is rendered at full-screen width and scaled down, so it stays sharp at its largest. */
 const WORD_MIN_SCALE = 0.45;
 const WORD_END_SCALE = 0.55;
-/** Phones: the word is already small at 17vw, so it barely shrinks and doesn't leave an empty block. */
-const WORD_END_SCALE_MOBILE = 0.85;
 /** Share of the outro scroll after which the heading starts shrinking. */
 const SHRINK_START = 0.73;
 
@@ -158,8 +156,9 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
     // so the shrinking word is never hidden behind pictures.
     if (outro > SHRINK_START) {
       const t = easeInOut(Math.min(1, (outro - SHRINK_START) / (1 - SHRINK_START)));
-      const endScale = isMobileRef.current ? WORD_END_SCALE_MOBILE : WORD_END_SCALE;
-      return 1 + (endScale - 1) * t;
+      // Phones have no outro, so the word is behind the last card by now — leave it at full size.
+      if (isMobileRef.current) return 1;
+      return 1 + (WORD_END_SCALE - 1) * t;
     }
     // Grow: spread over the whole entry so the zoom-in is gradual.
     const t = easeInOut(Math.min(1, Math.max(0, enter)));
@@ -249,8 +248,10 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
           ))}
         </div>
 
-        {/* Outro: 3/4 of a screen so the last card clears the word before it shrinks, then the section ends. */}
-        <div ref={outroRef} className="h-[75dvh]" aria-hidden />
+        {/* Outro: 3/4 of a screen so the last card clears the word before it shrinks, then the section ends.
+            Phones: no outro — the section ends right after the last card (the word stays hidden
+            behind it), so there is no empty dark screen before the next section. */}
+        <div ref={outroRef} className="h-0 md:h-[75dvh]" aria-hidden />
       </div>
     </section>
   );

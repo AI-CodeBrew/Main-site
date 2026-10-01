@@ -34,12 +34,6 @@ export default async function BlogPage() {
       }))
     : [];
 
-  const stats = [
-    { value: "Dialcom", label: "AI receptionist, CRM & OMS shipped" },
-    { value: "24/7", label: "AI agents that qualify and hand off" },
-    { value: "Global", label: "clients · engineered in Lahore" },
-  ];
-
   return (
     <main className="min-h-screen bg-white">
       <JsonLd
@@ -101,29 +95,7 @@ export default async function BlogPage() {
           </Link>
         </section>
       ) : (
-        <>
-          {/* Light grey stats strip — respond.io style */}
-          <section className="bg-[#F5F6F8]">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-7 md:flex-row md:items-center md:gap-0 md:px-6 md:py-8">
-              <h2 className="shrink-0 text-2xl font-bold leading-snug text-heading md:max-w-[260px] md:text-3xl md:leading-snug lg:max-w-[300px]">
-                Results from work like yours
-              </h2>
-
-              <div className="grid min-w-0 flex-1 grid-cols-1 divide-y divide-[#E2E5EB] sm:grid-cols-3 sm:divide-x sm:divide-y-0 md:ml-8 lg:ml-12">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="px-0 py-4 sm:px-6 sm:py-0 lg:px-8">
-                    <p className="text-3xl font-bold tracking-tight text-[#5A83FF] md:text-[2.25rem]">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-sm text-[#5B6170]">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <BlogsIndex posts={posts} />
-        </>
+        <BlogsIndex posts={posts} />
       )}
 
       <Contact />

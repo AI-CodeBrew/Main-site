@@ -42,9 +42,9 @@ const platforms = [
 
 // Same figures as the About page and the chat assistant prompt — keep all three in sync.
 const trust = [
-  { value: "500+", label: "Successful Projects" },
+  { value: "100+", label: "Successful Projects" },
   { value: "12+", label: "In-House Experts" },
-  { value: "8+", label: "Years of Experience" },
+  { value: "3+", label: "Years of Experience" },
   { value: "250+", label: "Happy Clients" },
   { value: "20+", label: "Countries Served" },
 ];
