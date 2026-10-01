@@ -108,7 +108,7 @@ export function Contact() {
                       }),
                     });
                     if (!res.ok) {
-                      alert("Something went wrong. Please try again or email team@fynktech.com.");
+                      alert("Something went wrong. Please try again or email umer@fynktech.com.");
                       return;
                     }
                     trackEvent("form_submit", { source: "contact", form: "contact_page" });

@@ -7,7 +7,7 @@
 export const siteConfig = {
   name: "Fynk Tech",
   url: "https://www.fynktech.com",
-  email: "team@fynktech.com",
+  email: "umer@fynktech.com",
   /** WhatsApp digits only for wa.me (PK 03058877785 → 923058877785) */
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923058877785",
   /** TODO: Cal.com / Calendly booking URL */

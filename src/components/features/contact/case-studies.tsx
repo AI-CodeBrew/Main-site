@@ -82,16 +82,10 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
           </div>
         </a>
 
-        {/* Axtra `.portfolio__content-6`: title card revealed on hover (desktop) */}
-        <div className="pointer-events-none invisible absolute right-[5%] top-0 z-[9] hidden bg-[#121212] px-[30px] py-5 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100 md:block">
-          <h4 className="pb-[5px] text-xl font-medium leading-tight text-white">{item.title}</h4>
-          <p className="text-sm text-white">{item.meta}</p>
-        </div>
-
-        {/* Phones have no hover, so the title sits under the image. */}
-        <div className="pt-3 md:hidden">
-          <h4 className="text-lg font-medium leading-tight text-white">{item.title}</h4>
-          <p className="text-sm text-white/70">{item.meta}</p>
+        {/* Title card — always visible, top-right on all breakpoints */}
+        <div className="pointer-events-none absolute right-[5%] top-0 z-[9] bg-[#121212] px-4 py-3 sm:px-[30px] sm:py-5">
+          <h4 className="pb-[5px] text-base font-medium leading-tight text-white sm:text-xl">{item.title}</h4>
+          <p className="text-xs text-white sm:text-sm">{item.meta}</p>
         </div>
       </motion.div>
     </div>
