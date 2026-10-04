@@ -40,12 +40,12 @@ export function OrderFlow() {
   return (
     <section
       id="order-flow"
-      className="relative overflow-hidden bg-white py-20 md:py-24"
+      className="relative overflow-hidden bg-white pb-14 pt-4 md:py-24"
       aria-labelledby="order-flow-heading"
     >
       <div className="container-page relative z-10">
-        <div className="rounded-3xl bg-[#F3F4F6] px-6 py-12 md:px-10 md:py-16 lg:px-14">
-          <div className="mb-10 text-center md:mb-12">
+        <div className="rounded-3xl bg-[#F3F4F6] px-5 py-8 md:px-10 md:py-16 lg:px-14">
+          <div className="mb-8 text-center md:mb-12">
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-[#01B4D2]">
               One connected system
             </p>

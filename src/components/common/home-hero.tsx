@@ -184,7 +184,7 @@ export function HomeHero() {
           showRobot ? "lg:grid-cols-[1.05fr_1fr]" : ""
         }`}
       >
-        <div className="text-left">
+        <div className="text-center lg:text-left">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={heroReady ? { opacity: 1, y: 0 } : undefined}
@@ -206,7 +206,7 @@ export function HomeHero() {
             initial={{ opacity: 0, y: 16 }}
             animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ delay: 0.15 }}
-            className="mt-6 text-base md:text-lg max-w-xl leading-relaxed text-white/75"
+            className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg lg:mx-0"
           >
             Voice and chat agents, workflow automation, and revenue-ready Shopify systems for teams that sell worldwide — engineered from our Lahore delivery center.
           </motion.p>
@@ -215,7 +215,7 @@ export function HomeHero() {
             initial={{ opacity: 0, y: 16 }}
             animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center gap-4 mt-8"
+            className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
           >
             <Link
               href="/contact?intent=strategy-call"

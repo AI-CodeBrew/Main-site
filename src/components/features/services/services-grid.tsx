@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -7,6 +8,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   Bot,
+  ChevronLeft,
+  ChevronRight,
   Cloud,
   Database,
   Filter,
@@ -102,6 +105,15 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
     .sort((a, b) => config.order.indexOf(a.slug) - config.order.indexOf(b.slug));
   const headingId = `${category}-services-heading`;
   const isEcommerce = category === "ecommerce";
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCard = (direction: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-service-card]");
+    const amount = (card?.offsetWidth ?? 280) + 16;
+    el.scrollBy({ left: direction * amount, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -154,11 +166,110 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
           </p>
         </motion.div>
 
+        {/* Mobile: horizontal scroll + centered arrows */}
+        <div className="md:hidden">
+          <div
+            ref={scrollerRef}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 pl-2 pr-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {services.map((service, index) => {
+              const visual = config.visuals[service.slug];
+              const Icon = visual?.icon ?? Bot;
+
+              return (
+                <div
+                  key={service.path}
+                  data-service-card
+                  className="w-[min(300px,82vw)] shrink-0 snap-start"
+                >
+                  <Link
+                    href={service.path}
+                    onClick={() =>
+                      trackEvent("cta_click", {
+                        cta: `service_${service.slug}`,
+                        location: `${category}_services_grid`,
+                      })
+                    }
+                    className={`group relative flex h-72 flex-col justify-end overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] ${
+                      isEcommerce
+                        ? "border border-black/[0.06] bg-[#F3F4F6] shadow-sm"
+                        : "border border-white/10"
+                    }`}
+                  >
+                    {visual ? (
+                      <Image
+                        src={visual.image}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="300px"
+                      />
+                    ) : null}
+                    {isEcommerce ? (
+                      <div
+                        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
+                        aria-hidden
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20" />
+                    )}
+                    <span className="absolute right-5 top-5 text-sm font-semibold text-white/50">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="relative z-10 p-6">
+                      <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+                        <Icon className="h-5 w-5 text-[#80DFFF]" />
+                      </div>
+                      <h3 className="mb-2 text-lg font-semibold text-white">
+                        {service.headline}
+                      </h3>
+                      <p className="line-clamp-2 text-sm leading-relaxed text-white/75">
+                        {service.subheadline}
+                      </p>
+                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#80DFFF]">
+                        Explore service
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Previous services"
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors ${
+                isEcommerce
+                  ? "border-[#E5E7EB] bg-white text-[#0A0045] hover:border-[#0A0045]"
+                  : "border-white/20 bg-white/5 text-white hover:border-white/50"
+              }`}
+            >
+              <ChevronLeft className="h-5 w-5" strokeWidth={1.75} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Next services"
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors ${
+                isEcommerce
+                  ? "border-[#E5E7EB] bg-white text-[#0A0045] hover:border-[#0A0045]"
+                  : "border-white/20 bg-white/5 text-white hover:border-white/50"
+              }`}
+            >
+              <ChevronRight className="h-5 w-5" strokeWidth={1.75} />
+            </button>
+          </div>
+        </div>
+
         <div
           className={
             isEcommerce
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:gap-5"
-              : "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+              ? "hidden grid-cols-1 gap-4 sm:grid-cols-2 md:grid lg:grid-cols-6 lg:gap-5"
+              : "hidden grid-cols-1 gap-5 sm:grid-cols-2 md:grid lg:grid-cols-4"
           }
         >
           {services.map((service, index) => {
@@ -169,9 +280,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
             const spanClass = isEcommerce
               ? isFeatured
                 ? "sm:col-span-2 lg:col-span-4"
-                : index === 1
-                  ? "lg:col-span-2"
-                  : "lg:col-span-2"
+                : "lg:col-span-2"
               : isFeatured
                 ? "sm:col-span-2"
                 : undefined;
