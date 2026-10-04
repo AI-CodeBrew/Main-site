@@ -74,8 +74,11 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
               src={item.image}
               alt={item.title}
               fill
-              loading="lazy"
-              unoptimized={!canOptimize(item.image)}
+              // Cards start at rotateX(90°) — native lazy/IO never intersects, so images
+              // never start. Eager-load and skip the optimizer for large CDN portraits.
+              loading="eager"
+              priority={index < 2}
+              unoptimized
               sizes="(max-width: 768px) 92vw, 640px"
               className="object-cover"
             />
@@ -84,7 +87,9 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
 
         {/* Title card — always visible, top-right on all breakpoints */}
         <div className="pointer-events-none absolute right-[5%] top-0 z-[9] bg-black/85 px-4 py-3 backdrop-blur-sm sm:px-[30px] sm:py-5">
-          <h4 className="pb-[5px] text-base font-medium leading-tight text-white sm:text-xl">{item.title}</h4>
+          <h4 className="pb-[5px] text-base font-medium leading-tight text-white sm:text-xl">
+            {item.title}
+          </h4>
           <p className="text-xs text-white sm:text-sm">{item.meta}</p>
         </div>
       </motion.div>
@@ -180,7 +185,7 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
       style={{ overflow: "clip" }}
       aria-labelledby="projects-heading"
     >
-      {/* Atmosphere — soft black + grid + glows (not flat solid) */}
+      {/* Atmosphere — soft black + grid + glows */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -221,12 +226,7 @@ export function CaseStudies({ items }: { items?: WorkItem[] }) {
       />
 
       {/* Browser-native pin (Axtra pins its heading with pinSpacing: false): cards scroll over it. */}
-      {/* 60dvh block: the word sits ~30% down the screen, and when the section ends the next
-          section shows in the bottom 40% instead of a screen of empty dark space.
-          Phones: 36dvh, pushed below the fixed header — the word is much shorter there, so a 60dvh
-          block was mostly empty black. */}
       <div className="pointer-events-none sticky top-0 z-[1] flex h-[36dvh] items-center justify-center overflow-hidden pt-14 md:h-[60dvh] md:pt-0">
-        {/* 17vw keeps all 8 letters inside the screen width at full size, on phones too. */}
         <motion.h2
           id="projects-heading"
           style={{ scale: wordScale }}

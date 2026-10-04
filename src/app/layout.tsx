@@ -74,10 +74,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${plusJakarta.variable} ${plusJakarta.className} antialiased`}
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
+        suppressHydrationWarning
       >
         <SmoothScroll />
         <Suspense fallback={null}>

@@ -91,8 +91,11 @@
   /* Colors exposed to Tailwind */
   --color-primary: var(--color-primary);
   --color-primary-dark: var(--color-primary-dark);
+  --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--color-accent);
+  --color-accent-foreground: #FFFFFF;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -104,6 +107,14 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, #5A83FF 0%, #01B4D2 100%);

@@ -6,12 +6,11 @@ const WAREHOUSES = [
   {
     city: "Lahore",
     lines: [companyAddress.line1, companyAddress.line2],
-    image: "/lahore.jpg",
+    image: "/warehouses/lahore.jpg",
   },
   {
     city: "Karachi",
     lines: ["Shop No 217, Capital Society", "Scheme 33, Karachi"],
-    // City photo by Aaron Robinson on Unsplash (free licence).
     image: "/warehouses/karachi.jpg",
   },
 ] as const;
@@ -21,37 +20,30 @@ function mapsHref(city: string, lines: readonly string[]): string {
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
 }
 
-/** Our warehouses: one card per city, same black + photo-card look as the services grid. */
+/** Our warehouses: one card per city, photo cards on a white section. */
 export function OurWarehouses() {
   return (
     <section
       id="warehouses"
-      className="relative overflow-hidden bg-[#121212] py-20 md:py-24"
+      className="relative overflow-hidden bg-white py-20 md:py-24"
       aria-labelledby="warehouses-heading"
     >
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.06) 0%, transparent 60%)",
-        }}
-        aria-hidden
-      />
-
       <div className="container-page relative z-10">
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <p
-            className="mb-3 text-xs font-medium uppercase tracking-[0.12em]"
-            style={{ color: "#80DFFF" }}
-          >
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-[#01B4D2]">
             Where we ship from
           </p>
-          <h2 id="warehouses-heading" className="mb-4 text-3xl font-bold text-white md:text-5xl">
+          <h2
+            id="warehouses-heading"
+            className="mb-4 text-3xl font-bold text-[#0A0045] md:text-5xl"
+          >
             Our Warehouses
           </h2>
-          <p className="text-base text-white/75 md:text-lg">
-            Two warehouses in Pakistan — Lahore and Karachi — so stock sits closer to your
-            customers.
+          <p className="text-base text-[#6B7280] md:text-lg">
+            Two warehouses in Pakistan —{" "}
+            <strong className="font-bold text-[#0A0045]">Lahore</strong> and{" "}
+            <strong className="font-bold text-[#0A0045]">Karachi</strong> — so stock sits
+            closer to your customers.
           </p>
         </div>
 

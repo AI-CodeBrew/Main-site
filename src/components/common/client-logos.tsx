@@ -15,7 +15,7 @@ export function ClientLogos() {
           <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "rgba(1, 180, 210, 0.8)" }}>
             Capabilities
           </p>
-          <h2 id="tech-strip-heading" className="text-2xl font-semibold mb-2" style={{ color: 'var(--heading)' }}>
+          <h2 id="tech-strip-heading" className="mb-2 text-3xl font-bold tracking-tight md:text-4xl" style={{ color: 'var(--heading)' }}>
             Tech we work with
           </h2>
           <p className="text-sm max-w-xl mx-auto" style={{ color: 'var(--text-muted)' }}>

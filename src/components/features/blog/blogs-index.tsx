@@ -217,15 +217,21 @@ function StoryGrid({ posts }: { posts: BlogIndexCard[] }) {
                     unoptimized={!canOptimizeImage(img)}
                   />
                 ) : null}
+                <div
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
+                  aria-hidden
+                />
+                <div className="absolute inset-x-0 bottom-0 z-[1] px-4 pb-4 pt-10 sm:px-5 sm:pb-5">
+                  {category ? (
+                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-white/80">
+                      {category}
+                    </p>
+                  ) : null}
+                  <h2 className="line-clamp-3 text-base font-bold leading-snug tracking-tight text-white md:text-lg md:leading-snug">
+                    {post.title}
+                  </h2>
+                </div>
               </div>
-              {category ? (
-                <p className="mt-4 text-sm font-semibold text-[#5A83FF]">{category}</p>
-              ) : (
-                <div className="mt-4" />
-              )}
-              <h2 className="mt-1.5 text-base font-bold leading-snug tracking-tight text-heading transition-colors group-hover:text-[#5A83FF] md:text-lg md:leading-snug">
-                {post.title}
-              </h2>
             </Link>
           </li>
         );

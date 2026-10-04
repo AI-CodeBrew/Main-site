@@ -18,8 +18,7 @@ export const projects = [
     name: "Dialcom",
     url: "https://dialcom.ai/",
     category: "Lending & Finance",
-    /** TODO: add a project screenshot to /public/projects/ and set its path here, e.g. "/projects/dialcom.jpg" */
-    image: null as string | null,
+    image: "/projects/dialcom.jpg" as string | null,
     summary:
       "CRM and voice AI platform for lenders — AI receptionist, CRM, and OMS.",
     deliverables: ["AI receptionist", "CRM", "OMS"] as const,

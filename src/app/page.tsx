@@ -21,15 +21,20 @@ const HowWeWork = dynamic(
   { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
 );
 
+const SelectedClients = dynamic(
+  () => import("@/components/home/selected-clients").then((m) => m.SelectedClients),
+  { loading: () => <div className="min-h-[14rem] bg-white" aria-hidden /> },
+);
+
 const CaseStudies = dynamic(
   () =>
     import("@/components/features/contact/case-studies").then((m) => m.CaseStudies),
-  { loading: () => <div className="min-h-[20rem]" aria-hidden /> },
+  { loading: () => <div className="min-h-[20rem] bg-black" aria-hidden /> },
 );
 
 const ProvenResults = dynamic(
   () => import("@/components/home/proven-results").then((m) => m.ProvenResults),
-  { loading: () => <div className="min-h-[28rem] bg-black" aria-hidden /> },
+  { loading: () => <div className="min-h-[28rem]" aria-hidden /> },
 );
 
 const FinalCta = dynamic(
@@ -69,6 +74,7 @@ export default async function Home() {
       </div>
       <ClientLogos />
       <HowWeWork />
+      <SelectedClients />
       <CaseStudies items={projectCards} />
       <ProvenResults posts={blogPosts} />
       <FinalCta />

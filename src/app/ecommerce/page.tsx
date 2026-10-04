@@ -2,20 +2,14 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/common/hero";
 import { OrderFlow } from "@/components/features/services/order-flow";
+import { OurOms } from "@/components/features/services/our-oms";
 import { OurWarehouses } from "@/components/features/services/our-warehouses";
-import { WhyFynkTech } from "@/components/features/services/why-fynktech";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
 const ServicesGrid = dynamic(
   () => import("@/components/features/services/services-grid").then((m) => m.ServicesGrid),
   { loading: () => <div className="min-h-[28rem]" aria-hidden /> },
-);
-
-const OperationsPlatform = dynamic(
-  () =>
-    import("@/components/features/services/operations-platform").then((m) => m.OperationsPlatform),
-  { loading: () => <div className="min-h-[36rem] bg-white" aria-hidden /> },
 );
 
 export const metadata: Metadata = buildPageMetadata({
@@ -41,11 +35,10 @@ export default function EcommercePage() {
         description="Shopify and WooCommerce builds, product sourcing, marketing and AI support — everything your store needs to grow, from one team."
         trackingLocation="ecommerce_hero"
       />
-      <ServicesGrid category="ecommerce" />
-      <OperationsPlatform />
-      <OrderFlow />
-      <WhyFynkTech />
       <OurWarehouses />
+      <OrderFlow />
+      <OurOms />
+      <ServicesGrid category="ecommerce" />
     </main>
   );
 }
