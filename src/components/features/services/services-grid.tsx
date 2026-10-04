@@ -6,13 +6,11 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
-  BarChart3,
   Bot,
   Cloud,
   Database,
   Filter,
   Globe,
-  Megaphone,
   MessageSquare,
   PackageSearch,
   Palette,
@@ -75,36 +73,24 @@ const configs: Record<ServiceCategory, GridConfig> = {
     eyebrow: "What we build",
     title: "E-commerce services",
     description:
-      "From launching your store to sourcing, marketing and AI support — everything you need to sell more online, under one roof.",
-    // Featured at positions 0, 5 and 6 → rows of F·s·s / s·s·F / F·s·s
+      "Store launch, sourcing, funnels, operations and brand — the core build blocks to sell online.",
     order: [
       "store-setup",
       "product-sourcing",
-      "marketing-growth",
       "sales-funnel",
       "operations-automation",
-      "ai-solutions",
-      "data-analytics",
       "branding-creative",
-      "maintenance",
     ],
-    featured: ["store-setup", "ai-solutions", "data-analytics"],
+    featured: ["store-setup"],
     visuals: {
       "store-setup": { icon: ShoppingCart, image: "/Business-Cards/StoreSetup&Development.png" },
       "product-sourcing": { icon: PackageSearch, image: "/Business-Cards/Product Sourcing & Supply Chain Management.png" },
-      "marketing-growth": { icon: Megaphone, image: "/Business-Cards/Marketing & Growth Systems.png" },
       "sales-funnel": { icon: Filter, image: "/Business-Cards/SalesFunnelOptimization.png" },
       "operations-automation": {
         icon: Workflow,
         image: "/Business-Cards/Operations & Automation(AI + Workflow + Support).png",
       },
-      "ai-solutions": {
-        icon: Bot,
-        image: "/Business-Cards/AI for eCommerce (Customer Support Bots, Return Bots, Upsell AI, Review Generation).png",
-      },
-      "data-analytics": { icon: BarChart3, image: "/Business-Cards/Data Analytics & Scaling Roadmaps.png" },
       "branding-creative": { icon: Palette, image: "/Business-Cards/Branding & Creative Production.png" },
-      maintenance: { icon: Wrench, image: "/Business-Cards/Maintenance &Long-TermStore Management.png" },
     },
   },
 };
@@ -112,21 +98,30 @@ const configs: Record<ServiceCategory, GridConfig> = {
 export function ServicesGrid({ category }: { category: ServiceCategory }) {
   const config = configs[category];
   const services = getAllServices()
-    .filter((s) => s.category === category)
+    .filter((s) => s.category === category && config.order.includes(s.slug))
     .sort((a, b) => config.order.indexOf(a.slug) - config.order.indexOf(b.slug));
   const headingId = `${category}-services-heading`;
+  const isEcommerce = category === "ecommerce";
 
   return (
     <section
       id={`${category}-services`}
-      // Same black as the home page PROJECTS / final CTA sections.
-      className="py-24 relative overflow-hidden bg-[#121212]"
+      className={
+        isEcommerce
+          ? "relative overflow-hidden bg-white py-20 md:py-24"
+          : "relative overflow-hidden bg-[#121212] py-24"
+      }
       aria-labelledby={headingId}
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.06) 0%, transparent 60%)" }}
-      />
+      {!isEcommerce ? (
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.06) 0%, transparent 60%)",
+          }}
+        />
+      ) : null}
 
       <div className="container-page relative z-10">
         <motion.div
@@ -134,22 +129,52 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-14"
+          className="mx-auto mb-12 max-w-3xl text-center md:mb-14"
         >
-          <p className="text-xs font-medium tracking-[0.12em] uppercase mb-3" style={{ color: "#80DFFF" }}>
+          <p
+            className="mb-3 text-xs font-medium uppercase tracking-[0.12em]"
+            style={{ color: isEcommerce ? "#01B4D2" : "#80DFFF" }}
+          >
             {config.eyebrow}
           </p>
-          <h2 id={headingId} className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <h2
+            id={headingId}
+            className={`mb-4 text-3xl font-bold md:text-5xl ${
+              isEcommerce ? "text-[#0A0045]" : "text-white"
+            }`}
+          >
             {config.title}
           </h2>
-          <p className="text-base md:text-lg text-white/75">{config.description}</p>
+          <p
+            className={`text-base md:text-lg ${
+              isEcommerce ? "text-[#6B7280]" : "text-white/75"
+            }`}
+          >
+            {config.description}
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div
+          className={
+            isEcommerce
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:gap-5"
+              : "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          }
+        >
           {services.map((service, index) => {
             const visual = config.visuals[service.slug];
             const Icon = visual?.icon ?? Bot;
             const isFeatured = config.featured.includes(service.slug);
+
+            const spanClass = isEcommerce
+              ? isFeatured
+                ? "sm:col-span-2 lg:col-span-4"
+                : index === 1
+                  ? "lg:col-span-2"
+                  : "lg:col-span-2"
+              : isFeatured
+                ? "sm:col-span-2"
+                : undefined;
 
             return (
               <motion.div
@@ -158,14 +183,23 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: (index % 4) * 0.08 }}
-                className={isFeatured ? "sm:col-span-2" : undefined}
+                className={spanClass}
               >
                 <Link
                   href={service.path}
                   onClick={() =>
-                    trackEvent("cta_click", { cta: `service_${service.slug}`, location: `${category}_services_grid` })
+                    trackEvent("cta_click", {
+                      cta: `service_${service.slug}`,
+                      location: `${category}_services_grid`,
+                    })
                   }
-                  className="group relative flex h-80 flex-col justify-end overflow-hidden rounded-2xl border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#80DFFF]"
+                  className={`group relative flex flex-col justify-end overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] ${
+                    isEcommerce
+                      ? `h-72 border border-black/[0.06] bg-[#F3F4F6] shadow-sm md:h-80 ${
+                          isFeatured ? "lg:h-full lg:min-h-[22rem]" : ""
+                        }`
+                      : "h-80 border border-white/10"
+                  }`}
                 >
                   {visual && (
                     <Image
@@ -175,30 +209,43 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes={
                         isFeatured
-                          ? "(max-width: 640px) 100vw, 50vw"
-                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          ? "(max-width: 640px) 100vw, 66vw"
+                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       }
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20 transition-colors duration-300 group-hover:via-black/85" />
+                  {isEcommerce ? (
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
+                      aria-hidden
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20 transition-colors duration-300 group-hover:via-black/85" />
+                  )}
 
-                  <span className="absolute top-5 right-5 text-sm font-semibold text-white/50">
+                  <span className="absolute right-5 top-5 text-sm font-semibold text-white/50">
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
                   <div className="relative z-10 p-6">
-                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20">
-                      <Icon className="h-5 w-5" style={{ color: "#80DFFF" }} />
+                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+                      <Icon className="h-5 w-5 text-[#80DFFF]" />
                     </div>
-                    <h3 className={`font-semibold text-white mb-2 ${isFeatured ? "text-2xl" : "text-lg"}`}>
+                    <h3
+                      className={`mb-2 font-semibold text-white ${
+                        isFeatured ? "text-2xl" : "text-lg"
+                      }`}
+                    >
                       {service.headline}
                     </h3>
                     <p
-                      className={`text-sm leading-relaxed text-white/75 ${isFeatured ? "line-clamp-3 max-w-lg" : "line-clamp-2"}`}
+                      className={`text-sm leading-relaxed text-white/75 ${
+                        isFeatured ? "line-clamp-3 max-w-lg" : "line-clamp-2"
+                      }`}
                     >
                       {service.subheadline}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold" style={{ color: "#80DFFF" }}>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#80DFFF]">
                       Explore service
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </span>
@@ -209,12 +256,19 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
           })}
         </div>
 
-        <div className="mt-14 text-center">
-          <p className="text-white/70 mb-5">Not sure which service fits your business?</p>
+        <div className="mt-12 text-center md:mt-14">
+          <p className={isEcommerce ? "mb-5 text-[#6B7280]" : "mb-5 text-white/70"}>
+            Not sure which service fits your business?
+          </p>
           <Link
             href="/contact?intent=strategy-call"
-            className="btn btn-primary text-base px-7 py-3.5"
-            onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: `${category}_services_grid` })}
+            className="btn btn-primary px-7 py-3.5 text-base"
+            onClick={() =>
+              trackEvent("cta_click", {
+                cta: "book_strategy_call",
+                location: `${category}_services_grid`,
+              })
+            }
           >
             Talk to an expert
             <ArrowRight className="h-5 w-5" strokeWidth={2.25} aria-hidden />

@@ -53,10 +53,14 @@ export function SelectedClients() {
         </h2>
 
         <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:mt-10 md:grid-cols-3 lg:grid-cols-5">
-          {CLIENTS.map((client) => (
+          {CLIENTS.map((client, index) => (
             <li
               key={client.id}
-              className="relative flex h-16 items-center justify-center overflow-hidden rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/[0.04] md:h-[4.5rem] md:px-5"
+              className={`relative flex h-16 items-center justify-center overflow-hidden rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/[0.04] md:h-[4.5rem] md:px-5 ${
+                index === CLIENTS.length - 1
+                  ? "col-span-2 mx-auto w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.5rem)] md:col-span-1 md:mx-0 md:w-auto"
+                  : ""
+              }`}
             >
               <span
                 aria-hidden

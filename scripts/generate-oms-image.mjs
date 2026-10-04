@@ -1,5 +1,5 @@
 /**
- * Regenerate the OMS dashboard showcase image.
+ * Generate OMS showcase as a PC/laptop product shot.
  * Usage: node --env-file=.env.local scripts/generate-oms-image.mjs
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -19,33 +19,23 @@ const ASPECT = "16:9";
 const IMAGE_SIZE = "2K";
 
 const PROMPT = `
-Design a brand-new FynkTech Order Management System (OMS) product screenshot for a marketing website.
+Create a premium marketing product photo of a modern laptop / PC showing an Order Management System (OMS) dashboard on screen.
 
-Use the attached image only as loose product context (order ops dashboard). Do NOT copy its layout 1:1.
-Create a cleaner, more premium, more modern revamp.
+Use the attached image as the UI that appears ON THE LAPTOP SCREEN (same OMS product: orders queue, KPI cards, table, Today panel). Redesign the screen UI cleanly if needed, but keep it clearly an OMS.
 
-COMPOSITION (full-bleed UI, 16:9, edge-to-edge):
-- NO laptop/phone mockup, NO desk photo, NO browser chrome, NO watermarks, NO marketing slogans outside the UI.
-- Dark navy shell (#0A0045) with a bright content canvas.
-- Slim left icon rail + top bar with wordmark "FynkTech" and small "OMS" pill.
-- Top modules: OMS (active), WMS, FMS — minimal segmented control.
+COMPOSITION:
+- A realistic modern laptop (MacBook-like or thin PC) centered / slightly angled, filling most of the frame.
+- The OMS dashboard is sharp and readable on the laptop display.
+- Soft studio background: light grey / soft off-white gradient, subtle depth — NOT a messy desk collage.
+- Thin laptop bezel, keyboard faintly visible at bottom, no giant props stealing focus.
+- Optional soft shadow under the laptop.
+- Full-bleed 16:9. Edge-to-edge. High-end agency quality.
 
-DASHBOARD CONTENT (must feel real and useful):
-1) Header row: title "Orders" + subtitle "Live queue across all channels" + primary button "New order" and a compact search field.
-2) Four large KPI tiles only (not six): Orders today, Awaiting confirm, In transit, Delivered — strong typography, subtle icons, cyan (#01B4D2) accent on one key metric.
-3) Main panel: modern orders table with columns Order ID, Channel, Customer, Status, COD, Updated.
-   - 6–7 realistic rows
-   - Channels: Shopify, Noon, WhatsApp, Website
-   - Status chips: Confirmed, Packed, Out for delivery, Delivered, On hold
-   - Clean zebra-free spacing, soft borders, excellent hierarchy
-4) Right side mini panel (about 30% width): "Today" card with a small sparkline / mini bar chart for hourly orders + 2 short activity lines (e.g. "COD verified · #FT-1842", "Routed to Lahore WH").
-
-VISUAL STYLE:
-- Premium SaaS / Linear + Stripe-inspired craft: generous whitespace, 12–16px radius cards, hairline borders, soft elevation.
-- Typography: sharp sans, bold numbers, muted labels.
-- Accent cyan sparingly; status colors calm and intentional (green/amber/blue).
-- Looks production-ready for a high-end agency landing page split section (image sits on the right of text).
-- Photoreal UI rendering, crisp, high resolution, no blurry text if possible.
+HARD RULES:
+- Do NOT show any "FynkTech" logo, wordmark, or company brand name on the laptop or in the UI.
+- No watermarks, no poster frames, no extra floating UI cards outside the laptop.
+- No phone / second device — laptop/PC only.
+- Screen UI: dark navy chrome + light content, OMS / WMS / FMS tabs, Orders title, KPI row, orders table, Today panel.
 `;
 
 async function loadRef() {
@@ -121,7 +111,9 @@ async function main() {
 
   const sitePath = path.join(OUT_DIR, "oms-dashboard.png");
   await writeFile(sitePath, buffer);
-  console.log(`Wrote ${sitePath} (${buffer.length} bytes, ${mime})`);
+  // Also keep a clear PC-named copy.
+  await writeFile(path.join(OUT_DIR, "oms-pc.png"), buffer);
+  console.log(`Wrote ${sitePath} + oms-pc.png (${buffer.length} bytes, ${mime})`);
 }
 
 main().catch((err) => {

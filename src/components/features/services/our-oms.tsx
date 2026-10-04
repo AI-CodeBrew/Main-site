@@ -1,60 +1,80 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 const POINTS = [
-  "Pull orders from Shopify, marketplaces and custom stores into one queue.",
-  "Verify COD and payments, then route each order to the right warehouse.",
-  "Track status to the door with SMS, email or WhatsApp updates.",
-  "Handle returns and exchanges without leaving the system.",
+  {
+    title: "One order queue",
+    body: "Shopify, marketplaces and custom stores land in a single live queue.",
+  },
+  {
+    title: "Verify, then route",
+    body: "Confirm COD and payments, then send each order to the right warehouse.",
+  },
+  {
+    title: "Track to the door",
+    body: "Status updates by SMS, email or WhatsApp — returns handled in-system.",
+  },
 ] as const;
 
-/** Our OMS: copy on the left, dashboard preview filling the right column. */
+/** Our OMS: copy left, PC mockup right — no white frame. */
 export function OurOms() {
   return (
     <section
       id="our-oms"
-      className="relative overflow-hidden bg-white py-14 md:py-16 lg:py-20"
+      className="relative overflow-hidden bg-[#121212] pb-14 pt-6 md:pb-16 md:pt-8 lg:pb-20"
       aria-labelledby="our-oms-heading"
     >
       <div className="container-page relative z-10">
-        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
-          <div className="flex flex-col justify-center py-2 lg:py-4">
-            <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-[#01B4D2]">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
+          <div className="lg:col-span-5">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#80DFFF]">
               Order Management
             </p>
             <h2
               id="our-oms-heading"
-              className="text-2xl font-bold tracking-tight text-[#0A0045] md:text-3xl lg:text-4xl"
+              className="text-3xl font-bold tracking-tight text-white md:text-4xl"
             >
               Our OMS
             </h2>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-[#4B5563] md:text-base">
+            <p className="mt-3 max-w-md text-base leading-relaxed text-white/70">
               Every order from every channel in one place — validated, routed and tracked from
               checkout to doorstep.
             </p>
 
-            <ul className="mt-7 space-y-3.5">
-              {POINTS.map((point) => (
-                <li
-                  key={point}
-                  className="flex gap-3 text-sm leading-relaxed text-[#374151] md:text-[15px]"
-                >
-                  <span
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#01B4D2]"
-                    aria-hidden
-                  />
-                  {point}
+            <ul className="mt-7 space-y-5 border-t border-white/10 pt-7">
+              {POINTS.map((point, index) => (
+                <li key={point.title} className="flex gap-4">
+                  <span className="mt-0.5 font-mono text-xs font-semibold tabular-nums text-white/40">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-white md:text-[15px]">
+                      {point.title}
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-white/65">{point.body}</p>
+                  </div>
                 </li>
               ))}
             </ul>
+
+            <Link
+              href="/ecommerce/operations-automation"
+              className="mt-7 inline-flex items-center gap-1.5 text-sm font-semibold text-[#80DFFF] transition-colors hover:text-white"
+            >
+              See how operations run
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </Link>
           </div>
 
-          <div className="relative h-full min-h-[18rem] overflow-hidden rounded-2xl bg-[#0A0045] shadow-[0_20px_50px_-20px_rgba(10,0,69,0.35)] ring-1 ring-[#0A0045]/10 sm:min-h-[22rem] lg:min-h-[24rem]">
+          <div className="relative aspect-[16/10] w-full lg:col-span-7">
             <Image
-              src="/platform/oms-dashboard.png"
-              alt="FynkTech OMS dashboard showing order KPIs and orders-over-time chart"
+              src="/platform/oms-pc.png"
+              alt="OMS dashboard shown on a laptop"
               fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-left-top"
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              className="object-contain object-center"
+              priority={false}
             />
           </div>
         </div>
