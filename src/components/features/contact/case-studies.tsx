@@ -51,8 +51,6 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
   const scale = useTransform(progress, [0, 0.85], [0.5, 1]);
   const opacity = useTransform(progress, [0, 0.85], [0.7, 1]);
 
-  const external = item.href.startsWith("http");
-
   return (
     <div
       ref={triggerRef}
@@ -63,12 +61,8 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
         className="will-change-transform"
         style={{ rotateX, scale, opacity, transformPerspective: 4000 }}
       >
-        <a
-          href={item.href}
-          target={external ? "_blank" : undefined}
-          rel={external ? "noopener noreferrer" : undefined}
-          className="block"
-        >
+        {/* Display only: pictures don't link anywhere. */}
+        <div>
           <div className="relative aspect-[1587/2245] overflow-hidden bg-[#1c1c1c]">
             <Image
               src={item.image}
@@ -83,7 +77,7 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
               className="object-cover"
             />
           </div>
-        </a>
+        </div>
 
         {/* Title card — always visible, top-right on all breakpoints */}
         <div className="pointer-events-none absolute right-[5%] top-0 z-[9] bg-black/85 px-4 py-3 backdrop-blur-sm sm:px-[30px] sm:py-5">

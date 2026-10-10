@@ -30,10 +30,10 @@ export function Footer() {
         }}
       />
 
-      <div className="container-page py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
+      <div className="container-page pt-10 pb-4 md:pt-12 relative z-10">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 mb-8 lg:grid-cols-[1.4fr_0.8fr_1.5fr_1.4fr_0.9fr_1.4fr] lg:gap-x-8">
+          <div className="col-span-2 order-1 lg:col-span-1 lg:order-none">
+            <div className="flex items-center gap-3 mb-4">
               <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-gray-200">
                 <Image
                   src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
@@ -45,7 +45,7 @@ export function Footer() {
               </div>
               <span className="font-semibold text-xl" style={{ color: 'var(--foreground)' }}>FynkTech</span>
             </div>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted-foreground)' }}>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--muted-foreground)' }}>
               AI automation and e-commerce systems for businesses worldwide. Delivery center in Lahore, Pakistan.
             </p>
             <div className="flex gap-3">
@@ -69,9 +69,9 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-3 text-sm">
+          <div className="order-2 lg:order-none">
+            <h3 className="font-semibold mb-3">Company</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link href="/" className="footer-link">Home</Link></li>
               <li><Link href="/about" className="footer-link">About Us</Link></li>
               <li><Link href="/blogs" className="footer-link">Blogs</Link></li>
@@ -79,9 +79,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">AI Automation</h3>
-            <ul className="space-y-3 text-sm">
+          <div className="col-span-2 order-4 md:col-span-1 lg:order-none">
+            <h3 className="font-semibold mb-3">AI Automation</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link href="/ai-automation/voice-chat" className="footer-link">AI Voice & Chat Automation</Link></li>
               <li><Link href="/ai-automation/workflow" className="footer-link">Business Workflow Automation</Link></li>
               <li><Link href="/ai-automation/sales-marketing" className="footer-link">AI Sales & Marketing Automation</Link></li>
@@ -91,9 +91,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">E-commerce</h3>
-            <ul className="space-y-3 text-sm">
+          <div className="col-span-2 order-5 md:col-span-1 lg:order-none">
+            <h3 className="font-semibold mb-3">E-commerce</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link href="/ecommerce/store-setup" className="footer-link">Store Setup & Development</Link></li>
               <li><Link href="/ecommerce/product-sourcing" className="footer-link">Product Sourcing & Supply Chain</Link></li>
               <li><Link href="/ecommerce/marketing-growth" className="footer-link">Marketing & Growth Systems</Link></li>
@@ -103,9 +103,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
-            <ul className="space-y-3 text-sm">
+          <div className="order-3 lg:order-none">
+            <h3 className="font-semibold mb-3">Resources</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link href="/case-studies" className="footer-link">Case Studies</Link></li>
               <li><Link href="/roi-calculator" className="footer-link">ROI Calculator</Link></li>
               <li><Link href="/privacy" className="footer-link">Privacy Policy</Link></li>
@@ -113,9 +113,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-3 text-sm">
+          <div className="col-span-2 order-6 md:col-span-1 lg:order-none">
+            <h3 className="font-semibold mb-3">Contact Us</h3>
+            <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
                 <a href={`mailto:${companyAddress.email}`} className="footer-link break-all">{companyAddress.email}</a>
@@ -145,7 +145,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t pt-8 text-center" style={{ borderColor: 'var(--border)' }}>
+        <div className="border-t pt-4 text-center" style={{ borderColor: 'var(--border)' }}>
           <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
             © {new Date().getFullYear()} FynkTech. All rights reserved.
           </p>

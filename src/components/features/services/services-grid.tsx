@@ -45,7 +45,8 @@ const configs: Record<ServiceCategory, GridConfig> = {
     title: "AI automation services",
     description:
       "From AI receptionists to full custom agents — pick the system your business needs, or let us map it with you on a free call.",
-    // Featured at positions 0 and 5 → rows of F·s·s / s·s·F / s·s·s·s
+    // UI/UX, Cloud and QA are hidden on this grid (their pages still exist).
+    // Same 6-column layout as e-commerce → rows of F·s / s·s·s / F·s
     order: [
       "voice-chat",
       "workflow",
@@ -54,9 +55,6 @@ const configs: Record<ServiceCategory, GridConfig> = {
       "web-development",
       "custom-agents",
       "mobile-development",
-      "ui-ux",
-      "cloud",
-      "qa-support",
     ],
     featured: ["voice-chat", "custom-agents"],
     visuals: {
@@ -104,7 +102,9 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
     .filter((s) => s.category === category && config.order.includes(s.slug))
     .sort((a, b) => config.order.indexOf(a.slug) - config.order.indexOf(b.slug));
   const headingId = `${category}-services-heading`;
-  const isEcommerce = category === "ecommerce";
+  const smallSlugs = services.filter((s) => !config.featured.includes(s.slug)).map((s) => s.slug);
+  const smallCount = smallSlugs.length;
+  const lastSmallSlug = smallSlugs[smallCount - 1];
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const scrollByCard = (direction: -1 | 1) => {
@@ -118,23 +118,9 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
   return (
     <section
       id={`${category}-services`}
-      className={
-        isEcommerce
-          ? "relative overflow-hidden bg-white py-20 md:py-24"
-          : "relative overflow-hidden bg-[#121212] py-24"
-      }
+      className="relative overflow-hidden bg-white py-20 md:py-24"
       aria-labelledby={headingId}
     >
-      {!isEcommerce ? (
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.06) 0%, transparent 60%)",
-          }}
-        />
-      ) : null}
-
       <div className="container-page relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -143,25 +129,16 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-12 max-w-3xl text-center md:mb-14"
         >
-          <p
-            className="mb-3 text-xs font-medium uppercase tracking-[0.12em]"
-            style={{ color: isEcommerce ? "#01B4D2" : "#80DFFF" }}
-          >
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-[#01B4D2]">
             {config.eyebrow}
           </p>
           <h2
             id={headingId}
-            className={`mb-4 text-3xl font-bold md:text-5xl ${
-              isEcommerce ? "text-[#0A0045]" : "text-white"
-            }`}
+            className="mb-4 text-3xl font-bold text-[#0A0045] md:text-5xl"
           >
             {config.title}
           </h2>
-          <p
-            className={`text-base md:text-lg ${
-              isEcommerce ? "text-[#6B7280]" : "text-white/75"
-            }`}
-          >
+          <p className="text-base text-[#6B7280] md:text-lg">
             {config.description}
           </p>
         </motion.div>
@@ -190,11 +167,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                         location: `${category}_services_grid`,
                       })
                     }
-                    className={`group relative flex h-72 flex-col justify-end overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] ${
-                      isEcommerce
-                        ? "border border-black/[0.06] bg-[#F3F4F6] shadow-sm"
-                        : "border border-white/10"
-                    }`}
+                    className="group relative flex h-72 flex-col justify-end overflow-hidden rounded-2xl border border-black/[0.06] bg-[#F3F4F6] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2]"
                   >
                     {visual ? (
                       <Image
@@ -205,14 +178,10 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                         sizes="300px"
                       />
                     ) : null}
-                    {isEcommerce ? (
-                      <div
-                        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
-                        aria-hidden
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20" />
-                    )}
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
+                      aria-hidden
+                    />
                     <span className="absolute right-5 top-5 text-sm font-semibold text-white/50">
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -242,11 +211,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
               type="button"
               onClick={() => scrollByCard(-1)}
               aria-label="Previous services"
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors ${
-                isEcommerce
-                  ? "border-[#E5E7EB] bg-white text-[#0A0045] hover:border-[#0A0045]"
-                  : "border-white/20 bg-white/5 text-white hover:border-white/50"
-              }`}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0A0045] shadow-sm transition-colors hover:border-[#0A0045]"
             >
               <ChevronLeft className="h-5 w-5" strokeWidth={1.75} />
             </button>
@@ -254,36 +219,28 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
               type="button"
               onClick={() => scrollByCard(1)}
               aria-label="Next services"
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors ${
-                isEcommerce
-                  ? "border-[#E5E7EB] bg-white text-[#0A0045] hover:border-[#0A0045]"
-                  : "border-white/20 bg-white/5 text-white hover:border-white/50"
-              }`}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0A0045] shadow-sm transition-colors hover:border-[#0A0045]"
             >
               <ChevronRight className="h-5 w-5" strokeWidth={1.75} />
             </button>
           </div>
         </div>
 
-        <div
-          className={
-            isEcommerce
-              ? "hidden grid-cols-1 gap-4 sm:grid-cols-2 md:grid lg:grid-cols-6 lg:gap-5"
-              : "hidden grid-cols-1 gap-5 sm:grid-cols-2 md:grid lg:grid-cols-4"
-          }
-        >
+        <div className="hidden grid-cols-1 gap-4 sm:grid-cols-2 md:grid lg:grid-cols-6 lg:gap-5">
           {services.map((service, index) => {
             const visual = config.visuals[service.slug];
             const Icon = visual?.icon ?? Bot;
             const isFeatured = config.featured.includes(service.slug);
 
-            const spanClass = isEcommerce
-              ? isFeatured
-                ? "sm:col-span-2 lg:col-span-4"
-                : "lg:col-span-2"
-              : isFeatured
-                ? "sm:col-span-2"
-                : undefined;
+            // An odd count of small cards would leave one alone on the 2-column tablet grid,
+            // so the last small card stretches across the row there.
+            const isLastOddSmall =
+              !isFeatured && smallCount % 2 === 1 && service.slug === lastSmallSlug;
+            const spanClass = isFeatured
+              ? "sm:col-span-2 lg:col-span-4"
+              : isLastOddSmall
+                ? "sm:col-span-2 lg:col-span-2"
+                : "lg:col-span-2";
 
             return (
               <motion.div
@@ -302,12 +259,8 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                       location: `${category}_services_grid`,
                     })
                   }
-                  className={`group relative flex flex-col justify-end overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] ${
-                    isEcommerce
-                      ? `h-72 border border-black/[0.06] bg-[#F3F4F6] shadow-sm md:h-80 ${
-                          isFeatured ? "lg:h-full lg:min-h-[22rem]" : ""
-                        }`
-                      : "h-80 border border-white/10"
+                  className={`group relative flex h-72 flex-col justify-end overflow-hidden rounded-2xl border border-black/[0.06] bg-[#F3F4F6] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] md:h-80 lg:h-full ${
+                    isFeatured ? "lg:min-h-[22rem]" : "lg:min-h-80"
                   }`}
                 >
                   {visual && (
@@ -323,14 +276,10 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
                       }
                     />
                   )}
-                  {isEcommerce ? (
-                    <div
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
-                      aria-hidden
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20 transition-colors duration-300 group-hover:via-black/85" />
-                  )}
+                  <div
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent"
+                    aria-hidden
+                  />
 
                   <span className="absolute right-5 top-5 text-sm font-semibold text-white/50">
                     {String(index + 1).padStart(2, "0")}
@@ -366,7 +315,7 @@ export function ServicesGrid({ category }: { category: ServiceCategory }) {
         </div>
 
         <div className="mt-12 text-center md:mt-14">
-          <p className={isEcommerce ? "mb-5 text-[#6B7280]" : "mb-5 text-white/70"}>
+          <p className="mb-5 text-[#6B7280]">
             Not sure which service fits your business?
           </p>
           <Link

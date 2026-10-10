@@ -15,13 +15,6 @@ type ClientLogo = {
 
 const CLIENTS: ClientLogo[] = [
   {
-    id: "arabia-ai",
-    name: "Arabia AI",
-    url: "https://arabiasalesbot.com",
-    logo: "/companylogos/arabia-ai.svg",
-    icon: true,
-  },
-  {
     id: "dialcom",
     name: "Dialcom AI",
     url: "https://dialcom.ai",
@@ -29,17 +22,18 @@ const CLIENTS: ClientLogo[] = [
     icon: true,
   },
   {
-    id: "playback",
-    name: "Playback",
-    url: "https://theplaybackstore.com",
-    logo: "/companylogos/playback.png",
+    id: "arabia-ai",
+    name: "Arabia AI",
+    url: "https://arabiasalesbot.com",
+    logo: "/companylogos/arabia-ai.svg",
     icon: true,
   },
   {
-    id: "halora",
-    name: "Halora",
-    url: "https://shophalora.com",
-    logo: "/companylogos/halora.svg",
+    id: "lumenook",
+    name: "Lumenook",
+    url: "https://lumenook.com",
+    logo: "/companylogos/lumenook.png",
+    icon: true,
   },
   {
     id: "the-local-baba",
@@ -68,17 +62,23 @@ const CLIENTS: ClientLogo[] = [
     logo: "/companylogos/maisonnor.png",
   },
   {
+    id: "playback",
+    name: "Playback",
+    url: "https://theplaybackstore.com",
+    logo: "/companylogos/playback.png",
+    icon: true,
+  },
+  {
+    id: "halora",
+    name: "Halora",
+    url: "https://shophalora.com",
+    logo: "/companylogos/halora.svg",
+  },
+  {
     id: "one-stations",
     name: "One Stations",
     url: "https://onestations.com",
     logo: "/companylogos/one-stations-logo.png",
-  },
-  {
-    id: "lumenook",
-    name: "Lumenook",
-    url: "https://lumenook.com",
-    logo: "/companylogos/lumenook.png",
-    icon: true,
   },
 ];
 

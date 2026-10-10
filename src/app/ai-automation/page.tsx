@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/common/hero";
+import { AutomationSteps } from "@/components/features/services/automation-steps";
+import { AutomationUseCases } from "@/components/features/services/automation-use-cases";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, buildPageMetadata } from "@/lib/seo";
 
@@ -33,6 +35,8 @@ export default function AiAutomationPage() {
         trackingLocation="ai_automation_hero"
       />
       <ServicesGrid category="ai" />
+      <AutomationSteps />
+      <AutomationUseCases />
     </main>
   );
 }
