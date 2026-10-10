@@ -25,7 +25,7 @@ function TickerRow({ hidden = false }: { hidden?: boolean }) {
           <Link
             href={service.href}
             tabIndex={hidden ? -1 : undefined}
-            className="whitespace-nowrap px-8 md:px-12 text-base md:text-xl font-medium uppercase tracking-wide text-[#2B2B2B] transition-colors hover:text-black"
+            className="whitespace-nowrap px-8 md:px-12 text-base md:text-xl font-medium text-[#2B2B2B] transition-colors hover:text-black"
           >
             {service.label}
           </Link>
