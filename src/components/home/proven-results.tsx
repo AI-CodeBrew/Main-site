@@ -28,8 +28,8 @@ const STATS: {
   ringClass: string;
 }[] = [
   {
-    value: "10+",
-    label: "Brands in selected clients",
+    value: "15+",
+    label: "Trusted by brands worldwide",
     icon: Users,
     iconClass: "text-[#1E3A5F]",
     ringClass: "bg-[#E8EEF8]",
