@@ -28,7 +28,7 @@ const STATS: {
   ringClass: string;
 }[] = [
   {
-    value: "5+",
+    value: "10+",
     label: "Brands in selected clients",
     icon: Users,
     iconClass: "text-[#1E3A5F]",
@@ -43,7 +43,7 @@ const STATS: {
   },
   {
     value: "Global",
-    label: "Clients · engineered in Lahore",
+    label: "Global Vision. Engineering Excellence.",
     icon: Globe2,
     iconClass: "text-[#7C3AED]",
     ringClass: "bg-[#F0E9FF]",
