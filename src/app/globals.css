@@ -462,11 +462,11 @@ section {
 }
 .text-muted { color: hsl(var(--muted-foreground)); }
 
-/* Editorial reveal — hero / section entrances */
+/* Editorial reveal — never use on LCP heading (opacity:0 delays LCP). */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -474,13 +474,13 @@ section {
   }
 }
 .reveal-up {
-  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: reveal-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .reveal-up-delay-1 {
-  animation-delay: 0.15s;
+  animation-delay: 0.12s;
 }
 .reveal-up-delay-2 {
-  animation-delay: 0.3s;
+  animation-delay: 0.22s;
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal-up,

@@ -30,8 +30,7 @@ function HighlightPill({ label }: { label: string }) {
 }
 
 /**
- * Editorial hero — General Sans display + HandUnderline accent word.
- * Reveal-up entrance respects prefers-reduced-motion via CSS.
+ * Editorial hero — LCP-safe: heading paints immediately (no opacity:0 entrance).
  */
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -48,8 +47,9 @@ export function HomeHero() {
       ref={sectionRef}
       className="relative flex flex-1 flex-col justify-start overflow-hidden bg-transparent pt-6 md:min-h-[85vh] md:justify-center md:pt-0"
     >
-      <div className="relative z-10 mx-auto flex w-full max-w-[1260px] flex-col items-center px-6 pb-16 pt-4 text-center md:py-16">
-        <h1 className="heading-display reveal-up mx-auto max-w-[1260px] text-[clamp(2.75rem,6vw,5.5rem)] font-medium leading-[1.08] tracking-[-0.024em] text-[#141414]">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1260px] flex-col items-center px-6 pb-10 pt-4 text-center md:pb-16 md:py-16">
+        {/* No reveal-up on H1 — opacity:0 animations delay mobile LCP into red. */}
+        <h1 className="heading-display mx-auto max-w-[1260px] text-[clamp(2.75rem,6vw,5.5rem)] font-medium leading-[1.08] tracking-[-0.024em] text-[#141414]">
           <span className="block">AI Agents &amp; Automation</span>
           <span className="block">that make your business</span>
           <span className="block">
@@ -90,8 +90,8 @@ export function HomeHero() {
                     fill
                     sizes="40px"
                     className="object-cover object-center"
-                    quality={80}
-                    priority={i === 0}
+                    quality={72}
+                    /* Do not priority — competes with mobile LCP image/text */
                   />
                 </span>
               ))}

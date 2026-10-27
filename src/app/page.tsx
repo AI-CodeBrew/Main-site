@@ -45,12 +45,13 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Warm mobile LCP candidate early (platform mockup sits in first viewport on phones). */}
+      {/* Mobile LCP: compressed FynkTech hero — discoverable in first paint. */}
       <link
         rel="preload"
         as="image"
-        href="/platform/project-fynktech-mobile-hero-v2.webp"
+        href="/platform/project-fynktech-mobile-hero-lcp.webp"
         type="image/webp"
+        fetchPriority="high"
       />
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={organizationJsonLd()} />

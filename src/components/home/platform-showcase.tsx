@@ -14,46 +14,42 @@ const SLIDES = [
   {
     id: "dialcom",
     src: "/platform/project-dialcom.webp",
-    mobileSrc: "/platform/project-dialcom-mobile.webp",
     alt: "Dialcom voice AI CRM — laptop and mobile product mockup",
   },
   {
     id: "fynktech",
     src: "/platform/project-fynktech-v5.webp",
-    mobileSrc: "/platform/project-fynktech-v5-mobile.webp",
     alt: "FynkTech AI platform with agents, automation and analytics",
   },
   {
     id: "arabia",
     src: "/platform/project-arabia-sales-bot.webp",
-    mobileSrc: "/platform/project-arabia-sales-bot-mobile.webp",
     alt: "Arabia Sales Bot WhatsApp AI — laptop and mobile product mockup",
   },
 ] as const;
 
 const INTERVAL_MS = 8000;
 
-/**
- * Opens as it enters the viewport:
- * - starts opening at 30% from the bottom (top hits 70% of viewport)
- * - fully open at 70% from the bottom (top hits 30% of viewport)
- * - stays rounded when open (16px), closed uses stadium clip (320px)
- */
-/** Dedicated mobile header art — large readable UI, separate from desktop collage. */
+/** Compressed mobile LCP asset (~25KB, 750w) — separate from desktop collage. */
 const MOBILE_HERO = {
-  src: "/platform/project-fynktech-mobile-hero-v2.webp",
+  src: "/platform/project-fynktech-mobile-hero-lcp.webp",
   alt: "FynkTech AI platform dashboard — revenue, orders and automation overview",
-  width: 1080,
-  height: 1440,
+  width: 750,
+  height: 1000,
 } as const;
 
+/**
+ * Mobile: static compressed LCP image (priority).
+ * Desktop: scroll-reveal carousel — lazy, never priority (won't steal mobile LCP bandwidth).
+ */
 export function PlatformShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
   const slide = SLIDES[index];
 
-  // Desktop carousel — mobile uses a separate static readable hero image.
   useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    if (!mq.matches) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % SLIDES.length);
     }, INTERVAL_MS);
@@ -62,7 +58,6 @@ export function PlatformShowcase() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    // 30% from bottom → 70% from bottom
     offset: ["start 0.7", "start 0.3"],
   });
 
@@ -77,7 +72,7 @@ export function PlatformShowcase() {
       className="relative z-10 w-full px-4 pb-0 pt-6 sm:px-6 md:pt-10"
     >
       <div className="mx-auto flex w-full max-w-6xl justify-center">
-        {/* Mobile-only readable FynkTech header image */}
+        {/* Mobile LCP */}
         <div className="relative w-full max-w-md pb-8 md:hidden">
           <div className="overflow-hidden rounded-2xl">
             <Image
@@ -87,15 +82,14 @@ export function PlatformShowcase() {
               height={MOBILE_HERO.height}
               className="h-auto w-full object-contain object-center"
               sizes="(max-width: 448px) 100vw, 28rem"
-              quality={78}
+              quality={72}
               priority
               fetchPriority="high"
-              unoptimized
             />
           </div>
         </div>
 
-        {/* Desktop: closed → open across 30%–70% viewport from bottom */}
+        {/* Desktop carousel — lazy, no priority */}
         <motion.div
           style={{
             width: frameWidth,
@@ -120,9 +114,7 @@ export function PlatformShowcase() {
                 className="object-cover object-center"
                 sizes="(max-width: 1280px) 100vw, 72rem"
                 quality={78}
-                priority={index === 0}
-                fetchPriority={index === 0 ? "high" : "auto"}
-                loading={index === 0 ? "eager" : "lazy"}
+                loading="lazy"
               />
             </motion.div>
           </AnimatePresence>

@@ -16,11 +16,11 @@ export const fontDisplay = localFont({
   fallback: ["Geist", "sans-serif"],
 });
 
-/** Body — Inter. */
+/** Body — Inter. Don't preload — competes with mobile LCP (heading uses General Sans). */
 export const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  preload: true,
+  preload: false,
   adjustFontFallback: true,
 });
