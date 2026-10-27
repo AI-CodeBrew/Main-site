@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
+import { PlatformShowcase } from "@/components/home/platform-showcase";
 import { JsonLd } from "@/components/seo/json-ld";
 import { listBlogs } from "@/lib/blogs/store";
 import { getProjectCards } from "@/lib/projects/store";
@@ -9,11 +10,6 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from "@/lib/seo";
-
-const PlatformShowcase = dynamic(
-  () => import("@/components/home/platform-showcase").then((m) => m.PlatformShowcase),
-  { loading: () => <div className="min-h-[18rem] md:min-h-[28rem]" aria-hidden /> },
-);
 
 const SelectedClients = dynamic(
   () => import("@/components/home/selected-clients").then((m) => m.SelectedClients),
@@ -61,6 +57,13 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
+      {/* Warm mobile LCP candidate early (platform mockup sits in first viewport on phones). */}
+      <link
+        rel="preload"
+        as="image"
+        href="/platform/project-dialcom-mobile.webp"
+        type="image/webp"
+      />
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={organizationJsonLd()} />
       <div className="flex flex-col md:min-h-[calc(100svh-4rem)]">

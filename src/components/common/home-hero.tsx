@@ -1,12 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { HandwritingText } from "@/components/ui/handwriting-text";
 
+/**
+ * Hero paints immediately (no opacity:0 entrance) so mobile LCP isn't blocked on JS.
+ * Handwriting word still cycles after mount.
+ */
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -23,12 +26,7 @@ export function HomeHero() {
       className="relative flex flex-1 flex-col justify-start overflow-hidden bg-transparent pt-6 md:min-h-[85vh] md:justify-center md:pt-0"
     >
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-16 pt-4 text-center md:py-16">
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="heading-display max-w-4xl text-4xl font-bold leading-[1.12] tracking-tight text-[#0A0045] sm:text-6xl"
-        >
+        <h1 className="heading-display max-w-4xl text-4xl font-bold leading-[1.12] tracking-tight text-[#0A0045] sm:text-6xl">
           <span className="block">AI Agents &amp; Automation</span>
           <span className="mt-1 block sm:mt-2">that make your business</span>
           <span className="mt-1 block">
@@ -39,24 +37,14 @@ export function HomeHero() {
               interval={3200}
             />
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#6B7280] md:text-lg"
-        >
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#6B7280] md:text-lg">
           Custom AI agents, chatbots and workflow automation that cut costs and scale your business
           — built in Pakistan for clients worldwide.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-8 flex w-full flex-wrap items-center justify-center gap-3 sm:gap-4"
-        >
+        <div className="mt-8 flex w-full flex-wrap items-center justify-center gap-3 sm:gap-4">
           <Link
             href="/contact?intent=strategy-call"
             className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-[#0A0045] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#070643]"
@@ -76,7 +64,7 @@ export function HomeHero() {
           >
             Our Services
           </Link>
-        </motion.div>
+        </div>
       </div>
 
       <button

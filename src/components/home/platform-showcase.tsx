@@ -68,9 +68,9 @@ export function PlatformShowcase() {
       className="relative z-10 w-full px-4 pb-0 pt-6 sm:px-6 md:pt-10"
     >
       <div className="mx-auto flex w-full max-w-6xl justify-center">
-        {/* Mobile: always open, keep soft rounded corners */}
+        {/* Mobile: always open. initial={false} so first slide isn't opacity:0 (LCP). */}
         <div className="relative aspect-[16/10] w-full max-w-lg overflow-hidden rounded-2xl md:hidden">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={slide.id}
               initial={{ opacity: 0 }}
@@ -87,6 +87,7 @@ export function PlatformShowcase() {
                 sizes="(max-width: 512px) 100vw, 32rem"
                 quality={72}
                 priority={index === 0}
+                fetchPriority={index === 0 ? "high" : "auto"}
                 loading={index === 0 ? "eager" : "lazy"}
               />
             </motion.div>
@@ -102,7 +103,7 @@ export function PlatformShowcase() {
           }}
           className="relative hidden aspect-[16/9] w-full max-w-6xl will-change-[clip-path,width] md:block"
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={slide.id}
               initial={{ opacity: 0 }}
@@ -119,6 +120,7 @@ export function PlatformShowcase() {
                 sizes="(max-width: 1280px) 100vw, 72rem"
                 quality={78}
                 priority={index === 0}
+                fetchPriority={index === 0 ? "high" : "auto"}
                 loading={index === 0 ? "eager" : "lazy"}
               />
             </motion.div>

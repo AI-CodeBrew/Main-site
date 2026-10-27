@@ -12,6 +12,8 @@ const scriptFont = Dancing_Script({
   subsets: ["latin"],
   weight: ["600", "700"],
   display: "swap",
+  // Don't compete with Plus Jakarta (hero LCP font) on the critical request path.
+  preload: false,
 });
 
 export interface HandwritingTextProps {
@@ -52,15 +54,16 @@ export function HandwritingText({
     return () => clearInterval(id);
   }, [cycle, interval]);
 
+  // Keep first paint fully opaque — fading the cycling word would delay LCP text.
   return (
     <span
       className={cn(scriptFont.className, "inline-block", className)}
       style={{
         height,
         lineHeight: 1,
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(0.12em)",
-        transition: "opacity 0.22s ease, transform 0.22s ease",
+        opacity: visible ? 1 : 0.35,
+        transform: visible ? "translateY(0)" : "translateY(0.08em)",
+        transition: "opacity 0.18s ease, transform 0.18s ease",
       }}
       aria-live="polite"
     >
