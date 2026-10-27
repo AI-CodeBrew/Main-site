@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import { AnimatePresence, motion } from "framer-motion";
 import { Layers, Minus, Plus } from "lucide-react";
+import { runWhenIdle } from "@/lib/idle";
 import { cn } from "@/lib/utils";
 
 const projectsHeadingFont = Dancing_Script({
@@ -60,8 +61,9 @@ function AnimatedProjectImage({
         sizes={mobileSrc ? "(max-width: 768px) 400px, 300px" : undefined}
         alt=""
         className="absolute inset-0 h-full w-full object-cover will-change-transform"
-        loading="lazy"
+        loading="eager"
         decoding="async"
+        fetchPriority="low"
         animate={
           active
             ? {
@@ -114,6 +116,26 @@ export function ProjectShowcase({
       y: rect.top + rect.height / 2,
     });
   };
+
+  // Warm the desktop hover previews in the background so the first hover is instant.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // Previews are desktop-only (`hidden md:block`).
+    if (!window.matchMedia("(min-width: 768px)").matches) return;
+
+    const urls = [
+      ...new Set(projects.map((p) => projectImageSrc(p.image)).filter(Boolean)),
+    ];
+    if (urls.length === 0) return;
+
+    return runWhenIdle(() => {
+      for (const url of urls) {
+        const img = new window.Image();
+        img.decoding = "async";
+        img.src = url;
+      }
+    }, 2_500);
+  }, [projects]);
 
   useEffect(() => {
     if (hoveredIndex === null) return;

@@ -139,6 +139,7 @@ export function Header() {
                       className="absolute inset-x-4 bottom-1.5 h-[2px] origin-left scale-x-0 rounded-full bg-[#01B4D2] transition-transform duration-300 ease-out group-hover:scale-x-100"
                     />
                     <svg
+                      aria-hidden
                       className={`h-3 w-3 transition-transform duration-300 ${
                         activeDropdown === item.label ? "rotate-180" : ""
                       }`}
@@ -216,12 +217,15 @@ export function Header() {
         )}
       </header>
 
-      {/* Separate full-screen overlay — does not push or scroll the page */}
+      {/* Separate full-screen overlay — does not push or scroll the page.
+          When closed: inert + aria-hidden so focusable links/buttons stay out of the a11y tree
+          (fixes Lighthouse Agentic Browsing / aria-hidden-focus on mobile). */}
       <div
         className={`fixed inset-0 z-[60] md:hidden ${
           mobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!mobileMenuOpen}
+        inert={!mobileMenuOpen ? true : undefined}
       >
         <div
           className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${

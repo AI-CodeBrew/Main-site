@@ -84,7 +84,7 @@ export function PlatformShowcase() {
                 alt={slide.alt}
                 fill
                 className="object-cover object-center"
-                sizes="100vw"
+                sizes="(max-width: 512px) 100vw, 32rem"
                 quality={72}
                 priority={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}

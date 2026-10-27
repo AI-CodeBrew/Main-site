@@ -132,7 +132,8 @@ export function SelectedClients() {
                     height={48}
                     sizes="(max-width: 768px) 144px, 160px"
                     unoptimized={client.logo.endsWith(".svg")}
-                    className="h-8 w-auto max-w-[9rem] object-contain md:h-9 md:max-w-[10rem]"
+                    className="h-8 max-w-[9rem] object-contain md:h-9 md:max-w-[10rem]"
+                    style={{ width: "auto" }}
                   />
                 )}
               </a>
