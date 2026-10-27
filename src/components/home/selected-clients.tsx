@@ -108,16 +108,16 @@ export function SelectedClients() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${client.name} (opens in a new tab)`}
-                className="group flex h-[4.5rem] items-center justify-center rounded-2xl bg-[#F3F4F6] px-4 py-4 transition-colors duration-300 hover:bg-[#EEF0F3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] md:h-[5.25rem] md:px-6"
+                className="group flex h-[4.5rem] items-center justify-center rounded-2xl bg-white px-4 py-4 ring-1 ring-black/[0.06] transition-colors duration-300 hover:ring-black/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] md:h-[5.25rem] md:px-6"
               >
                 {client.icon ? (
-                  <span className="flex max-w-full items-center gap-2.5 grayscale transition duration-300 group-hover:grayscale-0">
+                  <span className="flex max-w-full items-center gap-2.5">
                     <Image
                       src={client.logo}
                       alt=""
                       width={36}
                       height={36}
-                      className="h-8 w-8 shrink-0 object-contain opacity-90 md:h-9 md:w-9"
+                      className="h-8 w-8 shrink-0 object-contain md:h-9 md:w-9"
                     />
                     <span className="truncate text-sm font-bold tracking-tight text-[#111111] md:text-base">
                       {client.name}
@@ -130,7 +130,7 @@ export function SelectedClients() {
                     width={160}
                     height={48}
                     unoptimized={client.logo.endsWith(".svg")}
-                    className="h-8 w-auto max-w-[9rem] object-contain opacity-80 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0 md:h-9 md:max-w-[10rem]"
+                    className="h-8 w-auto max-w-[9rem] object-contain md:h-9 md:max-w-[10rem]"
                   />
                 )}
               </a>
