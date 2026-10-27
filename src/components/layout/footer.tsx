@@ -36,7 +36,7 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-gray-200">
                 <Image
-                  src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                  src="/fynktech-mark.webp"
                   alt="FynkTech"
                   width={32}
                   height={32}

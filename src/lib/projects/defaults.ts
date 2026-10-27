@@ -20,25 +20,25 @@ const dialcom = companyProjects.find((project) => project.id === "dialcom");
 
 /** Shown until projects are added in /admin/projects (or if Supabase is unreachable). */
 /** Cache-bust so browsers/CDN don't keep serving the old tall screenshots. */
-const LIGHT = "?v=square";
+const LIGHT = "?v=webp";
 
 export const DEFAULT_PROJECTS: ProjectCard[] = [
   {
     title: dialcom?.name ?? "Dialcom",
     meta: "A voice agent that qualifies, calls, and books while your team sleeps.",
-    image: `/projects/dialcom.jpg${LIGHT}`,
+    image: `/projects/dialcom.webp${LIGHT}`,
     href: dialcom?.url ?? "/contact",
   },
   {
     title: "Arabia AI",
     meta: "Turn Every Whatsapp chat into a confirmed order.",
-    image: `/projects/arabia-ai.jpg${LIGHT}`,
+    image: `/projects/arabia-ai.webp${LIGHT}`,
     href: "/contact",
   },
   {
     title: "The Local Baba",
     meta: "A modern B2B marketplace connecting businesses with trending products and reliable wholesale sourcing.",
-    image: `/projects/the-local-baba.jpg${LIGHT}`,
+    image: `/projects/the-local-baba.webp${LIGHT}`,
     href: "/contact",
   },
 ];

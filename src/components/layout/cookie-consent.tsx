@@ -23,7 +23,7 @@ export function CookieConsent() {
           <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-white/20">
               <Image
-                src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                src="/fynktech-mark.webp"
                 alt="FynkTech"
                 width={40}
                 height={40}
@@ -89,7 +89,7 @@ export function CookieConsent() {
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-6 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/20">
                 <Image
-                  src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                  src="/fynktech-mark.webp"
                   alt="FynkTech"
                   width={48}
                   height={48}

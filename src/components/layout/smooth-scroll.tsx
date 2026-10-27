@@ -21,6 +21,8 @@ export function SmoothScroll() {
   useEffect(() => {
     if (disabled) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Skip Lenis on phones/tablets — native scroll is faster and lighter.
+    if (window.matchMedia("(max-width: 767px), (pointer: coarse)").matches) return;
 
     let lenis: Lenis | null = null;
     let cancelled = false;

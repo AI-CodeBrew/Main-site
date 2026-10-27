@@ -36,7 +36,7 @@ import { StickyVideoSplit } from '@/components/features/common';
 function MyPage() {
   return (
     <StickyVideoSplit
-      videoSrc="/videos/6719ad0ceed6d5aa24a83d61_6748168d07d698d005cc4116_careers -transcode.mp4"
+      videoSrc="/videos/220941_small.mp4"
       title="Join Our Team"
       subtitle="Careers at FynkTech"
       description="We're building the future of technology with innovative solutions that transform businesses worldwide."

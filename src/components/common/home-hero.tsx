@@ -34,7 +34,6 @@ export function HomeHero() {
           <span className="mt-1 block">
             <HandwritingText
               words={["faster.", "smarter.", "scalable."]}
-              fontUrl="/fonts/handwriting.ttf"
               className="text-[#01B4D2]"
               height="1.1em"
               interval={3200}

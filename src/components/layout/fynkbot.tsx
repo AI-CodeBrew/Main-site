@@ -22,7 +22,7 @@ export function FynkBot() {
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-3 md:p-4 flex items-center gap-2 md:gap-3 relative">
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden ring-2 ring-white/20">
                 <Image
-                  src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                  src="/fynktech-mark.webp"
                   alt="FynkTech Bot"
                   width={40}
                   height={40}
@@ -97,7 +97,7 @@ export function FynkBot() {
       >
         <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden">
           <Image
-            src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+            src="/fynktech-mark.webp"
             alt="FynkTech Bot"
             width={64}
             height={64}

@@ -16,54 +16,54 @@ const CLIENTS: ClientLogo[] = [
     id: "dialcom",
     name: "Dialcom AI",
     url: "https://dialcom.ai",
-    logo: "/companylogos/dialcom.png",
+    logo: "/companylogos/dialcom.webp",
     icon: true,
   },
   {
     id: "arabia-ai",
     name: "Arabia AI",
     url: "https://arabiasalesbot.com",
-    logo: "/companylogos/arabia-sales-bot.png",
+    logo: "/companylogos/arabia-sales-bot.webp",
     icon: true,
   },
   {
     id: "lumenook",
     name: "Lumenook",
     url: "https://lumenook.com",
-    logo: "/companylogos/lumenook.png",
+    logo: "/companylogos/lumenook.webp",
     icon: true,
   },
   {
     id: "the-local-baba",
     name: "The Local Baba",
     url: "https://thelocalbaba.com",
-    logo: "/companylogos/localbaba.png",
+    logo: "/companylogos/localbaba.webp",
     icon: true,
   },
   {
     id: "everlooms",
     name: "Everlooms",
     url: "https://everlooms.com",
-    logo: "/companylogos/everlooms.png",
+    logo: "/companylogos/everlooms.webp",
     icon: true,
   },
   {
     id: "use-and-keep",
     name: "Use & Keep",
     url: "https://useandkeep.com",
-    logo: "/companylogos/useandkeep.png",
+    logo: "/companylogos/useandkeep.webp",
   },
   {
     id: "maisonnor",
     name: "Maisonnor",
     url: "https://maisonnor.co",
-    logo: "/companylogos/maisonnor.png",
+    logo: "/companylogos/maisonnor.webp",
   },
   {
     id: "playback",
     name: "Playback",
     url: "https://theplaybackstore.com",
-    logo: "/companylogos/playback.png",
+    logo: "/companylogos/playback.webp",
     icon: true,
   },
   {
@@ -76,7 +76,7 @@ const CLIENTS: ClientLogo[] = [
     id: "one-stations",
     name: "One Stations",
     url: "https://onestations.com",
-    logo: "/companylogos/one-stations-logo.png",
+    logo: "/companylogos/one-stations-logo.webp",
   },
 ];
 
@@ -117,6 +117,7 @@ export function SelectedClients() {
                       alt=""
                       width={36}
                       height={36}
+                      sizes="36px"
                       className="h-8 w-8 shrink-0 object-contain md:h-9 md:w-9"
                     />
                     <span className="truncate text-sm font-bold tracking-tight text-[#111111] md:text-base">
@@ -129,6 +130,7 @@ export function SelectedClients() {
                     alt={client.name}
                     width={160}
                     height={48}
+                    sizes="(max-width: 768px) 144px, 160px"
                     unoptimized={client.logo.endsWith(".svg")}
                     className="h-8 w-auto max-w-[9rem] object-contain md:h-9 md:max-w-[10rem]"
                   />

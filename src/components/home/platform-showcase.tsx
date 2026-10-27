@@ -13,17 +13,20 @@ import {
 const SLIDES = [
   {
     id: "dialcom",
-    src: "/platform/project-dialcom.jpg",
+    src: "/platform/project-dialcom.webp",
+    mobileSrc: "/platform/project-dialcom-mobile.webp",
     alt: "Dialcom voice AI CRM — laptop and mobile product mockup",
   },
   {
     id: "fynktech",
-    src: "/platform/project-fynktech-v5.jpg",
+    src: "/platform/project-fynktech-v5.webp",
+    mobileSrc: "/platform/project-fynktech-v5-mobile.webp",
     alt: "FynkTech AI platform with agents, automation, e-commerce and analytics",
   },
   {
     id: "arabia",
-    src: "/platform/project-arabia-sales-bot.jpg",
+    src: "/platform/project-arabia-sales-bot.webp",
+    mobileSrc: "/platform/project-arabia-sales-bot-mobile.webp",
     alt: "Arabia Sales Bot WhatsApp AI — laptop and mobile product mockup",
   },
 ] as const;
@@ -77,12 +80,14 @@ export function PlatformShowcase() {
               className="absolute inset-0"
             >
               <Image
-                src={slide.src}
+                src={slide.mobileSrc}
                 alt={slide.alt}
                 fill
                 className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, 32rem"
+                sizes="100vw"
+                quality={72}
                 priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
               />
             </motion.div>
           </AnimatePresence>
@@ -112,7 +117,9 @@ export function PlatformShowcase() {
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 1280px) 100vw, 72rem"
+                quality={78}
                 priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
               />
             </motion.div>
           </AnimatePresence>

@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   // Dev only: let shared tunnel links (VS Code Ports, Cloudflare) load the dev server's scripts.
   allowedDevOrigins: ["*.devtunnels.ms", "*.trycloudflare.com", "*.loca.lt"],
   images: {
+    // Prefer modern formats for next/image (homepage + rest of site).
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: "https",

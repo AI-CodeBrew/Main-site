@@ -70,18 +70,18 @@ export async function getProjectCards(): Promise<ProjectCard[]> {
   return result.data.map(toCard);
 }
 
-/** Map CDN/admin URLs onto local light-theme files so browsers don't keep old dark CDN cache. */
+/** Map CDN/admin URLs onto local WebP files for fast homepage loads. */
 function resolveProjectImage(url: string): string {
   const match = url.match(
-    /\/(?:uploads\/)?projects\/([a-z0-9-]+?)(?:-light)?\.(?:jpe?g|png|webp)(?:\?.*)?$/i,
+    /\/(?:uploads\/)?projects\/([a-z0-9-]+?)(?:-light|-mobile)?\.(?:jpe?g|png|webp)(?:\?.*)?$/i,
   );
   if (match?.[1]) {
-    const slug = match[1].replace(/-light$/i, "");
-    return `/projects/${slug}.jpg?v=square`;
+    const slug = match[1].replace(/-light$/i, "").replace(/-mobile$/i, "");
+    return `/projects/${slug}.webp?v=webp`;
   }
   if (url.startsWith("/projects/")) {
-    const bare = url.split("?")[0];
-    return `${bare}?v=square`;
+    const bare = url.split("?")[0].replace(/\.(jpe?g|png)$/i, ".webp");
+    return `${bare}?v=webp`;
   }
   return url;
 }

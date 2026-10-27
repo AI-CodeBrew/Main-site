@@ -30,18 +30,24 @@ type ProjectShowcaseProps = {
   className?: string;
 };
 
-function projectImageSrc(src: string): string {
-  if (!src) return "/projects/dialcom.jpg?v=square";
-  if (src.includes("?")) return src;
-  return `${src}?v=square`;
+function projectImageSrc(src: string, mobile = false): string {
+  const fallback = mobile
+    ? "/projects/dialcom-mobile.webp"
+    : "/projects/dialcom.webp";
+  if (!src) return `${fallback}?v=webp`;
+  const bare = src.split("?")[0].replace(/\.(jpe?g|png)$/i, ".webp");
+  const webp = mobile ? bare.replace(/\.webp$/i, "-mobile.webp") : bare;
+  return `${webp}?v=webp`;
 }
 
 function AnimatedProjectImage({
   src,
+  mobileSrc,
   className,
   active = true,
 }: {
   src: string;
+  mobileSrc?: string;
   className?: string;
   active?: boolean;
 }) {
@@ -50,8 +56,12 @@ function AnimatedProjectImage({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <motion.img
         src={src}
+        srcSet={mobileSrc ? `${mobileSrc} 400w, ${src} 640w` : undefined}
+        sizes={mobileSrc ? "(max-width: 768px) 400px, 300px" : undefined}
         alt=""
         className="absolute inset-0 h-full w-full object-cover will-change-transform"
+        loading="lazy"
+        decoding="async"
         animate={
           active
             ? {
@@ -177,6 +187,7 @@ export function ProjectShowcase({
             >
               <AnimatedProjectImage
                 src={projectImageSrc(active.image)}
+                mobileSrc={projectImageSrc(active.image, true)}
                 active
               />
             </div>

@@ -95,10 +95,11 @@ export function Header() {
           >
             <div className="h-8 w-8 overflow-hidden rounded-full ring-1 ring-black/5">
               <Image
-                src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                src="/fynktech-mark.webp"
                 alt="FynkTech"
                 width={32}
                 height={32}
+                sizes="32px"
                 className="h-full w-full object-cover"
                 priority
               />
@@ -245,10 +246,11 @@ export function Header() {
             >
               <div className="h-8 w-8 overflow-hidden rounded-full ring-1 ring-black/5">
                 <Image
-                  src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                  src="/fynktech-mark.webp"
                   alt="FynkTech"
                   width={32}
                   height={32}
+                  sizes="32px"
                   className="h-full w-full object-cover"
                 />
               </div>

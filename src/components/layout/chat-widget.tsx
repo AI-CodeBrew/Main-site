@@ -613,7 +613,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
             >
               <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden ring-2 ring-white/20">
                 <Image
-                  src="/DARK%20BLUE%20Fynk%20Tech%20CMYK%20JPEG%20files-05.jpg"
+                  src="/fynktech-mark.webp"
                   alt="FynkTech"
                   width={40}
                   height={40}
