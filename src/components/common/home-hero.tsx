@@ -1,14 +1,37 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { HandwritingText } from "@/components/ui/handwriting-text";
+import { HandUnderline } from "@/components/ui/hand-underline";
+import { cn } from "@/lib/utils";
+
+const TEAM_AVATARS = [
+  { src: "/team/avatar-1.webp", alt: "FynkTech team member" },
+  { src: "/team/avatar-2.webp", alt: "FynkTech team member" },
+  { src: "/team/avatar-3.webp", alt: "FynkTech team member" },
+] as const;
+
+function HighlightPill({ label }: { label: string }) {
+  return (
+    <span
+      className={cn(
+        "mx-0.5 inline-flex items-center rounded-lg border border-[#D7D7DE] bg-transparent px-2 py-0.5",
+        "text-[0.95em] font-semibold tracking-[-0.01em] text-[#5b5b66]",
+        "transition-[background-color,border-color,color,box-shadow] duration-200",
+        "hover:border-[#7DD8E8] hover:bg-[#7DD8E8] hover:text-[#141414] hover:shadow-[0_6px_18px_rgba(58,166,201,0.28)]",
+      )}
+    >
+      {label}
+    </span>
+  );
+}
 
 /**
- * Hero paints immediately (no opacity:0 entrance) so mobile LCP isn't blocked on JS.
- * Handwriting word still cycles after mount.
+ * Editorial hero — General Sans display + HandUnderline accent word.
+ * Reveal-up entrance respects prefers-reduced-motion via CSS.
  */
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -25,44 +48,57 @@ export function HomeHero() {
       ref={sectionRef}
       className="relative flex flex-1 flex-col justify-start overflow-hidden bg-transparent pt-6 md:min-h-[85vh] md:justify-center md:pt-0"
     >
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-16 pt-4 text-center md:py-16">
-        <h1 className="heading-display max-w-4xl text-4xl font-bold leading-[1.12] tracking-tight text-[#0A0045] sm:text-6xl">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1260px] flex-col items-center px-6 pb-16 pt-4 text-center md:py-16">
+        <h1 className="heading-display reveal-up mx-auto max-w-[1260px] text-[clamp(2.75rem,6vw,5.5rem)] font-medium leading-[1.08] tracking-[-0.024em] text-[#141414]">
           <span className="block">AI Agents &amp; Automation</span>
-          <span className="mt-1 block sm:mt-2">that make your business</span>
-          <span className="mt-1 block">
-            <HandwritingText
-              words={["faster.", "smarter.", "scalable."]}
-              className="text-[#01B4D2]"
-              height="1.1em"
-              interval={3200}
-            />
+          <span className="block">that make your business</span>
+          <span className="block">
+            <HandUnderline
+              animate="mount"
+              color="#3aa6c9"
+              className="font-medium text-[#3aa6c9]"
+            >
+              scalable
+            </HandUnderline>
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#6B7280] md:text-lg">
-          Custom AI agents, chatbots and workflow automation that cut costs and scale your business
-          — built in Pakistan for clients worldwide.
+        <p className="reveal-up reveal-up-delay-1 mx-auto mt-6 max-w-[40rem] text-[1.125rem] font-normal leading-[1.75] text-[#5b5b66]">
+          Custom <HighlightPill label="AI agents" />, <HighlightPill label="chatbots" /> and{" "}
+          <HighlightPill label="workflow automations" /> that cut costs and scale your business, for
+          clients worldwide.
         </p>
 
-        <div className="mt-8 flex w-full flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <div className="reveal-up reveal-up-delay-2 mt-8 flex w-full items-center justify-center">
           <Link
             href="/contact?intent=strategy-call"
-            className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-[#0A0045] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#070643]"
+            className="inline-flex cursor-pointer items-center gap-3 rounded-full bg-[#3aa6c9] py-2 pl-2 pr-5 shadow-[0_10px_28px_rgba(58,166,201,0.32)] transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-[#2f95b6] hover:shadow-[0_14px_32px_rgba(58,166,201,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3aa6c9] focus-visible:ring-offset-2 sm:gap-3.5 sm:pr-6"
             onClick={() =>
-              trackEvent("cta_click", { cta: "book_free_demo", location: "hero" })
+              trackEvent("cta_click", { cta: "book_call_with_team", location: "hero" })
             }
           >
-            Book a Free Demo
-            <ArrowRight className="h-3.5 w-3.5 text-white" strokeWidth={2.25} aria-hidden />
-          </Link>
-          <Link
-            href="/ai-automation"
-            className="hidden cursor-pointer items-center justify-center rounded-full border border-black/[0.1] bg-white px-4 py-2 text-sm font-semibold text-[#0A0045] transition-colors hover:bg-[#F3F4F6] md:inline-flex"
-            onClick={() =>
-              trackEvent("cta_click", { cta: "our_services", location: "hero" })
-            }
-          >
-            Our Services
+            <span className="flex items-center pl-0.5" aria-hidden>
+              {TEAM_AVATARS.map((avatar, i) => (
+                <span
+                  key={avatar.src}
+                  className="relative h-9 w-9 overflow-hidden rounded-full ring-[2.5px] ring-[#3aa6c9] sm:h-10 sm:w-10"
+                  style={{ marginLeft: i === 0 ? 0 : -10, zIndex: TEAM_AVATARS.length - i }}
+                >
+                  <Image
+                    src={avatar.src}
+                    alt=""
+                    fill
+                    sizes="40px"
+                    className="object-cover object-center"
+                    quality={80}
+                    priority={i === 0}
+                  />
+                </span>
+              ))}
+            </span>
+            <span className="pr-0.5 text-sm font-semibold tracking-[-0.01em] text-white sm:text-[0.9375rem]">
+              Book a free call
+            </span>
           </Link>
         </div>
       </div>

@@ -1,15 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Dancing_Script } from "next/font/google";
-import { ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const blogsHeadingFont = Dancing_Script({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  display: "swap",
-});
 
 export type HomeBlogCard = {
   slug: string;
@@ -18,6 +9,47 @@ export type HomeBlogCard = {
   image: string | null;
   createdAt?: string | null;
 };
+
+/** Editorial stat card — shorter so it lines up with the 5-item list. */
+function FeaturedStatCard({ index = 1 }: { index?: number }) {
+  const no = String(index).padStart(2, "0");
+  return (
+    <div className="flex min-h-[11.5rem] flex-col justify-between overflow-hidden rounded-[1.25rem] bg-[#01B4D2] px-5 py-4 text-white shadow-[0_20px_48px_-24px_rgba(1,180,210,0.45)] md:min-h-[13rem] md:rounded-[1.5rem] md:px-6 md:py-5">
+      <div className="flex items-center justify-between gap-4 border-b border-white/25 pb-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/85">
+          The AI automation ledger
+        </p>
+        <p className="shrink-0 font-mono text-[10px] uppercase tracking-[0.14em] text-white/85">
+          No. {no}
+        </p>
+      </div>
+
+      <div className="py-3 md:py-4">
+        <p className="text-[1.85rem] font-bold uppercase leading-[0.95] tracking-tight text-white md:text-[2.35rem]">
+          By year three
+        </p>
+        <span
+          className="mt-2.5 block h-[3px] w-14 rounded-full bg-white md:w-16"
+          aria-hidden
+        />
+      </div>
+
+      <div className="flex flex-wrap items-end justify-between gap-3 border-t border-white/25 pt-3">
+        <div className="min-w-0">
+          <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-white/80">
+            Avg. hours saved / week with AI agents
+          </p>
+          <p className="mt-1 text-xl font-bold tracking-tight text-white md:text-2xl">
+            40+ hrs
+          </p>
+        </div>
+        <p className="max-w-[10rem] text-right font-mono text-[9px] leading-snug text-white/75">
+          FynkTech · production AI systems, 2026
+        </p>
+      </div>
+    </div>
+  );
+}
 
 const FALLBACK: HomeBlogCard[] = [
   {
@@ -35,27 +67,34 @@ const FALLBACK: HomeBlogCard[] = [
     createdAt: "2026-07-20",
   },
   {
-    slug: "shopify-stores-built-to-convert",
-    title: "Shopify Stores Built to Convert — Not Just Look Pretty",
-    description: "E-commerce",
+    slug: "workflow-automation-that-cuts-busywork",
+    title: "Workflow Automation That Cuts Busywork Without Breaking Your Stack",
+    description: "Automation",
     image: null,
     createdAt: "2026-07-01",
   },
   {
-    slug: "shopify-dropshipping-pakistan",
-    title: "Shopify Dropshipping in Pakistan: Stores to Learn From in 2026",
-    description: "E-commerce",
+    slug: "voice-agents-for-sales",
+    title: "Voice Agents for Sales: Qualify, Book, and Hand Off Cleanly",
+    description: "Voice AI",
     image: null,
     createdAt: "2026-06-12",
   },
   {
-    slug: "cod-shopify-pakistan",
-    title: "Cash on Delivery for Shopify in Pakistan: Cut Fake Orders in 2026",
-    description: "Shopify & E-commerce",
+    slug: "whatsapp-ai-agents",
+    title: "WhatsApp AI Agents That Answer Fast and Escalate the Right Way",
+    description: "Chat AI",
     image: null,
     createdAt: "2026-05-28",
   },
 ];
+
+const ECOM_RE =
+  /e-?commerce|shopify|woocommerce|dropshipping|store setup|cod\b|cash on delivery/i;
+
+function isEcommercePost(post: HomeBlogCard) {
+  return ECOM_RE.test(`${post.slug} ${post.title} ${post.description ?? ""}`);
+}
 
 function hrefFor(slug: string) {
   if (slug.includes("/")) return `/${slug}`;
@@ -75,179 +114,120 @@ function readMins(description: string | null | undefined) {
   return `${mins} min read`;
 }
 
-function topicLabel(description: string | null | undefined) {
-  const raw = (description || "").trim();
-  if (!raw) return "Insights";
-  // Short category-style descriptions stay as-is; longer blurbs become "Essay".
-  if (raw.length <= 40 && !raw.includes(".")) return raw;
-  return "Essay";
+function listMeta(description: string | null | undefined) {
+  const raw = (description || "").trim() || "Insights";
+  if (ECOM_RE.test(raw)) return "Insights";
+  return raw;
 }
 
 /**
- * Editorial homepage blogs — featured essay + more stories list.
+ * Desktop: featured essay + numbered list (reference layout).
+ * Mobile: stacked featured + list.
+ * Homepage stays AI/automation-focused — e-commerce posts belong on /ecommerce.
  */
 export function HomeBlogs({ posts = [] }: { posts?: HomeBlogCard[] }) {
-  const cards = posts.length > 0 ? posts : FALLBACK;
+  const source = posts.length > 0 ? posts.filter((p) => !isEcommercePost(p)) : FALLBACK;
+  const cards = source.length > 0 ? source : FALLBACK;
   const featured = cards[0];
-  const list = cards.slice(1, 5);
+  const list = cards.slice(0, 5);
   const featuredDate = formatDate(featured.createdAt);
   const featuredRead = readMins(featured.description);
-  const featuredTopic = topicLabel(featured.description);
 
   return (
     <section
-      className="relative overflow-hidden bg-[#F4F5F7] py-14 md:py-20"
+      className="relative bg-white py-12 md:py-16"
       aria-labelledby="home-blogs-heading"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_at_top,_rgba(1,180,210,0.12),_transparent_65%)]"
-      />
-
-      <div className="container-page relative">
-        <div className="mb-8 flex items-end justify-between gap-4 md:mb-12">
+      <div className="container-page">
+        <div className="mb-8 flex items-end justify-between gap-4 md:mb-10">
           <div>
-            <div className="flex items-center gap-3">
-              <h2
-                id="home-blogs-heading"
-                className={cn(
-                  blogsHeadingFont.className,
-                  "text-5xl font-bold leading-none text-[#01B4D2] md:text-6xl",
-                )}
-              >
-                Blogs
-              </h2>
-            </div>
-            <p className="mt-2 text-sm text-[#6B7280] md:text-base">
-              Practical notes on AI agents and e-commerce that ship
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9CA3AF]">
+              Ideas that ship
             </p>
+            <h2
+              id="home-blogs-heading"
+              className="mt-2 text-2xl font-bold tracking-tight text-[#0B1220] md:text-3xl"
+            >
+              Blogs
+            </h2>
           </div>
           <Link
             href="/blogs"
-            className="hidden items-center gap-1.5 text-sm font-semibold text-[#0A0045] transition-colors hover:text-[#01B4D2] md:inline-flex"
+            className="hidden text-sm font-semibold text-[#01B4D2] transition-colors hover:text-[#0B7A8C] md:inline-flex"
           >
             View all
-            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.25} aria-hidden />
           </Link>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-stretch">
-          {/* Featured essay */}
-          <article className="min-h-0">
-            <Link
-              href={hrefFor(featured.slug)}
-              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[1.5rem] bg-[#0A0045] px-6 py-7 text-white transition-transform duration-300 hover:-translate-y-0.5 md:px-8 md:py-9"
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[#01B4D2]/25 blur-3xl transition-opacity duration-500 group-hover:opacity-90"
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -bottom-24 -left-10 h-48 w-48 rounded-full bg-[#5A83FF]/20 blur-3xl"
-              />
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-start">
+          {/* Featured */}
+          <article>
+            <Link href={hrefFor(featured.slug)} className="group block">
+              <FeaturedStatCard index={1} />
 
-              <div className="relative">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/65">
-                  <span className="text-[#01B4D2]">Featured</span>
-                  <span aria-hidden className="text-white/30">
-                    ·
-                  </span>
-                  <span>{featuredTopic}</span>
-                  {featuredDate ? (
-                    <>
-                      <span aria-hidden className="text-white/30">
-                        ·
-                      </span>
-                      <span>{featuredDate}</span>
-                    </>
-                  ) : null}
-                  <span aria-hidden className="text-white/30">
-                    ·
-                  </span>
+              <div className="mt-4 flex items-center justify-between gap-3 border-b border-black/[0.08] pb-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF]">
+                <span className="text-[#01B4D2]">Featured essay</span>
+                <span className="flex items-center gap-3 text-[#9CA3AF]">
+                  {featuredDate ? <span>{featuredDate}</span> : null}
                   <span>{featuredRead}</span>
-                </div>
-
-                <h3 className="mt-5 max-w-xl text-[1.55rem] font-bold leading-[1.2] tracking-tight text-white md:text-[1.85rem] md:leading-[1.18]">
-                  {featured.title}
-                </h3>
-
-                {featured.description && featured.description.length > 40 ? (
-                  <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/70 md:text-[15px]">
-                    {featured.description}
-                  </p>
-                ) : null}
-              </div>
-
-              <div className="relative mt-10 flex items-center justify-between gap-4 border-t border-white/15 pt-5">
-                <p className="text-sm text-white/60">
-                  By <span className="font-semibold text-white">FynkTech</span>
-                </p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#01B4D2] transition-transform duration-300 group-hover:translate-x-0.5">
-                  Read essay
-                  <ArrowUpRight
-                    className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    strokeWidth={2.25}
-                    aria-hidden
-                  />
                 </span>
               </div>
+
+              <h3 className="mt-3 text-xl font-bold leading-snug tracking-tight text-[#0B1220] transition-colors group-hover:text-[#01B4D2] md:text-[1.55rem] md:leading-[1.3]">
+                {featured.title}
+              </h3>
+
+              {featured.description ? (
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6B7280]">
+                  {featured.description}
+                </p>
+              ) : null}
+
+              <p className="mt-4 text-sm text-[#6B7280]">
+                Written by <span className="font-semibold text-[#0B1220]">FynkTech</span>
+                <span className="mx-1.5 text-[#D1D5DB]">·</span>
+                AI &amp; Automation
+              </p>
             </Link>
           </article>
 
-          {/* More stories */}
-          <div className="flex min-h-0 flex-col">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9CA3AF]">
-              More stories
-            </p>
-            <ol className="flex flex-1 flex-col divide-y divide-black/[0.07] border-y border-black/[0.07]">
-              {list.map((post, index) => {
-                const n = String(index + 1).padStart(2, "0");
-                const meta = topicLabel(post.description);
-                const date = formatDate(post.createdAt);
-                return (
-                  <li key={post.slug + post.title} className="flex-1">
-                    <Link
-                      href={hrefFor(post.slug)}
-                      className="group flex h-full items-start gap-4 py-4 transition-colors md:gap-5 md:py-5"
-                    >
-                      <span className="mt-0.5 shrink-0 font-mono text-xs font-semibold tabular-nums text-[#01B4D2]/80">
-                        {n}
+          {/* Numbered list */}
+          <ol className="divide-y divide-black/[0.08] border-y border-black/[0.08] lg:min-h-0">
+            {list.map((post, index) => {
+              const n = String(index + 1).padStart(2, "0");
+              const meta = listMeta(post.description);
+              return (
+                <li key={post.slug + post.title}>
+                  <Link
+                    href={hrefFor(post.slug)}
+                    className="group flex gap-4 py-3.5 transition-colors md:gap-5 md:py-4"
+                  >
+                    <span className="mt-0.5 shrink-0 text-sm font-semibold tabular-nums text-[#01B4D2]">
+                      {n}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[15px] font-semibold leading-snug tracking-tight text-[#0B1220] transition-colors group-hover:text-[#01B4D2] md:text-base">
+                        {post.title}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-[15px] font-semibold leading-snug tracking-tight text-[#0A0045] transition-colors group-hover:text-[#01B4D2] md:text-base md:leading-snug">
-                          {post.title}
-                        </span>
-                        <span className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-[#9CA3AF]">
-                          <span>{meta}</span>
-                          {date ? (
-                            <>
-                              <span aria-hidden>·</span>
-                              <span>{date}</span>
-                            </>
-                          ) : null}
-                        </span>
+                      <span className="mt-1.5 block text-xs text-[#9CA3AF]">
+                        {meta}
+                        <span className="mx-1.5">·</span>
+                        {readMins(post.description)}
                       </span>
-                      <ArrowUpRight
-                        className="mt-1 h-4 w-4 shrink-0 text-[#0A0045]/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#01B4D2]"
-                        strokeWidth={2.25}
-                        aria-hidden
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
         </div>
 
         <div className="mt-8 md:hidden">
           <Link
             href="/blogs"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0A0045]"
+            className="inline-flex text-sm font-semibold text-[#01B4D2]"
           >
             View all blogs
-            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.25} aria-hidden />
           </Link>
         </div>
       </div>

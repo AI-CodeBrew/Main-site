@@ -25,7 +25,7 @@ const PROJECT_META: Record<
 > = {
   dialcom: { tags: ["AI", "Voice", "CRM"], statusColor: "#F5C518" },
   "arabia ai": { tags: ["AI", "WhatsApp", "Sales"], statusColor: "#5A83FF" },
-  "the local baba": { tags: ["E-commerce", "B2B", "Marketplace"], statusColor: "#22C55E" },
+  "the local baba": { tags: ["B2B", "Marketplace", "Platform"], statusColor: "#22C55E" },
 };
 
 function enrich(item: WorkItem) {

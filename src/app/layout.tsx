@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -9,16 +8,8 @@ import { DeferredAnalytics } from "@/components/layout/deferred-analytics";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { UtmCapture } from "@/components/layout/utm-capture";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { fontDisplay, fontSans } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/seo";
-
-// Single family for body + hero headings. preload + display swap keeps LCP text visible.
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-aeonik",
-  display: "swap",
-  preload: true,
-  adjustFontFallback: true,
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -76,7 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${plusJakarta.variable} ${plusJakarta.className} antialiased`}
+        className={`${fontDisplay.variable} ${fontSans.variable} ${fontSans.className} antialiased`}
         style={{ color: "var(--foreground)" }}
         suppressHydrationWarning
       >

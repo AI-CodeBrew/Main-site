@@ -2,17 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Dancing_Script } from "next/font/google";
 import { AnimatePresence, motion } from "framer-motion";
 import { Layers, Minus, Plus } from "lucide-react";
+import { HandUnderline } from "@/components/ui/hand-underline";
 import { runWhenIdle } from "@/lib/idle";
 import { cn } from "@/lib/utils";
-
-const projectsHeadingFont = Dancing_Script({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  display: "swap",
-});
 
 export type ShowcaseProject = {
   title: string;
@@ -168,12 +162,11 @@ export function ProjectShowcase({
           <div className="flex items-center gap-3">
             <h2
               id="project-showcase-heading"
-              className={cn(
-                projectsHeadingFont.className,
-                "text-5xl font-bold leading-none text-[#01B4D2] md:text-6xl",
-              )}
+              className="heading-display text-5xl leading-none text-[#141414] md:text-6xl"
             >
-              {title}
+              <HandUnderline color="#3aa6c9" className="text-[#3aa6c9]">
+                {title}
+              </HandUnderline>
             </h2>
             <span
               className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#01B4D2] text-white"

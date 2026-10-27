@@ -21,7 +21,7 @@ const SLIDES = [
     id: "fynktech",
     src: "/platform/project-fynktech-v5.webp",
     mobileSrc: "/platform/project-fynktech-v5-mobile.webp",
-    alt: "FynkTech AI platform with agents, automation, e-commerce and analytics",
+    alt: "FynkTech AI platform with agents, automation and analytics",
   },
   {
     id: "arabia",

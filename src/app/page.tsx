@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
 import { PlatformShowcase } from "@/components/home/platform-showcase";
 import { JsonLd } from "@/components/seo/json-ld";
-import { listBlogs } from "@/lib/blogs/store";
 import { getProjectCards } from "@/lib/projects/store";
 import {
   buildPageMetadata,
@@ -22,14 +21,15 @@ const CaseStudies = dynamic(
   { loading: () => <div className="min-h-[12rem] bg-white md:min-h-[20rem]" aria-hidden /> },
 );
 
-const HomeBlogs = dynamic(
-  () => import("@/components/home/home-blogs").then((m) => m.HomeBlogs),
-  { loading: () => <div className="min-h-[24rem] bg-white" aria-hidden /> },
+const KeyAdvantages = dynamic(
+  () => import("@/components/home/key-advantages").then((m) => m.KeyAdvantages),
+  { loading: () => <div className="min-h-[22rem] bg-[#F7F8FA] md:min-h-[28rem]" aria-hidden /> },
 );
 
-const ScalableSmarter = dynamic(
-  () => import("@/components/home/scalable-smarter").then((m) => m.ScalableSmarter),
-  { loading: () => <div className="hidden min-h-[28rem] bg-[#F4F5F7] md:block" aria-hidden /> },
+const DiscussProjectCta = dynamic(
+  () =>
+    import("@/components/home/discuss-project-cta").then((m) => m.DiscussProjectCta),
+  { loading: () => <div className="min-h-[22rem] bg-white md:min-h-[32rem]" aria-hidden /> },
 );
 
 export const metadata: Metadata = buildPageMetadata({
@@ -41,19 +41,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Home() {
-  const [projectCards, blogsResult] = await Promise.all([
-    getProjectCards(),
-    listBlogs(),
-  ]);
-  const blogPosts = blogsResult.ok
-    ? blogsResult.data.slice(0, 12).map((b) => ({
-        slug: b.slug,
-        title: b.title,
-        description: b.description,
-        image: b.card_image || b.image,
-        createdAt: b.created_at,
-      }))
-    : [];
+  const projectCards = await getProjectCards();
 
   return (
     <main className="min-h-screen">
@@ -72,8 +60,8 @@ export default async function Home() {
       <PlatformShowcase />
       <SelectedClients />
       <CaseStudies items={projectCards} />
-      <ScalableSmarter />
-      <HomeBlogs posts={blogPosts} />
+      <KeyAdvantages />
+      <DiscussProjectCta />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { HandUnderline } from "@/components/ui/hand-underline";
 
 type ClientLogo = {
   id: string;
@@ -95,9 +96,12 @@ export function SelectedClients() {
         </p>
         <h2
           id="selected-clients-heading"
-          className="mt-2 text-center text-2xl font-bold tracking-tight text-[#111111] md:text-3xl"
+          className="heading-display mt-2 text-center text-2xl text-[#141414] md:text-3xl"
         >
-          Trusted by brands worldwide
+          Trusted by brands{" "}
+          <HandUnderline color="#3aa6c9" className="text-[#3aa6c9]">
+            worldwide
+          </HandUnderline>
         </h2>
 
         <ul className="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-4 md:gap-4">
