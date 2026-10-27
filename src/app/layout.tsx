@@ -77,7 +77,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${plusJakarta.variable} ${plusJakarta.className} antialiased`}
-        style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
+        style={{ color: "var(--foreground)" }}
         suppressHydrationWarning
       >
         <SmoothScroll />

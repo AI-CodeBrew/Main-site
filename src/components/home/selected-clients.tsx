@@ -1,15 +1,13 @@
 "use client";
 
-import { useCallback, useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type ClientLogo = {
   id: string;
   name: string;
   url: string;
   logo: string;
-  /** Icon-only logos (not a wordmark) keep their colours and show the brand name beside them. */
+  /** Small mark — show name beside the logo. */
   icon?: boolean;
 };
 
@@ -25,7 +23,7 @@ const CLIENTS: ClientLogo[] = [
     id: "arabia-ai",
     name: "Arabia AI",
     url: "https://arabiasalesbot.com",
-    logo: "/companylogos/arabia-ai.svg",
+    logo: "/companylogos/arabia-sales-bot.png",
     icon: true,
   },
   {
@@ -82,23 +80,14 @@ const CLIENTS: ClientLogo[] = [
   },
 ];
 
-/** Selected-clients row — tinted link cards, scrolls with prev/next arrows when brands overflow. */
+/** Eight brands only. Grayscale → brand color on hover. */
 export function SelectedClients() {
-  const scrollerRef = useRef<HTMLUListElement>(null);
-
-  // One click moves exactly one brand card (card width + gap).
-  const scrollByCard = useCallback((dir: -1 | 1) => {
-    const el = scrollerRef.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    if (!el || !card) return;
-    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
-    el.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: "smooth" });
-  }, []);
+  const visible = CLIENTS.slice(0, 8);
 
   return (
     <section
       aria-labelledby="selected-clients-heading"
-      className="relative bg-white pb-14 pt-6 md:pb-20 md:pt-8"
+      className="relative bg-transparent pb-8 pt-6 md:pb-20 md:pt-10"
     >
       <div className="container-page">
         <p className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-[#9CA3AF]">
@@ -108,79 +97,46 @@ export function SelectedClients() {
           id="selected-clients-heading"
           className="mt-2 text-center text-2xl font-bold tracking-tight text-[#111111] md:text-3xl"
         >
-          Trusted by brands worldwide.
+          Trusted by brands worldwide
         </h2>
 
-        <div className="relative mt-8 md:mt-10">
-          <ul
-            ref={scrollerRef}
-            className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth py-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 [&::-webkit-scrollbar]:hidden"
-          >
-            {CLIENTS.map((client) => (
-              <li
-                key={client.id}
-                className="w-[calc((100%-0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4rem)/5)]"
+        <ul className="mt-8 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-4 md:gap-4">
+          {visible.map((client) => (
+            <li key={client.id}>
+              <a
+                href={client.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${client.name} (opens in a new tab)`}
+                className="group flex h-[4.5rem] items-center justify-center rounded-2xl bg-[#F3F4F6] px-4 py-4 transition-colors duration-300 hover:bg-[#EEF0F3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#01B4D2] md:h-[5.25rem] md:px-6"
               >
-                <a
-                  href={client.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${client.name} (opens in a new tab)`}
-                  className="group relative flex h-16 items-center justify-center overflow-hidden rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:ring-[#5A83FF]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5A83FF] md:h-[4.5rem] md:px-5"
-                >
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-[#0A0045] via-[#5A83FF] to-[#01B4D2]"
-                  />
-                  {client.icon ? (
-                    <span className="flex min-w-0 items-center gap-2 opacity-85 transition-opacity duration-300 group-hover:opacity-100">
-                      <Image
-                        src={client.logo}
-                        alt=""
-                        width={40}
-                        height={40}
-                        unoptimized={client.logo.endsWith(".svg")}
-                        className="h-7 w-7 shrink-0 object-contain md:h-8 md:w-8"
-                      />
-                      <span className="truncate text-base font-bold tracking-tight text-[#111111] md:text-lg">
-                        {client.name}
-                      </span>
-                    </span>
-                  ) : (
+                {client.icon ? (
+                  <span className="flex max-w-full items-center gap-2.5 grayscale transition duration-300 group-hover:grayscale-0">
                     <Image
                       src={client.logo}
-                      alt={client.name}
-                      width={140}
-                      height={40}
-                      unoptimized={client.logo.endsWith(".svg")}
-                      className="h-7 w-auto max-w-full object-contain opacity-85 brightness-0 transition-opacity duration-300 group-hover:opacity-100 md:h-8"
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="h-8 w-8 shrink-0 object-contain opacity-90 md:h-9 md:w-9"
                     />
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Same arrow style as the "Why FynkTech?" carousel. */}
-          <div className="mt-4 flex justify-center gap-1 md:justify-end">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              aria-label="Previous brands"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:text-[#0B1220]"
-            >
-              <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              aria-label="Next brands"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:text-[#0B1220]"
-            >
-              <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
-            </button>
-          </div>
-        </div>
+                    <span className="truncate text-sm font-bold tracking-tight text-[#111111] md:text-base">
+                      {client.name}
+                    </span>
+                  </span>
+                ) : (
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    width={160}
+                    height={48}
+                    unoptimized={client.logo.endsWith(".svg")}
+                    className="h-8 w-auto max-w-[9rem] object-contain opacity-80 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0 md:h-9 md:max-w-[10rem]"
+                  />
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

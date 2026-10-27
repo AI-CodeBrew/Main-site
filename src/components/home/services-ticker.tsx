@@ -2,17 +2,13 @@ import Link from "next/link";
 
 const services = [
   { label: "AI Agents", href: "/ai-automation/custom-agents" },
-  { label: "Voice & Chat Bots", href: "/ai-automation/voice-chat" },
+  { label: "AI Automation", href: "/ai-automation" },
+  { label: "Voice AI Agents", href: "/ai-automation/voice-chat" },
+  { label: "AI Chatbots", href: "/ai-automation/voice-chat" },
   { label: "Workflow Automation", href: "/ai-automation/workflow" },
-  { label: "Store Setup", href: "/ecommerce/store-setup" },
-  { label: "Sales Funnels", href: "/ecommerce/sales-funnel" },
-  { label: "Digital Marketing", href: "/ecommerce/marketing-growth" },
-  { label: "Branding", href: "/ecommerce/branding-creative" },
-  { label: "Web Dev", href: "/ai-automation/web-development" },
-  { label: "App Dev", href: "/ai-automation/mobile-development" },
-  { label: "UI & UX", href: "/ai-automation/ui-ux" },
-  { label: "Cloud", href: "/ai-automation/cloud" },
-  { label: "Data Analytics", href: "/ai-automation/data-analytics" },
+  { label: "Shopify Stores", href: "/ecommerce/store-setup" },
+  { label: "E-commerce Development", href: "/ecommerce" },
+  { label: "SEO", href: "/ecommerce/marketing-growth" },
 ];
 
 function TickerRow({ hidden = false }: { hidden?: boolean }) {
@@ -25,11 +21,11 @@ function TickerRow({ hidden = false }: { hidden?: boolean }) {
           <Link
             href={service.href}
             tabIndex={hidden ? -1 : undefined}
-            className="whitespace-nowrap px-8 md:px-12 text-base md:text-xl font-medium text-[#2B2B2B] transition-colors hover:text-black"
+            className="whitespace-nowrap px-8 text-xl font-medium text-white transition-colors hover:text-white/80 md:px-12"
           >
             {service.label}
           </Link>
-          <span className="text-[#9A9A9A]" aria-hidden>
+          <span className="text-[#01B4D2]" aria-hidden>
             ✦
           </span>
         </li>
@@ -43,7 +39,7 @@ export function ServicesTicker() {
   return (
     <section
       aria-label="Our services"
-      className="relative overflow-hidden border-y border-[#D4D4D4] bg-[#E6E6E6] py-5 md:py-6"
+      className="relative overflow-hidden bg-[#1E293B] py-5"
     >
       {/* Two identical rows; the track moves -50% so the loop is seamless. */}
       <div

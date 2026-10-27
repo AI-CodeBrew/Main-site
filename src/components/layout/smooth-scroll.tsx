@@ -29,11 +29,15 @@ export function SmoothScroll() {
       void import("lenis").then(({ default: LenisCtor }) => {
         if (cancelled) return;
         lenis = new LenisCtor({
-          lerp: 0.1,
+          lerp: 0.08,
           autoRaf: true,
           anchors: true,
           // Chat window, menus, modals keep their own native scrolling.
           allowNestedScroll: true,
+        });
+        // Keep scroll-linked animations (sticky clip reveal) in sync with Lenis.
+        lenis.on("scroll", () => {
+          window.dispatchEvent(new Event("scroll"));
         });
       });
     });

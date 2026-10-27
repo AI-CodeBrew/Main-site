@@ -7,55 +7,38 @@ export type ProjectCard = {
   href: string;
 };
 
-/** Project images are tall portraits (same shape as A4 paper). */
+/** Project images are square colored-canvas device cards. */
 export const PROJECT_IMAGE = {
-  width: 1587,
-  height: 2245,
-  /** Smallest size that stays sharp on retina screens (card is ~635px wide on desktop). */
-  minWidth: 1270,
-  minHeight: 1796,
-  /** width / height */
-  ratio: 1587 / 2245,
+  width: 2048,
+  height: 2048,
+  minWidth: 1200,
+  minHeight: 1200,
+  ratio: 1,
 } as const;
 
 const dialcom = companyProjects.find((project) => project.id === "dialcom");
 
 /** Shown until projects are added in /admin/projects (or if Supabase is unreachable). */
+/** Cache-bust so browsers/CDN don't keep serving the old tall screenshots. */
+const LIGHT = "?v=square";
+
 export const DEFAULT_PROJECTS: ProjectCard[] = [
   {
     title: dialcom?.name ?? "Dialcom",
     meta: "A voice agent that qualifies, calls, and books while your team sleeps.",
-    image: "/projects/dialcom.jpg",
+    image: `/projects/dialcom.jpg${LIGHT}`,
     href: dialcom?.url ?? "/contact",
   },
   {
     title: "Arabia AI",
     meta: "Turn Every Whatsapp chat into a confirmed order.",
-    image: "/projects/arabia-ai.jpg",
+    image: `/projects/arabia-ai.jpg${LIGHT}`,
     href: "/contact",
   },
   {
     title: "The Local Baba",
     meta: "A modern B2B marketplace connecting businesses with trending products and reliable wholesale sourcing.",
-    image: "/projects/the-local-baba.jpg",
+    image: `/projects/the-local-baba.jpg${LIGHT}`,
     href: "/contact",
-  },
-  {
-    title: "Workflow system",
-    meta: "Automation",
-    image: "/projects/workflow-system.jpg",
-    href: "/ai-automation/workflow",
-  },
-  {
-    title: "Sales funnel",
-    meta: "Growth",
-    image: "/projects/sales-funnel.jpg",
-    href: "/ecommerce/sales-funnel",
-  },
-  {
-    title: "Custom agent",
-    meta: "AI product",
-    image: "/projects/custom-agent.jpg",
-    href: "/ai-automation/custom-agents",
   },
 ];

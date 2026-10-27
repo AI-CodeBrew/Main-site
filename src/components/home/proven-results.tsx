@@ -128,7 +128,7 @@ export function ProvenResults({ posts = [] }: { posts?: ResultsBlogCard[] }) {
                 id="proven-results-heading"
                 className="text-2xl font-semibold tracking-tight text-[#0B1220] md:text-[36px] md:leading-[44px] md:tracking-[-0.02em]"
               >
-                Why FynkTech?
+                Blogs
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-600 md:text-base">
                 Practical guides on AI agents, Shopify, and automation — written from real client work.

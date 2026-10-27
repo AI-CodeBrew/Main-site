@@ -24,8 +24,9 @@
   --color-gradient-end: #5A83FF;
   --color-accent-gradient: #01B4D2;
 
-  /* Light Theme */
-  --background: #FFFFFF;
+  /* Light Theme — matches home hero canvas */
+  --page-bg: linear-gradient(165deg, #F4F8FC 0%, #EEF5FA 35%, #F7FAFD 65%, #F0F6F8 100%);
+  --background: #F4F8FC;
   --foreground: #0A0045;
   --muted: #f8f9fa;
   --muted-foreground: #6c757d;
@@ -45,8 +46,8 @@
   --ring: #0A0045;
 
   /* Theme tokens used by components (bg-surface, text-heading, text-body, text-subtle, border-line) */
-  --surface: #FFFFFF;
-  --surface-muted: #F8F9FA;
+  --surface: transparent;
+  --surface-muted: rgba(243, 244, 246, 0.72);
   --heading: #070643;
   --body: #374151;
   --text-muted: #6B7280;
@@ -127,15 +128,56 @@
 /* Base */
 html { 
   scroll-behavior: smooth; 
-  overflow-x: hidden;
+  /* clip (not hidden) so position:sticky / pin-scroll sections still work */
+  overflow-x: clip;
+  background: var(--background);
 }
 body {
-  background: var(--background);
+  background: var(--page-bg);
   color: var(--foreground);
   font-family: var(--font-aeonik), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   cursor: default;
+}
+
+/* Soft brand washes + dots — same atmosphere as the home hero */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 45% at 18% 22%, rgba(1, 180, 210, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 82% 18%, rgba(90, 131, 255, 0.12) 0%, transparent 68%),
+    radial-gradient(ellipse 60% 50% at 50% 88%, rgba(10, 0, 69, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 35% at 70% 60%, rgba(1, 180, 210, 0.08) 0%, transparent 65%);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image: radial-gradient(rgba(10, 0, 69, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, black 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, black 20%, transparent 85%);
+}
+
+/* Admin stays solid white over the public atmosphere */
+.admin-light {
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+  background: #FFFFFF;
+}
+
+/* Full-bleed page sections should not paint a white slab over the shared canvas */
+main > section.bg-white {
+  background-color: transparent !important;
 }
 
 /* Clickable controls — always show pointer */

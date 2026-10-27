@@ -2,7 +2,7 @@ import { howWeWork } from "@/lib/content/site";
 
 export function HowWeWork() {
   return (
-    <section className="relative pb-6 pt-12 md:pb-8 md:pt-16" aria-labelledby="process-heading">
+    <section className="relative pb-6 pt-4 md:pb-8 md:pt-6" aria-labelledby="process-heading">
       <div className="container-page">
         <div className="relative overflow-hidden rounded-3xl bg-[#F3F4F6] px-6 py-14 md:px-10 md:py-20">
           <div
@@ -31,7 +31,7 @@ export function HowWeWork() {
                 id="process-heading"
                 className="mt-3 text-4xl font-bold tracking-tight text-[#0B1220] md:text-5xl"
               >
-                How we work
+                AI Automation Services
               </h2>
             </div>
 

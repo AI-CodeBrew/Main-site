@@ -5,7 +5,7 @@
     "stack": "Next.js, Supabase, Vapi, Twilio, Google Calendar, Zoom, Google Meet, Google Sheets",
     "local": "/projects/dialcom.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/dialcom.jpg",
-    "bytes": 1866381
+    "bytes": 1923974
   },
   {
     "slug": "arabia-ai",
@@ -13,7 +13,7 @@
     "stack": "Next.js, Supabase, Meta WhatsApp, Fly.io, Redis, Shopify",
     "local": "/projects/arabia-ai.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/arabia-ai.jpg",
-    "bytes": 2044615
+    "bytes": 1948011
   },
   {
     "slug": "the-local-baba",
@@ -21,7 +21,7 @@
     "stack": "Next.js, Node.js, Supabase, Meta, Redis, Fly.io, Vercel",
     "local": "/projects/the-local-baba.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/the-local-baba.jpg",
-    "bytes": 2194398
+    "bytes": 2009143
   },
   {
     "slug": "workflow-system",
@@ -29,7 +29,7 @@
     "stack": "n8n, Make, Node.js, Supabase, Redis",
     "local": "/projects/workflow-system.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/workflow-system.jpg",
-    "bytes": 1977822
+    "bytes": 1895833
   },
   {
     "slug": "sales-funnel",
@@ -37,7 +37,7 @@
     "stack": "Shopify, Meta Ads, GA4, Klaviyo, Next.js",
     "local": "/projects/sales-funnel.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/sales-funnel.jpg",
-    "bytes": 2032103
+    "bytes": 1926901
   },
   {
     "slug": "custom-agent",
@@ -45,7 +45,7 @@
     "stack": "LangChain, OpenAI, Vapi, Supabase, Next.js",
     "local": "/projects/custom-agent.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/custom-agent.jpg",
-    "bytes": 2081785
+    "bytes": 1884827
   },
   {
     "slug": "store-launch",
@@ -53,7 +53,7 @@
     "stack": "Shopify, Stripe, Klaviyo, Next.js",
     "local": "/projects/store-launch.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/store-launch.jpg",
-    "bytes": 2092293
+    "bytes": 1842379
   },
   {
     "slug": "support-agent",
@@ -61,6 +61,6 @@
     "stack": "Vapi, Twilio, LangChain, Supabase, Next.js",
     "local": "/projects/support-agent.jpg",
     "url": "https://fynktech-website.b-cdn.net/uploads/projects/support-agent.jpg",
-    "bytes": 1714894
+    "bytes": 1936242
   }
 ]

@@ -1,117 +1,33 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
-import { preconnect } from "react-dom";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { useRef } from "react";
+import { ArrowDown, ArrowRight, Github } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { Spotlight } from "@/components/ui/spotlight";
-import { IntersectingRings } from "@/components/ui/intersecting-rings";
+import { HandwritingText } from "@/components/ui/handwriting-text";
 
-const SplineScene = dynamic(
-  () => import("@/components/ui/splite").then((m) => m.SplineScene),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex items-center justify-center" aria-hidden>
-        <span className="loader" />
-      </div>
-    ),
-  },
-);
+type FloatingIcon =
+  | { name: string; src: string; kind: "img"; top: string; left?: string; right?: string; size: number; rotate: number; delay: number; hideOnMobile?: boolean }
+  | { name: string; kind: "github"; top: string; left?: string; right?: string; size: number; rotate: number; delay: number; hideOnMobile?: boolean };
 
-/**
- * The loader stays until the 3D robot has loaded. This is only a safety net for a robot that
- * never loads (blocked network, WebGL off), so visitors are never stuck on the loader.
- */
-const MAX_LOADER_MS = 30_000;
-
-const ROBOT_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
-
-/**
- * Spline's onLoad fires when the scene file is ready, a moment before the robot is actually
- * drawn and animating. Wait this long after its first frames so the loader never lifts early.
- */
-const ROBOT_SETTLE_MS = 700;
+/** Fixed “random” placement so SSR stays stable and icons stay clear of the copy. */
+const FLOATING_ICONS: FloatingIcon[] = [
+  { name: "GitHub", kind: "github", top: "16%", left: "8%", size: 40, rotate: -8, delay: 0.1 },
+  { name: "Supabase", src: "/Logos/supabase.svg", kind: "img", top: "20%", right: "9%", size: 40, rotate: 10, delay: 0.2 },
+  { name: "Shopify", src: "/brands/shopify.svg", kind: "img", top: "40%", left: "5%", size: 36, rotate: 6, delay: 0.35, hideOnMobile: true },
+  { name: "AWS", src: "/Logos/aws.svg", kind: "img", top: "46%", right: "6%", size: 42, rotate: -6, delay: 0.45 },
+  { name: "Zapier", src: "/Logos/zapier.svg", kind: "img", top: "64%", left: "9%", size: 34, rotate: 12, delay: 0.55, hideOnMobile: true },
+  { name: "Slack", src: "/brands/slack.svg", kind: "img", top: "28%", left: "14%", size: 32, rotate: -4, delay: 0.25, hideOnMobile: true },
+  { name: "Stripe", src: "/Logos/cc-stripe.svg", kind: "img", top: "70%", right: "11%", size: 34, rotate: 8, delay: 0.6 },
+  { name: "Node.js", src: "/Logos/Node.js_idBSZu62Vz_1.svg", kind: "img", top: "74%", left: "15%", size: 36, rotate: -10, delay: 0.7, hideOnMobile: true },
+  { name: "Google", src: "/brands/google.svg", kind: "img", top: "36%", right: "14%", size: 32, rotate: 5, delay: 0.4, hideOnMobile: true },
+  { name: "Flutter", src: "/Logos/flutter.svg", kind: "img", top: "58%", left: "17%", size: 32, rotate: -7, delay: 0.5, hideOnMobile: true },
+];
 
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [showRobot, setShowRobot] = useState(false);
-  const [screenChecked, setScreenChecked] = useState(false);
-  const [pageLoaded, setPageLoaded] = useState(false);
-  const [robotLoaded, setRobotLoaded] = useState(false);
-  const [loaderTimedOut, setLoaderTimedOut] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const sync = () => {
-      setShowRobot(mq.matches);
-      setScreenChecked(true);
-    };
-    sync();
-    mq.addEventListener("change", sync);
-
-    // The rest of the page (scripts, fonts, above-the-fold images) must be loaded too.
-    const windowLoaded = new Promise<void>((resolve) => {
-      if (document.readyState === "complete") resolve();
-      else window.addEventListener("load", () => resolve(), { once: true });
-    });
-    let cancelled = false;
-    void Promise.all([windowLoaded, document.fonts?.ready]).then(() => {
-      if (!cancelled) setPageLoaded(true);
-    });
-
-    const timer = window.setTimeout(() => setLoaderTimedOut(true), MAX_LOADER_MS);
-    return () => {
-      cancelled = true;
-      mq.removeEventListener("change", sync);
-      window.clearTimeout(timer);
-    };
-  }, []);
-
-  // Start connecting to Spline's servers right away so the robot (and the loader) finish sooner.
-  if (showRobot) preconnect("https://prod.spline.design");
-
-  // After Spline says it's loaded, let it paint two frames and settle before lifting the loader.
-  const onRobotLoad = () => {
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() => window.setTimeout(() => setRobotLoaded(true), ROBOT_SETTLE_MS)),
-    );
-  };
-
-  // Desktop: page + robot both ready, so hero and robot appear at the same moment.
-  // Phones have no robot, so they only wait for the page.
-  const heroReady =
-    loaderTimedOut || (screenChecked && pageLoaded && (!showRobot || robotLoaded));
-
-  // While the loading screen is up: keep the page at the top and block scrolling, so visitors
-  // land on the hero when it appears. Capture-phase listeners run before Lenis's own.
-  useEffect(() => {
-    if (heroReady) return;
-    const block = (e: Event) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    };
-    const SCROLL_KEYS = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
-    const blockKeys = (e: KeyboardEvent) => {
-      if (SCROLL_KEYS.has(e.key)) block(e);
-    };
-    const html = document.documentElement;
-    const previousOverflow = html.style.overflow;
-    html.style.overflow = "hidden";
-    window.scrollTo(0, 0);
-    window.addEventListener("wheel", block, { capture: true, passive: false });
-    window.addEventListener("touchmove", block, { capture: true, passive: false });
-    window.addEventListener("keydown", blockKeys, { capture: true });
-    return () => {
-      html.style.overflow = previousOverflow;
-      window.removeEventListener("wheel", block, { capture: true });
-      window.removeEventListener("touchmove", block, { capture: true });
-      window.removeEventListener("keydown", blockKeys, { capture: true });
-    };
-  }, [heroReady]);
 
   const scrollPastHero = () => {
     const section = sectionRef.current;
@@ -123,135 +39,117 @@ export function HomeHero() {
     <section
       id="home"
       ref={sectionRef}
-      // flex-1: the page wraps hero + ticker in one screen-tall column; the hero takes the space
-      // left above the ticker (see app/page.tsx) and centers its content in it.
-      className="relative flex flex-1 flex-col justify-center overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse 90% 70% at 50% 0%, #12121f 0%, #0a0a12 55%, #000000 100%)",
-      }}
+      className="relative flex flex-1 flex-col justify-start overflow-hidden bg-transparent pt-6 md:min-h-[85vh] md:justify-center md:pt-0"
     >
-      {/* Website loading screen: covers the whole screen, menu bar and chat button included
-          (also in the server HTML, so the half-loaded site never flashes) while the page and
-          3D robot load behind it, then fades away to reveal the finished home page. */}
-      <AnimatePresence>
-        {!heroReady && (
+      <div className="pointer-events-none absolute inset-0 z-[1] hidden md:block" aria-hidden>
+        {FLOATING_ICONS.map((icon) => (
           <motion.div
-            key="site-loader"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="fixed inset-0 z-[1000] flex flex-col items-center justify-center gap-6 bg-black"
-            role="status"
-            aria-label="Welcome"
+            key={icon.name}
+            initial={{ opacity: 0, scale: 0.7, y: 8, rotate: icon.rotate }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: [0, -6, 0],
+              rotate: icon.rotate,
+            }}
+            transition={{
+              opacity: { duration: 0.5, delay: icon.delay },
+              scale: { duration: 0.5, delay: icon.delay },
+              y: {
+                duration: 4.5 + icon.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: icon.delay,
+              },
+            }}
+            className="absolute flex items-center justify-center rounded-xl border border-black/[0.06] bg-white/90 shadow-[0_6px_20px_rgba(10,0,69,0.06)] backdrop-blur-sm"
+            style={{
+              top: icon.top,
+              left: icon.left,
+              right: icon.right,
+              width: icon.size + 14,
+              height: icon.size + 14,
+            }}
           >
-            <IntersectingRings tone="light" size={96} />
-            <span className="text-sm md:text-base font-medium uppercase tracking-[0.35em] text-white/60">
-              Welcome
-            </span>
+            {icon.kind === "github" ? (
+              <Github className="text-[#0A0045]" style={{ width: icon.size * 0.55, height: icon.size * 0.55 }} strokeWidth={1.75} />
+            ) : (
+              <Image
+                src={icon.src}
+                alt=""
+                width={icon.size}
+                height={icon.size}
+                className="object-contain"
+                style={{ width: icon.size * 0.62, height: icon.size * 0.62 }}
+              />
+            )}
           </motion.div>
-        )}
-      </AnimatePresence>
+        ))}
+      </div>
 
-      <Spotlight className="z-[1]" size={320} fill="white" />
-
-      {/* Fine line grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 85%)",
-        }}
-      />
-
-      {/* Soft center glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 45% at 50% 30%, rgba(90,131,255,0.08) 0%, transparent 70%)",
-        }}
-      />
-
-      <div
-        className={`container-page relative z-10 grid grid-cols-1 items-center gap-8 lg:gap-10 pt-8 pb-16 md:pt-10 lg:py-8 ${
-          showRobot ? "lg:grid-cols-[1.05fr_1fr]" : ""
-        }`}
-      >
-        <div className="text-center lg:text-left">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-white/60 mb-5"
-          >
-            AI Agents · E-commerce · Global
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7 }}
-            className="heading-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight text-white"
-          >
-            AI Agents &amp; Stores Built for Global Growth
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ delay: 0.15 }}
-            className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg lg:mx-0"
-          >
-            Voice and chat agents, workflow automation, and revenue-ready Shopify systems for teams that sell worldwide — engineered from our Lahore delivery center.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ delay: 0.3 }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
-          >
-            <Link
-              href="/contact?intent=strategy-call"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base md:text-lg font-semibold bg-white text-black hover:bg-white/85 transition-colors cursor-pointer"
-              onClick={() => trackEvent("cta_click", { cta: "book_strategy_call", location: "hero" })}
-            >
-              Talk to an expert
-              <ArrowRight className="h-5 w-5 text-black" strokeWidth={2.25} aria-hidden />
-            </Link>
-          </motion.div>
-        </div>
-
-        {showRobot ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            // Shrinks on short laptop screens so hero + ticker still fit in the first screen
-            // (14rem ≈ menu bar + ticker + hero padding).
-            className="relative mx-auto w-full h-[320px] sm:h-[400px] lg:h-[min(480px,calc(100svh-14rem))] cursor-default"
-            aria-label="Interactive AI agent 3D preview"
-          >
-            <SplineScene
-              scene={ROBOT_SCENE}
-              className="w-full h-full"
-              onLoad={onRobotLoad}
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-16 pt-4 text-center md:py-16">
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="heading-display max-w-4xl text-4xl font-bold leading-[1.12] tracking-tight text-[#0A0045] sm:text-6xl"
+        >
+          <span className="block">AI Agents &amp; Automation</span>
+          <span className="mt-1 block sm:mt-2">that make your business</span>
+          <span className="mt-1 block">
+            <HandwritingText
+              words={["faster.", "smarter.", "scalable."]}
+              fontUrl="/fonts/handwriting.ttf"
+              className="text-[#01B4D2]"
+              height="1.1em"
+              interval={3200}
             />
-          </motion.div>
-        ) : null}
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#6B7280] md:text-lg"
+        >
+          Custom AI agents, chatbots and workflow automation that cut costs and scale your business
+          — built in Pakistan for clients worldwide.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-8 flex w-full flex-wrap items-center justify-center gap-3 sm:gap-4"
+        >
+          <Link
+            href="/contact?intent=strategy-call"
+            className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-[#0A0045] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#070643]"
+            onClick={() =>
+              trackEvent("cta_click", { cta: "book_free_demo", location: "hero" })
+            }
+          >
+            Book a Free Demo
+            <ArrowRight className="h-3.5 w-3.5 text-white" strokeWidth={2.25} aria-hidden />
+          </Link>
+          <Link
+            href="/ai-automation"
+            className="hidden cursor-pointer items-center justify-center rounded-full border border-black/[0.1] bg-white px-4 py-2 text-sm font-semibold text-[#0A0045] transition-colors hover:bg-[#F3F4F6] md:inline-flex"
+            onClick={() =>
+              trackEvent("cta_click", { cta: "our_services", location: "hero" })
+            }
+          >
+            Our Services
+          </Link>
+        </motion.div>
       </div>
 
       <button
         type="button"
         onClick={scrollPastHero}
         aria-label="Scroll to next section"
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 p-2 text-white/70 hover:text-white transition-colors cursor-pointer"
+        className="absolute bottom-4 left-1/2 z-10 hidden -translate-x-1/2 cursor-pointer p-2 text-[#6B7280] transition-colors hover:text-[#0A0045] md:block"
       >
         <ArrowDown className="h-6 w-6 animate-bounce" />
       </button>

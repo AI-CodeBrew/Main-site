@@ -65,16 +65,32 @@ export async function getProjectCards(): Promise<ProjectCard[]> {
     order: "sort_order.asc,created_at.asc",
     is_published: "eq.true",
   });
-  const result = await request<Project[]>(`projects?${params}`, { next: { revalidate: 60 } });
+  const result = await request<Project[]>(`projects?${params}`, { cache: "no-store" });
   if (!result.ok || result.data.length === 0) return DEFAULT_PROJECTS;
   return result.data.map(toCard);
+}
+
+/** Map CDN/admin URLs onto local light-theme files so browsers don't keep old dark CDN cache. */
+function resolveProjectImage(url: string): string {
+  const match = url.match(
+    /\/(?:uploads\/)?projects\/([a-z0-9-]+?)(?:-light)?\.(?:jpe?g|png|webp)(?:\?.*)?$/i,
+  );
+  if (match?.[1]) {
+    const slug = match[1].replace(/-light$/i, "");
+    return `/projects/${slug}.jpg?v=square`;
+  }
+  if (url.startsWith("/projects/")) {
+    const bare = url.split("?")[0];
+    return `${bare}?v=square`;
+  }
+  return url;
 }
 
 export function toCard(project: Project): ProjectCard {
   return {
     title: project.title,
     meta: project.meta ?? "",
-    image: project.image_url,
+    image: resolveProjectImage(project.image_url),
     href: project.href || "/contact",
   };
 }

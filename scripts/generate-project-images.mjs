@@ -25,20 +25,24 @@ const REFS = {
 };
 
 const SHARED_RULES = `
-STYLE (match the attached reference images closely):
-- Tall vertical 2:3 portfolio mockup card for a dark website.
+STYLE (keep device composition from attached references, but FORCE LIGHT THEME):
+- Tall vertical 2:3 portfolio mockup card.
 - Clean, simple, MINIMAL composition — less marketing copy than the references.
 - Show BOTH a realistic desktop/laptop web UI screenshot AND a smartphone mobile UI screenshot.
-- Soft dark studio desk / gradient background with subtle blue or brand-colored ambient light.
-- Bottom of the frame: a clear horizontal TECH STACK bar (white or dark pill / strip) with real tech logos + short labels — same idea as the references.
+- LIGHT studio background: soft off-white / light grey / cream desk, gentle daylight, subtle soft shadows — NOT a dark/black/navy studio.
+- CRITICAL: All app UIs on the screens must be LIGHT THEME — white/light-grey canvases, dark text, soft borders, airy SaaS dashboards. Do NOT use dark-mode UI chrome, black sidebars as the main look, or neon-on-black interfaces.
+- Accent color sparingly (cyan #01B4D2 or soft blue) on buttons/chips only.
+- Bottom of the frame: a clear horizontal TECH STACK bar (light pill / soft grey strip) with real tech logos + short labels.
 - Keyboard / mouse / tiny plant optional; keep them quiet.
 
 HARD RULES:
 - Do NOT write the project name / title as a big headline on the canvas (the site already shows the title).
-- ZERO captions / taglines / subtitles outside the device screens and the stack bar.
+- ZERO captions / taglines / subtitles / labels outside the device screens and the stack bar.
+- Absolutely NO watermark text like "Clean SaaS Platform Mockup", "Mockup", "Portfolio", or any overlay title at the top of the image.
 - Small logos inside the UI screenshots are OK.
 - No giant marketing headlines, no long paragraphs, no CTA buttons as large overlays on the canvas.
 - No watermarks. High-end, sharp, agency portfolio quality.
+- If a reference is dark-themed, convert the mood to light while keeping layout/device placement.
 `;
 
 const PROJECTS = [
@@ -48,10 +52,11 @@ const PROJECTS = [
     refs: ["dialcom"],
     stack: "Next.js, Supabase, Vapi, Twilio, Google Calendar, Zoom, Google Meet, Google Sheets",
     prompt: `${SHARED_RULES}
-PROJECT CONTEXT: Dialcom — AI voice receptionist / CRM / OMS for lenders.
-UI content: desktop CRM dashboard (appointments, call outcomes, booking rate) + phone showing a dark mobile landing / agent screen.
+PROJECT CONTEXT: Dialcom — AI voice receptionist / CRM for lenders that qualifies, calls, and books appointments.
+Compose a FRESH premium shot (not a copy of the reference): slightly new camera angle, cleaner desk, sharper UI.
+UI content: LIGHT-THEME iMac/desktop CRM dashboard with call KPIs, booking rate chart, call outcomes, timezone clocks + iPhone showing a crisp Dialcom mobile dashboard (upcoming calls, leads, booking).
 Stack bar labels exactly: Next.js · Supabase · Vapi · Twilio · Calendar · Zoom · Meet · Sheets
-Use the attached Dialcom reference for composition, lighting, device placement, and stack-bar style — but SIMPLER: remove big marketing text; keep devices + stack.`,
+Use the attached Dialcom reference only for device + stack-bar language — make the final image look newer and more polished.`,
   },
   {
     slug: "arabia-ai",
@@ -59,11 +64,12 @@ Use the attached Dialcom reference for composition, lighting, device placement, 
     refs: ["arabia", "dialcom"],
     stack: "Next.js, Supabase, Meta WhatsApp, Fly.io, Redis, Shopify",
     prompt: `${SHARED_RULES}
-PROJECT CONTEXT: Arabia AI — WhatsApp + Shopify commerce inbox / order confirmation.
-UI content: laptop dashboard (conversations, orders, inbox) + phone showing WhatsApp-style chat / mobile dashboard.
-Subtle Middle East / modern commerce vibe in background lighting only — no big skyline collage, no large headline text.
+PROJECT CONTEXT: Arabia AI / Arabia Sales Bot — WhatsApp commerce AI that turns chats into confirmed Shopify orders.
+Compose a FRESH premium shot: MacBook + iPhone on a warm cream desk, soft daylight, tiny plant optional.
+UI content: LIGHT-THEME laptop inbox/dashboard (chat list, order panel, confirmed/paid statuses, soft terracotta/teal accents) + phone showing a WhatsApp-style chat with an AI order confirmation / payment link card.
+NO skyline collage. NO top-of-image title text. NO "Clean SaaS" or mockup watermark.
 Stack bar: Next.js · Supabase · Meta · Fly.io · Redis · Shopify
-Use attached Arabia AI + Dialcom references for layout language; output a cleaner Dialcom-like device mockup (not a long marketing landing).`,
+Use attached refs for device placement language only — output a cleaner Dialcom-quality device mockup.`,
   },
   {
     slug: "the-local-baba",
@@ -72,7 +78,7 @@ Use attached Arabia AI + Dialcom references for layout language; output a cleane
     stack: "Next.js, Node.js, Supabase, Meta, Redis, Fly.io, Vercel",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: The Local Baba — B2B wholesale marketplace / e-commerce.
-UI content: laptop product grid storefront + phone product / browse screen.
+UI content: LIGHT-THEME laptop product grid storefront + phone product / browse screen.
 Warm orange accent lighting OK. No large "Modern E-commerce" headlines, no feature icon columns, no CTA button overlays.
 Stack bar: Next.js · Node.js · Supabase · Meta · Redis · Fly.io · Vercel
 Use attached Local Baba + Dialcom references — keep devices + stack, drop marketing copy blocks.`,
@@ -84,7 +90,7 @@ Use attached Local Baba + Dialcom references — keep devices + stack, drop mark
     stack: "n8n, Make, Node.js, Supabase, Redis",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: Business workflow automation system.
-UI content: desktop automation canvas / workflow builder with connected nodes + phone showing run status / approvals.
+UI content: LIGHT-THEME desktop automation canvas / workflow builder with connected nodes + phone showing run status / approvals.
 Stack bar: n8n · Make · Node.js · Supabase · Redis
 Compose like the Dialcom reference (monitor + phone + stack bar), simpler and cleaner.`,
   },
@@ -95,7 +101,7 @@ Compose like the Dialcom reference (monitor + phone + stack bar), simpler and cl
     stack: "Shopify, Meta Ads, GA4, Klaviyo, Next.js",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: E-commerce sales funnel / conversion growth.
-UI content: desktop funnel analytics / landing builder dashboard + phone checkout or landing page.
+UI content: LIGHT-THEME desktop funnel analytics / landing builder dashboard + phone checkout or light landing page.
 Stack bar: Shopify · Meta Ads · GA4 · Klaviyo · Next.js
 Compose like the Dialcom reference — devices + stack only, no big marketing text.`,
   },
@@ -106,7 +112,7 @@ Compose like the Dialcom reference — devices + stack only, no big marketing te
     stack: "LangChain, OpenAI, Vapi, Supabase, Next.js",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: Custom AI agent product (chat + voice).
-UI content: desktop agent console / conversation analytics + phone chat agent UI.
+UI content: LIGHT-THEME desktop agent console / conversation analytics + phone chat agent UI.
 Stack bar: LangChain · OpenAI · Vapi · Supabase · Next.js
 Compose like the Dialcom reference — devices + stack only.`,
   },
@@ -118,7 +124,7 @@ Compose like the Dialcom reference — devices + stack only.`,
     stack: "Shopify, Stripe, Klaviyo, Next.js",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: Premium Shopify store launch.
-UI content: desktop Shopify storefront / admin + phone product page.
+UI content: LIGHT-THEME desktop Shopify storefront / admin + phone product page.
 Stack bar: Shopify · Stripe · Klaviyo · Next.js
 Compose like Dialcom/Local Baba references — devices + stack, no headlines.`,
   },
@@ -129,7 +135,7 @@ Compose like Dialcom/Local Baba references — devices + stack, no headlines.`,
     stack: "Vapi, Twilio, LangChain, Supabase, Next.js",
     prompt: `${SHARED_RULES}
 PROJECT CONTEXT: AI voice & chat support agent.
-UI content: desktop support inbox / ticket dashboard + phone chat / call UI.
+UI content: LIGHT-THEME desktop support inbox / ticket dashboard + phone chat / call UI.
 Stack bar: Vapi · Twilio · LangChain · Supabase · Next.js
 Compose like Dialcom reference — devices + stack, no headlines.`,
   },
@@ -233,18 +239,39 @@ async function uploadToBunny(buffer, filename, contentType) {
   return `${cdn}/${objectPath}`;
 }
 
+function parseArgs(argv) {
+  const only = argv.find((a) => a.startsWith("--only="))?.slice(7);
+  return {
+    only: only ? only.split(",").map((s) => s.trim()).filter(Boolean) : null,
+  };
+}
+
 async function main() {
   const apiKey = requireEnv("GEMINI_API_KEY");
+  const { only } = parseArgs(process.argv.slice(2));
   await mkdir(OUT_DIR, { recursive: true });
 
+  const list = PROJECTS.filter((p) => !only || only.includes(p.slug));
+  if (!list.length) throw new Error(`No projects matched --only=${only?.join(",")}`);
+
+  const neededRefs = new Set(list.flatMap((p) => p.refs));
   const refCache = {};
   for (const [key, file] of Object.entries(REFS)) {
+    if (!neededRefs.has(key)) continue;
     refCache[key] = await loadRef(file);
     console.log(`Loaded ref ${key} (${file})`);
   }
 
-  const results = [];
-  for (const project of PROJECTS) {
+  const mapPath = path.join(OUT_DIR, "manifest.json");
+  let existing = [];
+  try {
+    existing = JSON.parse(await readFile(mapPath, "utf8"));
+  } catch {
+    existing = [];
+  }
+
+  const results = [...existing];
+  for (const project of list) {
     process.stdout.write(`Generating ${project.slug}… `);
     const refParts = project.refs.map((k) => refCache[k]);
     const { buffer, mime } = await generateImage(apiKey, project.prompt, refParts);
@@ -264,20 +291,22 @@ async function main() {
       process.stdout.write(`local only → ${cdnUrl}\n`);
     }
 
-    results.push({
+    const entry = {
       slug: project.slug,
       title: project.title,
       stack: project.stack,
       local: `/projects/${outName}`,
       url: cdnUrl,
       bytes: buffer.length,
-    });
+    };
+    const idx = results.findIndex((r) => r.slug === project.slug);
+    if (idx >= 0) results[idx] = entry;
+    else results.push(entry);
   }
 
-  const mapPath = path.join(OUT_DIR, "manifest.json");
   await writeFile(mapPath, JSON.stringify(results, null, 2));
   console.log(`\nWrote ${mapPath}`);
-  console.log(JSON.stringify(results, null, 2));
+  console.log(JSON.stringify(results.filter((r) => list.some((p) => p.slug === r.slug)), null, 2));
 }
 
 main().catch((err) => {

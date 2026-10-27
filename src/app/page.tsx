@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { HomeHero } from "@/components/common/home-hero";
-import { ServicesTicker } from "@/components/home/services-ticker";
 import { JsonLd } from "@/components/seo/json-ld";
 import { listBlogs } from "@/lib/blogs/store";
 import { getProjectCards } from "@/lib/projects/store";
@@ -11,14 +10,9 @@ import {
   websiteJsonLd,
 } from "@/lib/seo";
 
-const ClientLogos = dynamic(
-  () => import("@/components/common/client-logos").then((m) => m.ClientLogos),
-  { loading: () => <div className="min-h-[12rem]" aria-hidden /> },
-);
-
-const HowWeWork = dynamic(
-  () => import("@/components/home/how-we-work").then((m) => m.HowWeWork),
-  { loading: () => <div className="min-h-[16rem]" aria-hidden /> },
+const PlatformShowcase = dynamic(
+  () => import("@/components/home/platform-showcase").then((m) => m.PlatformShowcase),
+  { loading: () => <div className="min-h-[18rem] md:min-h-[28rem]" aria-hidden /> },
 );
 
 const SelectedClients = dynamic(
@@ -29,24 +23,24 @@ const SelectedClients = dynamic(
 const CaseStudies = dynamic(
   () =>
     import("@/components/features/contact/case-studies").then((m) => m.CaseStudies),
-  { loading: () => <div className="min-h-[20rem] bg-black" aria-hidden /> },
+  { loading: () => <div className="min-h-[12rem] bg-white md:min-h-[20rem]" aria-hidden /> },
 );
 
-const ProvenResults = dynamic(
-  () => import("@/components/home/proven-results").then((m) => m.ProvenResults),
-  { loading: () => <div className="min-h-[28rem]" aria-hidden /> },
+const HomeBlogs = dynamic(
+  () => import("@/components/home/home-blogs").then((m) => m.HomeBlogs),
+  { loading: () => <div className="min-h-[24rem] bg-white" aria-hidden /> },
 );
 
-const FinalCta = dynamic(
-  () => import("@/components/home/final-cta").then((m) => m.FinalCta),
-  { loading: () => <div className="min-h-[12rem] bg-black" aria-hidden /> },
+const ScalableSmarter = dynamic(
+  () => import("@/components/home/scalable-smarter").then((m) => m.ScalableSmarter),
+  { loading: () => <div className="hidden min-h-[28rem] bg-[#F4F5F7] md:block" aria-hidden /> },
 );
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "AI Agents & E-commerce",
-  absoluteTitle: "FynkTech | AI Agents & E-commerce Stores for Global Growth",
+  title: "AI Automation Agency in Pakistan | AI Agents – FynkTech",
+  absoluteTitle: "AI Automation Agency in Pakistan | AI Agents – FynkTech",
   description:
-    "FynkTech builds AI agents and e-commerce stores for businesses worldwide. Delivery center in Lahore, Pakistan. Talk to an expert or WhatsApp us today.",
+    "FynkTech builds custom AI agents, voice bots and workflow automation for businesses in Pakistan. Automate sales, support and ops. Book a free demo.",
   path: "/",
 });
 
@@ -61,6 +55,7 @@ export default async function Home() {
         title: b.title,
         description: b.description,
         image: b.card_image || b.image,
+        createdAt: b.created_at,
       }))
     : [];
 
@@ -68,16 +63,14 @@ export default async function Home() {
     <main className="min-h-screen">
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={organizationJsonLd()} />
-      <div className="flex min-h-[calc(100svh-4rem)] flex-col">
+      <div className="flex flex-col md:min-h-[calc(100svh-4rem)]">
         <HomeHero />
-        <ServicesTicker />
       </div>
-      <ClientLogos />
-      <HowWeWork />
+      <PlatformShowcase />
       <SelectedClients />
       <CaseStudies items={projectCards} />
-      <ProvenResults posts={blogPosts} />
-      <FinalCta />
+      <ScalableSmarter />
+      <HomeBlogs posts={blogPosts} />
     </main>
   );
 }

@@ -12,7 +12,7 @@ export function Footer() {
   const whatsappNumber = siteConfig.whatsappNumber;
 
   return (
-    <footer className="border-t footer-light-shadow relative overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--background)' }}>
+    <footer className="border-t footer-light-shadow relative overflow-hidden bg-transparent" style={{ borderColor: 'var(--border)' }}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
