@@ -49,7 +49,7 @@ export default async function Home() {
       <link
         rel="preload"
         as="image"
-        href="/platform/project-dialcom-mobile.webp"
+        href="/platform/project-fynktech-mobile-hero-v2.webp"
         type="image/webp"
       />
       <JsonLd data={websiteJsonLd()} />

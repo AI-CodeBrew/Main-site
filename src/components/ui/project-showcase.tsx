@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Layers, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { HandUnderline } from "@/components/ui/hand-underline";
 import { runWhenIdle } from "@/lib/idle";
 import { cn } from "@/lib/utils";
@@ -159,22 +159,14 @@ export function ProjectShowcase({
     >
       <div className="flex items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-3">
-            <h2
-              id="project-showcase-heading"
-              className="heading-display text-5xl leading-none text-[#141414] md:text-6xl"
-            >
-              <HandUnderline color="#3aa6c9" className="text-[#3aa6c9]">
-                {title}
-              </HandUnderline>
-            </h2>
-            <span
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#01B4D2] text-white"
-              aria-hidden
-            >
-              <Layers className="h-4 w-4" strokeWidth={2.25} />
-            </span>
-          </div>
+          <h2
+            id="project-showcase-heading"
+            className="heading-display text-5xl leading-none text-[#141414] md:text-6xl"
+          >
+            <HandUnderline color="#3aa6c9" className="text-[#3aa6c9]">
+              {title}
+            </HandUnderline>
+          </h2>
           <p className="mt-2 text-sm text-[#6B7280] md:text-base">{eyebrow}</p>
         </div>
       </div>

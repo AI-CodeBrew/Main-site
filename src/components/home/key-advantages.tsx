@@ -59,9 +59,7 @@ export function KeyAdvantages() {
       />
       <div className="container-page relative">
         <div className="mx-auto max-w-3xl text-center">
-          <HandUnderline className="text-lg font-light text-[#6B7280] md:text-xl" color="#5bb8f5">
-            Our key advantages
-          </HandUnderline>
+          <p className="text-lg font-light text-[#6B7280] md:text-xl">Our key advantages</p>
           <h2
             id="key-advantages-heading"
             className="heading-display mt-3 text-3xl text-[#141414] md:text-4xl lg:text-[2.75rem]"
