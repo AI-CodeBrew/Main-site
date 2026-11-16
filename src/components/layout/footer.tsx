@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, MessageCircle, MapPin } from "lucide-react";
 import { companyAddress } from "@/lib/content/company";
 import { siteConfig, socialLinks, whatsappLink } from "@/lib/content/site";
+import { fynkTools } from "@/lib/content/tools";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/common/social-icons";
 import { trackEvent } from "@/lib/analytics";
 
@@ -31,7 +32,7 @@ export function Footer() {
       />
 
       <div className="container-page pt-10 pb-4 md:pt-12 relative z-10">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 mb-8 lg:grid-cols-[1.4fr_0.8fr_1.5fr_1.4fr_0.9fr_1.4fr] lg:gap-x-8">
+        <div className="mb-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-[1.3fr_0.75fr_1.35fr_1.25fr_0.95fr_0.95fr_1.3fr] lg:gap-x-6">
           <div className="col-span-2 order-1 lg:col-span-1 lg:order-none">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-gray-200">
@@ -107,9 +108,40 @@ export function Footer() {
             <h3 className="font-semibold mb-3">Resources</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/case-studies" className="footer-link">Case Studies</Link></li>
+              <li><Link href="/tools" className="footer-link">All Tools</Link></li>
               <li><Link href="/roi-calculator" className="footer-link">ROI Calculator</Link></li>
               <li><Link href="/privacy" className="footer-link">Privacy Policy</Link></li>
               <li><Link href="/terms" className="footer-link">Terms & Conditions</Link></li>
+            </ul>
+          </div>
+
+          <div className="order-3 lg:order-none">
+            <h3 className="mb-3 font-semibold">Tools</h3>
+            <ul className="space-y-2 text-sm">
+              {fynkTools.map((tool) => (
+                <li key={tool.id}>
+                  <a
+                    href={tool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-link"
+                    onClick={() =>
+                      trackEvent("nav_click", {
+                        destination: tool.url,
+                        label: tool.name,
+                        location: "footer_tools",
+                      })
+                    }
+                  >
+                    {tool.name}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link href="/tools" className="footer-link">
+                  View all tools
+                </Link>
+              </li>
             </ul>
           </div>
 

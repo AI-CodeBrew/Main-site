@@ -309,6 +309,16 @@ export function Header() {
                 E-commerce
               </Link>
               <Link
+                href="/tools"
+                className="block rounded-xl px-4 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors hover:bg-[#F3F4F6]"
+                onClick={() => {
+                  trackNav("/tools", "Tools", "header_mobile");
+                  closeMobileMenu();
+                }}
+              >
+                Tools
+              </Link>
+              <Link
                 href="/contact"
                 className="block rounded-xl px-4 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors hover:bg-[#F3F4F6]"
                 onClick={() => {
