@@ -31,19 +31,13 @@ export function loadPostHog(): Promise<PostHogClient | null> {
   if (client) return Promise.resolve(client);
   if (loadPromise) return loadPromise;
 
-  const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
-
-  if (!token || !host) {
-    if (process.env.NODE_ENV === "development") {
-      const missing = token ? "NEXT_PUBLIC_POSTHOG_HOST" : "NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN";
-      console.warn(
-        `[posthog] ${missing} is missing — events will not be sent. This warning stops once it is configured.`,
-      );
-    }
-    loadPromise = Promise.resolve(null);
-    return loadPromise;
-  }
+  // Public project key (safe in browser bundles). Env wins when set at build time;
+  // hardcoded fallback keeps production alive when Vercel env was never configured.
+  const token =
+    process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ||
+    "phc_kvQmegn8WfQDzSSGgGJ8P2xsfC3AAWR9oUuV9PwfpmaB";
+  const host =
+    process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
 
   loadPromise = import("posthog-js")
     .then(({ default: posthog }) => {
