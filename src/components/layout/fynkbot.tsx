@@ -16,7 +16,7 @@ export function FynkBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.8 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[calc(100vh-8rem)] max-h-[500px] md:w-[380px] md:h-[500px] bg-surface rounded-2xl shadow-2xl border border-line overflow-hidden"
+            className="mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[calc(100vh-8rem)] max-h-[500px] md:w-[380px] md:h-[500px] bg-white rounded-2xl shadow-2xl border border-line overflow-hidden"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] p-3 md:p-4 flex items-center gap-2 md:gap-3 relative">
@@ -46,12 +46,12 @@ export function FynkBot() {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 p-3 md:p-4 h-[calc(100%-140px)] md:h-[320px] overflow-y-auto bg-surface-muted">
+            <div className="flex-1 p-3 md:p-4 h-[calc(100%-140px)] md:h-[320px] overflow-y-auto bg-[#F8F9FA]">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-surface rounded-2xl p-3 md:p-4 shadow-sm border border-line"
+                className="bg-white rounded-2xl p-3 md:p-4 shadow-sm border border-line"
               >
                 <div className="flex items-start gap-2 md:gap-3">
                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-r from-[#0A0045] to-[#1a1a2e] flex items-center justify-center flex-shrink-0">
@@ -67,11 +67,11 @@ export function FynkBot() {
             </div>
 
             {/* Input Area */}
-            <div className="p-3 md:p-4 bg-surface border-t border-line h-[100px] md:h-[120px] flex flex-col justify-center">
+            <div className="p-3 md:p-4 bg-white border-t border-line h-[100px] md:h-[120px] flex flex-col justify-center">
               <div className="flex gap-2 md:gap-3">
                 <input
                   placeholder="Type your message..."
-                  className="flex-1 px-3 md:px-4 py-2 md:py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20 focus:border-[#0A0045] transition-all duration-200 text-xs md:text-sm bg-surface-muted"
+                  className="flex-1 px-3 md:px-4 py-2 md:py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20 focus:border-[#0A0045] transition-all duration-200 text-xs md:text-sm bg-[#F8F9FA]"
                 />
                 <motion.button
                   whileHover={{ scale: 1.05 }}

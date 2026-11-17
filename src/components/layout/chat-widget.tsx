@@ -572,11 +572,17 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
     viewport?.isMobile ??
     (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches);
   const keyboardOpen = !fullScreen && viewport !== null && viewport.keyboardInset > 0;
+  // Layout-only styles — never put opacity/transform here; those fight Framer Motion and
+  // leave the panel stuck see-through over the page.
   const panelStyle: React.CSSProperties = fullScreen
-    ? { top: viewport?.offsetTop ?? 0, height: viewport?.height, transformOrigin: "bottom center" }
+    ? {
+        top: viewport?.offsetTop ?? 0,
+        height: viewport?.height,
+        backgroundColor: "#ffffff",
+      }
     : {
-        transformOrigin: "bottom right",
         height: viewport ? Math.min(520, viewport.height - 32) : undefined,
+        backgroundColor: "#ffffff",
       };
 
   return (
@@ -590,17 +596,19 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
       <AnimatePresence>
         {open && (
           <motion.div
-            // Desktop: pops out of the chat button's corner. Phones: slides up full screen.
-            initial={fullScreen ? { opacity: 0, y: 40 } : { opacity: 0, scale: 0.6 }}
-            animate={fullScreen ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }}
-            exit={fullScreen ? { opacity: 0, y: 40 } : { opacity: 0, scale: 0.6 }}
-            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            // Phones: slide up. Desktop: short rise. No opacity/scale — those stuck mid-tween
+            // and made the assistant look transparent over the page.
+            initial={fullScreen ? { y: 28 } : { y: 12 }}
+            animate={{ y: 0 }}
+            exit={fullScreen ? { y: 28 } : { y: 12 }}
+            transition={{ type: "spring", stiffness: 420, damping: 34 }}
             style={panelStyle}
             role="dialog"
             aria-label="Chat with FynkTech"
             // data-lenis-prevent: messages scroll natively instead of the page behind.
             data-lenis-prevent
-            className={`bg-surface flex flex-col overflow-hidden ${
+            // Solid fill — page --surface is transparent for the hero gradient.
+            className={`flex flex-col overflow-hidden bg-white ${
               fullScreen
                 ? "fixed inset-x-0 w-full"
                 : "mb-4 w-[calc(100vw-2rem)] max-w-[380px] h-[min(520px,calc(100vh-6rem))] rounded-2xl shadow-2xl border border-line"
@@ -660,7 +668,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
             {!visitorName ? (
               <form
                 onSubmit={onNameSubmit}
-                className="flex-1 flex flex-col justify-center gap-4 p-6 bg-surface-muted"
+                className="flex-1 flex flex-col justify-center gap-4 p-6 bg-[#F8F9FA]"
               >
                 <div className="text-center">
                   <p className="text-lg font-semibold text-heading">Welcome to FynkTech</p>
@@ -676,7 +684,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
                     maxLength={60}
                     autoFocus
                     required
-                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-white focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
                 <label className="block">
@@ -688,7 +696,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
                     autoComplete="tel"
                     inputMode="tel"
                     maxLength={20}
-                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-surface focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                    className="w-full text-base md:text-sm px-3 py-2.5 rounded-xl border border-line bg-white focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                   />
                 </label>
                 <button
@@ -701,14 +709,14 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
               </form>
             ) : (
               <>
-                <div className="flex-1 overflow-y-auto p-4 bg-surface-muted space-y-3">
+                <div className="flex-1 overflow-y-auto p-4 bg-[#F8F9FA] space-y-3">
                   {messages.map((m, i) => (
                     <div
                       key={i}
                       className={`w-fit text-sm rounded-2xl px-3 py-2 max-w-[90%] ${
                         m.role === "user"
                           ? "ml-auto bg-[#0A0045] text-white"
-                          : "bg-surface border border-line text-heading"
+                          : "bg-white border border-line text-heading"
                       }`}
                     >
                       {m.role === "user" ? (
@@ -744,7 +752,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
                 )}
 
                 {/* Bottom padding clears the iPhone home bar in full-screen mode. */}
-                <div className="p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-line bg-surface space-y-2">
+                <div className="p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-line bg-white space-y-2">
                   {actions.includes("book") && (
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -761,7 +769,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Type a message…"
-                      className="flex-1 min-w-0 text-base md:text-sm px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
+                      className="flex-1 min-w-0 text-base md:text-sm px-3 py-2 rounded-xl border border-line bg-white focus:outline-none focus:ring-2 focus:ring-[#0A0045]/20"
                       disabled={loading}
                     />
                     <button
@@ -784,7 +792,7 @@ export function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
           initial={{ opacity: 0, y: 8, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: "spring", stiffness: 380, damping: 28 }}
-          className="relative mb-3 w-[min(280px,calc(100vw-2rem))] rounded-2xl rounded-br-sm border border-line bg-surface p-3 pr-8 shadow-xl"
+          className="relative mb-3 w-[min(280px,calc(100vw-2rem))] rounded-2xl rounded-br-sm border border-line bg-white p-3 pr-8 shadow-xl"
         >
           <button
             type="button"
