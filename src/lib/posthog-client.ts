@@ -1,7 +1,7 @@
 /**
  * Lazy PostHog client — the SDK (~165 KB gz) only downloads after the browser is idle,
  * so it never competes with first paint. Calls made before load are queued and flushed
- * once init finishes. Session recording and surveys stay off to avoid their extra scripts.
+ * once init finishes. Surveys stay off; session recording is on for live-site replay.
  */
 import { runWhenIdle } from "@/lib/idle";
 
@@ -53,11 +53,12 @@ export function loadPostHog(): Promise<PostHogClient | null> {
         capture_pageview: true,
         capture_pageleave: true,
         person_profiles: "identified_only",
-        // Keep analytics; skip the heavy recorder + survey bundles.
-        disable_session_recording: true,
+        // Record live sessions (project has session_recording_opt_in on).
+        // External deps must stay allowed so the recorder script can load.
+        disable_session_recording: false,
         disable_surveys: true,
         disable_surveys_automatic_display: true,
-        disable_external_dependency_loading: true,
+        disable_external_dependency_loading: false,
       });
       client = posthog;
       flushQueue(posthog);
