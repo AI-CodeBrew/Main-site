@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MessageCircle, MapPin } from "lucide-react";
+import { MessageCircle, MapPin } from "lucide-react";
 import { companyAddress } from "@/lib/content/company";
 import { siteConfig, socialLinks, whatsappLink } from "@/lib/content/site";
 import { fynkTools } from "@/lib/content/tools";
@@ -148,10 +148,6 @@ export function Footer() {
           <div className="col-span-2 order-6 md:col-span-1 lg:order-none">
             <h3 className="font-semibold mb-3">Contact Us</h3>
             <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-3">
-                <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
-                <a href={`mailto:${companyAddress.email}`} className="footer-link break-all">{companyAddress.email}</a>
-              </li>
               {whatsappNumber && (
                 <li className="flex items-start gap-3">
                   <MessageCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--foreground)' }} />
